@@ -34,6 +34,7 @@
 
 int colour = 31;
 
+/* Starting the random engine */
 void init_nb_aleatoire()
 {
 	srand(time(0));
@@ -150,6 +151,7 @@ void initialize_plate(int taille_plateau, int **table)
 	}
 }
 
+/*Verifies if a navire can be placed on a specific location with a specific size and orientation */
 bool est_valide_pro(int **table_navire, int x, int y, int sens, int taille, int taille_plateau)
 {
 	int max;
@@ -238,24 +240,129 @@ bool est_valide_pro(int **table_navire, int x, int y, int sens, int taille, int 
 	}
 }
 
+
+bool est_valide_pro_v2(int **table_navire, int taille_plateau, Tmp_navire *navire)
+{
+	int max;
+	switch (navire->sens)
+	{
+	case UP: // vers le haut
+		max = navire->premiere_case.y - navire->taille;
+		if (max < -1)
+		{
+			return false;
+			break;
+		}
+		for (int j = navire->premiere_case.y; j < max; j--)
+		{
+			if (table_navire[navire->premiere_case.x][j] == 1)
+			{
+				return false;
+				break;
+			}
+		}
+		return true;
+		break;
+
+	case RIGHT: // droit
+		max = navire->premiere_case.x + navire->taille;
+
+		if (max > taille_plateau)
+		{
+			return false;
+			break;
+		}
+		for (int i = navire->premiere_case.x; i < max; i++)
+		{
+			if (table_navire[i][navire->premiere_case.y] == 1)
+			{
+				return false;
+				break;
+			}
+		}
+
+		return true;
+		break;
+
+	case DOWN:
+		max = navire->premiere_case.y + navire->taille;
+
+		if (max > taille_plateau)
+		{
+			return false;
+			break;
+		}
+		for (int j = navire->premiere_case.y; j < max; j++)
+		{
+			if (table_navire[navire->premiere_case.x][j] == 1)
+			{
+				return false;
+				break;
+			}
+		}
+
+		return true;
+		break;
+
+	case LEFT: 
+		max = navire->premiere_case.x - navire->taille;
+
+		if (max < -1)
+		{
+			return false;
+			break;
+		}
+		for (int i = navire->premiere_case.x; i < max; i--)
+		{
+			if (table_navire[i][navire->premiere_case.y] == 1)
+			{
+				return false;
+				break;
+			}
+		}
+		return true;
+		break;
+
+	default:
+		return false;
+		break;
+	}
+}
+
+/* Creation of a navire/boat */
 Navire *creer_navire(int taille, int taille_plateau, int **table_navire, int id)
 {
 	Navire *nav;
 	nav = (Navire *)malloc(sizeof(Navire)); // allocating memory for this specific navire
 
-	if (nav == NULL)
+	Tmp_navire *tmp;
+	tmp = (Tmp_navire *)malloc(sizeof(Tmp_navire));
+
+	if (nav == NULL || tmp == NULL)
 	{
-		fprintf(stderr, "failed to allocate memory for navire.\n");
+		fprintf(stderr, "failed to allocate memory for navire or tmp_navire.\n");
 		exit(-1);
 	}
 
+	//V1 with est_valide_pro
 	int randing = nb_random(0, 3);
 	int x = nb_random(0, taille_plateau - 1);
 	int y = nb_random(0, taille_plateau - 1);
+
+
+	//V2 with est_valide_pro
+	/*
+	tmp->taille = taille;
+	tmp->sens = nb_random(0, 3);
+	tmp->premiere_case.x = nb_random(0, taille_plateau - 1);
+	tmp->premiere_case.y = nb_random(0, taille_plateau - 1);
+	*/
+
 	bool verification = true;
 
 	while (verification)
 	{
+		//V1 with est_valide_pro
 		if (est_valide_pro(table_navire, x, y, randing, taille, taille_plateau))
 		{
 			verification = false;
@@ -265,14 +372,46 @@ Navire *creer_navire(int taille, int taille_plateau, int **table_navire, int id)
 			x = nb_random(0, taille_plateau - 1);
 			y = nb_random(0, taille_plateau - 1);
 		}
+		
+
+		//V2 with est_valide_pro
+		/*
+		if (est_valide_pro_v2(table_navire, taille_plateau, tmp))
+		{
+			verification = false;
+		}
+		else
+		{
+			tmp->premiere_case.x = nb_random(0, taille_plateau - 1);
+			tmp->premiere_case.y = nb_random(0, taille_plateau - 1);
+		}
+		*/
 	}
 
+	//Approach is here is to verify everything before save them into nav
 	nav->taille = taille;
+
+
+	//V1 with est_valide_pro
 	nav->premiere_case.x = x;
 	nav->premiere_case.y = y;
-	nav->id = id; //setting up the unique id of the navire
+	
 
+	//V2 with est_valide_pro
+	/*
+	nav->premiere_case.x = tmp->premiere_case.x;
+	nav->premiere_case.y = tmp->premiere_case.x;
+	nav->id = id; //setting up the unique id of the navire
+	*/
+
+	//V1 with est_valide_pro
 	switch (randing)
+	
+
+	//V2 with est_valide_pro
+	/*
+	switch (tmp->sens)
+	*/
 	{
 	case UP: 
 		nav->sens = UP;
@@ -301,17 +440,7 @@ Navire *creer_navire(int taille, int taille_plateau, int **table_navire, int id)
 	}
 }
 
-void copier_grille_de_reference_vers_la_grille_de_jeu(int **table_navire, int **table_jeu, int taille_tableau) //TO BE FIXED!!!!
-{
-	for (int i = 0; i < taille_tableau; i++)
-	{
-		for (int j = 0; j < taille_tableau; j++)
-		{
-			table_jeu[i][j] = table_navire[i][j];
-		}
-	}
-}
-
+/* Adding navires randomly on the game's plate */
 void initialisation_plateau(int **table_navire, int taille_plateau, Navire **liste_of_navires, int **boats_checklist)
 {
 	int randing;
@@ -386,6 +515,7 @@ void initialisation_plateau(int **table_navire, int taille_plateau, Navire **lis
 	}
 }
 
+/* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
 void proposition_joueur(int **plateau, int **prop, int *NbTouche, int *NbJoue, int *NbToucheNav, int taille_plateau)
 {
 	int x, y;

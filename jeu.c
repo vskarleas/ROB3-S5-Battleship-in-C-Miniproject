@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
 
     initialisation_plateau(grille_ref, taille_plateau, &boats, boats_checlist);
-    //copier_grille_de_reference_vers_la_grille_de_jeu(grille_ref, grille, taille_plateau); //TO BE FIXED!!!
+    
     
 
     return 1;

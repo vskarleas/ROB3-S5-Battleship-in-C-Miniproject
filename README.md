@@ -2,13 +2,13 @@
 
 * 15/11/2023: Creation de la structure et initialisation de tous les fnctionnes principales du programme
 * 16/11/2023: Creation du fichier compte-rendu
-* 17/11/2023: Correction du problem de Debuger - Maintenant c'est possible de debauger le code
+* 17/11/2023: Correction du problem de Debuger - Maintenant c'est possible de debauger le code + Cleaned the source code + Added
 
 # Notes - Problems
 
-1. copier_grille_de_reference_vers_la_grille_de_jeu il y a un **erreur**!!! (PROBLEM)
-2. À tester proposition_joueur (TO_DO)
-3. est_valide_pro est une fonction qui repond au cahier de charge de la fonction demandé est_valide sauf que celui fait traite chaque sous ca seperament tout en en faisant la verification du placement d'une navire à une position à partir du premier moment que les coordonees x, y aleartoires sont cree. (NOTE)
+1. Test the proposition_joueur  function and (TO_DO)
+2. est_valide_pro est une fonction qui repond au cahier de charge de la fonction demandé est_valide sauf que celui fait traite chaque sous ca seperament tout en en faisant la verification du placement d'une navire à une position à partir du premier moment que les coordonees x, y aleartoires sont cree. (NOTE)
+3. strcmpr -> 0 si ok, 1 sinon (for two strings) [0 si code number for false, and any other number is considered as true in C in an if or a bool]
 
 # Crucial changes
 
@@ -40,6 +40,14 @@
    * est_valide_pro
    * initialisation_plateau
 
+# To be created
+
+* [ ] Game's whole logic on main
+* [ ] A bool function that verifies if every boat has been found or not
+* [ ] A logic/algorythm that detects a boat according to the points placed from the user
+* [ ] The user has to give the coordinates in format (1, taille_tableau) and not in format (0, taille-tableau-1) - TO TAKE INTO ACCOUNT
+* [ ] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided])
+
 # Ameliorations
 
 * Ajouter plus de fonctionalite sur l'affichafe de la grille du jeu (if you want more than that)
@@ -49,3 +57,4 @@
 * V1.1 Code de base
 * V1.2 Code corrigé selon indications de Manu
 * V1.3 Code optimized from the previous source code
+* V1.4 Comments added and cleaned source code

@@ -13,3 +13,11 @@ typedef struct navire
     int taille;
     int id;
 } Navire;
+
+// type: Structure
+typedef struct tmp_navire
+{
+    int sens; /* 0 haut 1 droite 2 bas 3 gauche */
+    Case premiere_case;
+    int taille;
+} Tmp_navire;
