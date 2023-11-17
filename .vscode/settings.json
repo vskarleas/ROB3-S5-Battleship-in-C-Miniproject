@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "sequence_point.h": "c",
+        "test_degree": "c",
+        "programmes.h": "c",
+        "array": "c",
+        "stdbool.h": "c",
+        "__locale": "c",
+        "stdio.h": "c",
+        "string.h": "c",
+        "functions.h": "c"
+    }
+}
