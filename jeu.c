@@ -1,3 +1,9 @@
+//#############################################################################
+//# File jeu.c (main program)
+//# UE Infomatics for Robotics - Polytech Sorbonne - 2023/2024 - S5
+//# Authors: Yannis Sadoun, Vasileios Filippos Skarleas - All rights reserved.
+//#############################################################################
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,32 +16,9 @@
 int main(int argc, char **argv)
 {
     init_nb_aleatoire();
-
-    /*
-    bool repeater = true;
-
-    int taille_plateau;
-    printf("Donner la taille du tableau: ");
-    scanf("%d", &taille_plateau);
-    if (taille_plateau < 4)
-    {
-        while (repeater)
-        {
-            printf("\033[0;33mATTENTION!\033[1;0m La taille doit etre au minimum 4. Redonner la taille: ");
-            scanf("%d", &taille_plateau);
-            printf("\n");
-            if (taille_plateau >= 4)
-            {
-                repeater = false;
-            }
-        }
-    }
-    printf("C'est parti!\n\n");
-    */ //EVERYTHING IS PASSED ON user_input FILE
-
     int taille_plateau = get_user_input();
 
-    /* Dynamic creation of the table */
+    /* Dynamic creation of the game table */
     int **grille;
     grille = malloc(taille_plateau * sizeof (int **));
 
@@ -66,10 +49,24 @@ int main(int argc, char **argv)
     }
 
     initialize_plate(taille_plateau, grille_ref);
+
+    int **boats_checlist;
+    boats_checlist = malloc(6 * sizeof (int **));
+
+    if (boats_checlist == NULL) {
+        fprintf(stderr, "failed to allocate memory for the boats checklist table.\n");
+        exit(-1);
+    }
+
+    for (int i = 0; i < 6; i++)
+    {
+        boats_checlist[i] = malloc(2 * sizeof(int));
+    }
         
-    //list of navires created
+    //list of navires created (reference matrix of placed boats initially)
     Navire * boats ;
     boats = malloc(sizeof(Navire *)*6);
+
 
     if (boats == NULL) {
         fprintf(stderr, "failed to allocate memory for navires list.\n");
@@ -77,9 +74,8 @@ int main(int argc, char **argv)
     }
 
 
-    initialisation_plateau(grille_ref, taille_plateau, &boats);
-    copier_grille_de_reference_vers_la_grille_de_jeu(grille_ref, grille, taille_plateau);
-    printing_the_grille(grille, taille_plateau);
+    initialisation_plateau(grille_ref, taille_plateau, &boats, boats_checlist);
+    //copier_grille_de_reference_vers_la_grille_de_jeu(grille_ref, grille, taille_plateau); //TO BE FIXED!!!
     
 
     return 1;

@@ -1,6 +1,6 @@
 #############################################################################
 # Fichier Makefile 
-# UE Infomatics for Robotics - Polytech Sorbonne - 2023/2024
+# UE Infomatics for Robotics - Polytech Sorbonne - 2023/2024 - S5
 # Author: Vasileios Filippos Skarleas - All rights reserved.
 #############################################################################
 # utilisation des variables internes $@ $< $^ $*
