@@ -42,7 +42,7 @@
 
 # Ameliorations
 
-* Ajouter plus de fonctionalite sur l'affichafe de la grille du jeu (if you want)
+* Ajouter plus de fonctionalite sur l'affichafe de la grille du jeu (if you want more than that)
 
 # Versions
 
