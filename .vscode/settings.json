@@ -9,6 +9,7 @@
         "__locale": "c",
         "stdio.h": "c",
         "string.h": "c",
-        "functions.h": "c"
+        "functions.h": "c",
+        "user_input.h": "c"
     }
 }

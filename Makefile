@@ -71,7 +71,9 @@ programmes.o : programmes.c structures.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-jeu.o : jeu.c programmes.h
+user_input.o : user_input.c
+
+jeu.o : jeu.c programmes.h user_input.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
@@ -81,7 +83,7 @@ jeu.o : jeu.c programmes.h
 ########################################################
 # regles explicites de creation des executables
 
-jeu : jeu.o programmes.o
+jeu : jeu.o programmes.o user_input.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@

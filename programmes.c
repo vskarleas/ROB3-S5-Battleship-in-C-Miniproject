@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "programmes.h"
 
@@ -20,19 +21,16 @@
 
 #define COULE 10 // Felicitations
 
+void init_nb_aleatoire() 
+{
+    srand(time(0));
+}
+
 
 /*Generates random numbers min and max given as arguments*/
 int nb_random(int min, int max)
 {
-	int step = 10;
-	int our_random;
-
-	for (int i = 0; i < step; i++)
-	{
-		our_random = (rand() % (max - min + 1)) + min;
-	}
-
-	return our_random;
+	return min + rand() % (max+1 - min);
 }
 
 /* It prints the plate */
@@ -92,7 +90,7 @@ bool valdation_navire(int **table_navire, int x, int y, int sens, int taille, in
 	switch (sens)
 	{
 	case NORTH:
-		for (int j = y; j < y + taille -1; j--)
+		for (int j = y; j < y + taille -1; j--) //THERE IS AN ERROR HERE
 		{
 			if (j < 0)
 			{
@@ -109,14 +107,14 @@ bool valdation_navire(int **table_navire, int x, int y, int sens, int taille, in
 		break;
 
 	case SOUTH:
-		for (int j = y; j < y + taille -1; j++)
+		for (int j = y; j <= y + taille -1; j++) //CHANGE THE LOGIC TO <=
 		{
-			if (j > taille_plateau)
+			if (j > taille_plateau-1) //ADDED -1 HERE OTHER WISE IT GOES OFF THE TABLE
 			{
 				return false;
 				break;
 			}
-			if (table_navire[x][j] == 1)
+			if (table_navire[x][j] == 1 && j < taille_plateau) //ADDED THE && HERE
 			{
 				return false;
 				break;
@@ -126,9 +124,9 @@ bool valdation_navire(int **table_navire, int x, int y, int sens, int taille, in
 		break;
 
 	case EAST:
-		for (int i = x; i < x + taille -1; i++)
+		for (int i = x; i <= x + taille -1; i++) //CHANGED LOGIC TO
 		{
-			if (i > taille_plateau)
+			if (i > taille_plateau - 1) //ADDED -1 HERE OTHER WISE IT GOES OFF THE TABLE
 			{
 				return false;
 				break;
@@ -143,7 +141,7 @@ bool valdation_navire(int **table_navire, int x, int y, int sens, int taille, in
 		break;
 
 	case WEST:
-		for (int i = x; i < x + taille -1; i--)
+		for (int i = x; i < x + taille -1; i--) //THERE IS AN ERROR HERE PROBBALY AS WELL
 		{
 			if (i < 0)
 			{
@@ -167,7 +165,14 @@ bool valdation_navire(int **table_navire, int x, int y, int sens, int taille, in
 
 Navire *creer_navire(int taille, int taille_plateau, int **table_navire)
 {
-	Navire *nav = NULL;
+	Navire *nav;
+    nav = (Navire *)malloc(sizeof(Navire)); //allocating memory for this specific navire
+
+    if (nav == NULL) {
+        fprintf(stderr, "failed to allocate memory for navire.\n");
+        exit(-1);
+    }
+
 	int randing = nb_random(0, 3);
 	int x = nb_random(0, taille_plateau - 1);
 	int y = nb_random(0, taille_plateau - 1);
@@ -226,43 +231,6 @@ Navire *creer_navire(int taille, int taille_plateau, int **table_navire)
 	}
 }
 
-void initialisation_plateau(int **table_navire, int taille_plateau, Navire **liste_of_navires) {
-    int randing;
-    for (int i = 0; i < 6; i++) {
-        randing = (taille_plateau < 6) ? nb_random(2, taille_plateau) : nb_random(2, 6);
-        Navire *nav = creer_navire(randing, taille_plateau, table_navire);
-
-        // Enregistrement du navire dans le tableau
-        liste_of_navires[i] = nav;
-
-        int x = nav->premiere_case.x;
-        int y = nav->premiere_case.y;
-
-        switch (nav->sens) {
-            case NORTH:
-                for (int j = y; j > y - nav->taille; j--) {
-                    table_navire[x][j] = 1;
-                }
-                break;
-            case SOUTH:
-                for (int j = y; j < y + nav->taille; j++) {
-                    table_navire[x][j] = 1;
-                }
-                break;
-            case EAST:
-                for (int j = x; j < x + nav->taille; j++) {
-                    table_navire[j][y] = 1;
-                }
-                break;
-            case WEST:
-                for (int j = x; j > x - nav->taille; j--) {
-                    table_navire[j][y] = 1;
-                }
-                break;
-        }
-    }
-}
-
 void copier_grille_de_reference_vers_la_grille_de_jeu(int **table_navire, int **table_jeu, int taille_tableau)
 {
 	for (int i = 0; i < taille_tableau; i++)
@@ -276,6 +244,63 @@ void copier_grille_de_reference_vers_la_grille_de_jeu(int **table_navire, int **
 		}
 	}
 }
+
+void initialisation_plateau(int **table_navire, int taille_plateau, Navire **liste_of_navires) {
+    int randing;
+    for (int i = 0; i < 6; i++) {
+        randing = (taille_plateau < 6) ? nb_random(2, taille_plateau) : nb_random(2, 6); //logic for choosing the maximum length of a navire depending the size of the plate
+        Navire *nav = creer_navire(randing, taille_plateau, table_navire);
+
+        // Enregistrement du navire dans le tableau
+        liste_of_navires[i] = nav; //IT WORKS, TESTED IT A COUPLE OF TIMES
+
+        int x = nav->premiere_case.x;
+        int y = nav->premiere_case.y;
+
+        switch (nav->sens) {
+            case NORTH:
+                for (int j = y; j > y - nav->taille; j--) {
+                    table_navire[x][j] = 1;
+                }
+
+                //TEMPORARY FOR FIXING THE LOGIC PROBLEMS ON navire_validation
+                printf("Navire No %d created succesfuly. Here are its data:\n", i+1);
+                printf("Grille %dx%d\nTaille de navire: %d\nSens: %d\n(%d,%d)\n\n", taille_plateau, taille_plateau, nav->taille, nav->sens, x, y);
+                //END OF TEMPORARY FOR FIXING THE LOGIC PROBLEMS ON nav
+
+                break;
+            case SOUTH:
+                for (int j = y; j < y + nav->taille; j++) {
+                    table_navire[x][j] = 1;
+                }
+                //TEMPORARY FOR FIXING THE LOGIC PROBLEMS ON navire_validation
+                printf("Navire No %d created succesfuly. Here are its data:\n", i+1);
+                printf("Grille %dx%d\nTaille de navire: %d\nSens: %d\n(%d,%d)\n\n", taille_plateau, taille_plateau, nav->taille, nav->sens, x, y);
+                //END OF TEMPORARY FOR FIXING THE LOGIC PROBLEMS ON nav
+                break;
+            case EAST:
+                for (int j = x; j < x + nav->taille; j++) {
+                    table_navire[j][y] = 1;
+                }
+                //TEMPORARY FOR FIXING THE LOGIC PROBLEMS ON navire_validation
+                printf("Navire No %d created succesfuly. Here are its data:\n", i+1);
+                printf("Grille %dx%d\nTaille de navire: %d\nSens: %d\n(%d,%d)\n\n", taille_plateau, taille_plateau, nav->taille, nav->sens, x, y);
+                //END OF TEMPORARY FOR FIXING THE LOGIC PROBLEMS ON nav
+                break;
+            case WEST:
+                for (int j = x; j > x - nav->taille; j--) {
+                    table_navire[j][y] = 1;
+                }
+                //TEMPORARY FOR FIXING THE LOGIC PROBLEMS ON navire_validation
+                printf("Navire No %d created succesfuly. Here are its data:\n", i+1);
+                printf("Grille %dx%d\nTaille de navire: %d\nSens: %d\n(%d,%d)\n\n", taille_plateau, taille_plateau, nav->taille, nav->sens, x, y);
+                //END OF TEMPORARY FOR FIXING THE LOGIC PROBLEMS ON nav
+                break;
+        }
+    }
+}
+
+
 
 void proposition_joueur(int **plateau, int **prop, int *NbTouche, int *NbJoue, int *NbToucheNav, int taille_plateau) 
 {
