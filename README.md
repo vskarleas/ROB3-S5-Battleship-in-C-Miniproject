@@ -9,6 +9,18 @@
 1. Test the proposition_joueur  function and (TO_DO)
 2. est_valide_pro est une fonction qui repond au cahier de charge de la fonction demandé est_valide sauf que celui fait traite chaque sous ca seperament tout en en faisant la verification du placement d'une navire à une position à partir du premier moment que les coordonees x, y aleartoires sont cree. (NOTE)
 3. strcmpr -> 0 si ok, 1 sinon (for two strings) [0 si code number for false, and any other number is considered as true in C in an if or a bool]
+4. ```c
+   (taille_plateau < 6) ? nb_random(2, taille_plateau) : nb_random(2, 6);
+   ```
+
+   was replaved with
+
+   ```c
+   nb_random(2, (taille_plateau < 6) ? taille_plateau : 6);
+   ```
+
+   for optimization reasons.
+5. A new function was created called msleep that adds a controled delay in ms whenever it's called. It's useful when you want to ensure the uniqueness of aleartory values since the leartory principle is based on the ms inside the processor's clock.
 
 # Crucial changes
 
@@ -26,6 +38,8 @@
 | 4  | 1         |
 | 5  | 1         |
 
+* A new verison of the printing function is available called printing_the_grille_v3 that is more UI friendly
+
 # Discovered
 
 1. Printing of grille marche
@@ -42,15 +56,14 @@
 
 # To be created
 
-* [ ] Game's whole logic on main
+* [ ] Game's whole logic on game_loop.c and call it on the main
 * [ ] A bool function that verifies if every boat has been found or not
 * [ ] A logic/algorythm that detects a boat according to the points placed from the user
 * [ ] The user has to give the coordinates in format (1, taille_tableau) and not in format (0, taille-tableau-1) - TO TAKE INTO ACCOUNT
 * [ ] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided])
 
 # Ameliorations
-
-* Ajouter plus de fonctionalite sur l'affichafe de la grille du jeu (if you want more than that)
+* Try to use est_valide_pro_v2 instead of using est_valide_pro since it's written more cleverly while using pointers
 
 # Versions
 
@@ -58,3 +71,4 @@
 * V1.2 Code corrigé selon indications de Manu
 * V1.3 Code optimized from the previous source code
 * V1.4 Comments added and cleaned source code
+* V2.1 Bug fixes regarding est_valid_pro

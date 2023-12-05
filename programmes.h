@@ -6,6 +6,9 @@
 
 #include "structures.h"
 
+/* Introducing a controled delay whenever we call this function */
+int msleep(long tms);
+
 /* Starting the random engine */
 void init_nb_aleatoire();
 
@@ -14,6 +17,9 @@ int nb_random(int min, int max);
 
 /* It prints the plate - Treats table of any size and makes sure that the printing is done correctly */
 void printing_the_grille(int **table, int taille_plateau);
+
+/* Printing the game's table in a more UI friendly way */
+void printing_the_grille_v3(int **table, int taille_plateau);
 
 /* Just puts a 0 on every cell for initialization */
 void initialize_plate(int taille_plateau, int **table);
