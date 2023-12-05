@@ -66,14 +66,17 @@ all : $(EXECUTABLES)
 # regles explicites de compilation separee de modules
 # n'ayant pas de fichier .h ET/OU dependant d'autres modules
 	
-programmes.o : programmes.c structures.h
+programmes.o : programmes.c
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
 user_input.o : user_input.c
+	@echo ""
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
 
-jeu.o : jeu.c programmes.h user_input.h
+jeu.o : jeu.c programmes.h user_input.h structures.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<

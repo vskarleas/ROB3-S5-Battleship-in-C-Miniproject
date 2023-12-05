@@ -10,6 +10,7 @@
         "stdio.h": "c",
         "string.h": "c",
         "functions.h": "c",
-        "user_input.h": "c"
+        "user_input.h": "c",
+        "structures.h": "c"
     }
 }

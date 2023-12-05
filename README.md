@@ -63,6 +63,7 @@
 * [ ] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided])
 
 # Ameliorations
+
 * Try to use est_valide_pro_v2 instead of using est_valide_pro since it's written more cleverly while using pointers
 
 # Versions
@@ -72,3 +73,4 @@
 * V1.3 Code optimized from the previous source code
 * V1.4 Comments added and cleaned source code
 * V2.1 Bug fixes regarding est_valid_pro
+* V2.2 Makefile updated
