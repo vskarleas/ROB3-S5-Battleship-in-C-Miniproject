@@ -60,7 +60,7 @@
 * [ ] A bool function that verifies if every boat has been found or not
 * [ ] A logic/algorythm that detects a boat according to the points placed from the user
 * [ ] The user has to give the coordinates in format (1, taille_tableau) and not in format (0, taille-tableau-1) - TO TAKE INTO ACCOUNT
-* [ ] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided])
+* [ ] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided]) IF WE WANT
 
 # Ameliorations
 
