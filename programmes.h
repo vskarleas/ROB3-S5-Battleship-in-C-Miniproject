@@ -33,7 +33,7 @@ bool est_valide_pro_v2(int **table_navire, int taille_plateau, Tmp_navire *navir
 Navire *creer_navire(int taille, int taille_plateau, int **table_navire, int id);
 
 /* Adding navires randomly on the game's plate */
-void initialisation_plateau(int **table_navire, int taille_plateau, Navire **liste_of_navires, int **boats_checklist);
+void initialisation_plateau(int **table_navire, int taille_plateau, Navire **liste_of_navires);
 
 /* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
 void proposition_joueur(int **plateau, int **prop, int *NbTouche, int *NbJoue, int *NbToucheNav, int taille_plateau);

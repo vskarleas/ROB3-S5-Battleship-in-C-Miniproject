@@ -1,9 +1,3 @@
-//#############################################################################
-//# File jeu.c (main program)
-//# UE Infomatics for Robotics - Polytech Sorbonne - 2023/2024 - S5
-//# Authors: Yannis Sadoun, Vasileios Filippos Skarleas - All rights reserved.
-//#############################################################################
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,70 +7,65 @@
 #include "programmes.h"
 #include "user_input.h"
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     init_nb_aleatoire();
     int taille_plateau = get_user_input();
 
-    /* Dynamic creation of the game table */
-    int **grille;
-    grille = malloc(taille_plateau * sizeof (int **));
-
-    if (grille == NULL) {
-        fprintf(stderr, "failed to allocate memory for plate of the game.\n");
+    // Allocation de la mémoire pour prop
+    int **prop = malloc(taille_plateau * sizeof(int *));
+    if (prop == NULL) {
+        fprintf(stderr, "Failed to allocate memory for prop.\n");
         exit(-1);
     }
 
-    for (int i = 0; i < taille_plateau; i++)
-    {
-        grille[i] = malloc(taille_plateau * sizeof(int));
+    for (int i = 0; i < taille_plateau; i++) {
+        prop[i] = malloc(taille_plateau * sizeof(int));
+        if (prop[i] == NULL) {
+            fprintf(stderr, "Failed to allocate memory for prop row %d.\n", i);
+            exit(-1);
+        }
     }
 
-    initialize_plate(taille_plateau, grille);
-    printing_the_grille(grille, taille_plateau);
+    initialize_plate(taille_plateau, prop);
+    printing_the_grille(prop, taille_plateau);
 
-    int **grille_ref;
-    grille_ref = malloc(taille_plateau * sizeof (int **));
-
-    if (grille_ref == NULL) {
-        fprintf(stderr, "failed to allocate memory for the navires table (table of reference).\n");
+    // Allocation de la mémoire pour plateau
+    int **plateau = malloc(taille_plateau * sizeof(int *));
+    if (plateau == NULL) {
+        fprintf(stderr, "Failed to allocate memory for plateau.\n");
         exit(-1);
     }
 
-    for (int i = 0; i < taille_plateau; i++)
-    {
-        grille_ref[i] = malloc(taille_plateau * sizeof(int));
+    for (int i = 0; i < taille_plateau; i++) {
+        plateau[i] = malloc(taille_plateau * sizeof(int));
+        if (plateau[i] == NULL) {
+            fprintf(stderr, "Failed to allocate memory for plateau row %d.\n", i);
+            exit(-1);
+        }
     }
 
-    initialize_plate(taille_plateau, grille_ref);
+    initialize_plate(taille_plateau, plateau);
 
-    int **boats_checlist;
-    boats_checlist = malloc(6 * sizeof (int **));
-
-    if (boats_checlist == NULL) {
-        fprintf(stderr, "failed to allocate memory for the boats checklist table.\n");
-        exit(-1);
-    }
-
-    for (int i = 0; i < 6; i++)
-    {
-        boats_checlist[i] = malloc(2 * sizeof(int));
-    }
-        
-    //list of navires created (reference matrix of placed boats initially)
-    Navire * boats ;
-    boats = malloc(sizeof(Navire *)*6);
-
-
+    // Allocation et initialisation des navires
+    Navire *boats = malloc(sizeof(Navire) * 6);
     if (boats == NULL) {
-        fprintf(stderr, "failed to allocate memory for navires list.\n");
+        fprintf(stderr, "Failed to allocate memory for boats.\n");
         exit(-1);
     }
 
+    initialisation_plateau(plateau, taille_plateau, &boats);
 
-    initialisation_plateau(grille_ref, taille_plateau, &boats, boats_checlist);
-    
-    
+    printf("\n\nAprès:\n");
+    for (int i=0; i<taille_plateau; i++)
+	{
+		for (int j=0; j<taille_plateau; j++)
+		{
+			prop[i][j] = plateau[i][j];
+		}
+	}
 
-    return 1;
+    printing_the_grille(prop, taille_plateau); // Après copie
+
+
+    return 0;
 }

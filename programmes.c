@@ -570,7 +570,7 @@ Navire *creer_navire(int taille, int taille_plateau, int **table_navire, int id)
 }
 
 /* Adding navires randomly on the game's plate */
-void initialisation_plateau(int **table_navire, int taille_plateau, Navire **liste_of_navires, int **boats_checklist)
+void initialisation_plateau(int **table_navire, int taille_plateau, Navire **liste_of_navires)
 {
 	int randing, x, y;
 	for (int i = 0; i < 6; i++)
@@ -581,7 +581,7 @@ void initialisation_plateau(int **table_navire, int taille_plateau, Navire **lis
 
 		// Enregistrement du navire dans le tableau
 		liste_of_navires[i] = nav;
-		boats_checklist[i][0] = OK;
+		//boats_checklist[i][0] = OK;
 
 		x = nav->premiere_case.x;
 		y = nav->premiere_case.y;
