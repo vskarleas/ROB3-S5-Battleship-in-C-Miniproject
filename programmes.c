@@ -581,7 +581,6 @@ void initialisation_plateau(int **table_navire, int taille_plateau, Navire **lis
 
 		// Enregistrement du navire dans le tableau
 		liste_of_navires[i] = nav;
-		//boats_checklist[i][0] = OK;
 
 		x = nav->premiere_case.x;
 		y = nav->premiere_case.y;
@@ -688,4 +687,17 @@ void proposition_joueur(int **plateau, int **prop, int *NbTouche, int *NbJoue, i
 		printf("À l'eau.\n");
 		prop[x][y] = 0;
 	}
+}
+
+void copier_navires(int **prop, int **plateau, int taille_plateau)
+{
+
+    for (int i=0; i<taille_plateau; i++)
+    {
+        for (int j=0; j<taille_plateau; j++)
+        {
+            prop[i][j] = plateau[i][j];
+        }
+    }
+    return;
 }

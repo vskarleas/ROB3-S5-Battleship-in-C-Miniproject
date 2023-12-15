@@ -38,4 +38,6 @@ void initialisation_plateau(int **table_navire, int taille_plateau, Navire **lis
 /* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
 void proposition_joueur(int **plateau, int **prop, int *NbTouche, int *NbJoue, int *NbToucheNav, int taille_plateau);
 
+void copier_navires(int **prop, int **plateau, int taille_plateau);
+
 #endif
