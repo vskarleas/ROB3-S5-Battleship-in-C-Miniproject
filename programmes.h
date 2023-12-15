@@ -27,17 +27,20 @@ void initialize_plate(int taille_plateau, int **table);
 /*Verifies if a navire can be placed on a specific location with a specific size and orientation */
 bool est_valide_pro(int **table_navire, int x, int y, int sens, int taille, int taille_plateau);
 
-bool est_valide_pro_v2(int **table_navire, int taille_plateau, Tmp_navire *navire);
+Cellule_Liste_Navire *creer_element_liste_Navire(Navire v);
 
-/* Creation of a navire/boat */
-Navire *creer_navire(int taille, int taille_plateau, int **table_navire, int id);
+Liste_Navire creer_liste_Navire_vide();
 
-/* Adding navires randomly on the game's plate */
-void initialisation_plateau(int **table_navire, int taille_plateau, Navire **liste_of_navires);
+void ajouter_element_liste_Navire(Liste_Navire *L, Navire e);
 
 /* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
 void proposition_joueur(int **plateau, int **prop, int *NbTouche, int *NbJoue, int *NbToucheNav, int taille_plateau);
 
+// Allocation et initialisation des navires
+Liste_Navire initialisation_plateau(int **plateau, int taille_plateau);
+
 void copier_navires(int **prop, int **plateau, int taille_plateau);
+
+void update_prop(int **prop, int x, int y);
 
 #endif

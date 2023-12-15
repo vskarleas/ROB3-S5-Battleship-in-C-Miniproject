@@ -46,3 +46,8 @@ int get_user_input()
 
     return taille_plateau;
 }
+
+int user_plays()
+{
+    
+}
