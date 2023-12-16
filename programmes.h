@@ -6,6 +6,10 @@
 
 #include "structures.h"
 
+void waitForKeypress();
+
+void clearScreen();
+
 /* Introducing a controled delay whenever we call this function */
 int msleep(long tms);
 
@@ -33,14 +37,18 @@ Liste_Navire creer_liste_Navire_vide();
 
 void ajouter_element_liste_Navire(Liste_Navire *L, Navire e);
 
+bool navire_found(int **prop, Liste_Navire L);
+
+void update_prop(int **prop, int x, int y);
+
 /* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
-void proposition_joueur(int **plateau, int **prop, int *NbTouche, int *NbJoue, int *NbToucheNav, int taille_plateau);
+bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plateau, int *NbNav);
+
+void printProgress(double percentage);
 
 // Allocation et initialisation des navires
 Liste_Navire initialisation_plateau(int **plateau, int taille_plateau);
 
 void copier_navires(int **prop, int **plateau, int taille_plateau);
-
-void update_prop(int **prop, int x, int y);
 
 #endif

@@ -10,8 +10,12 @@
 #include <stdbool.h>
 #include <errno.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "programmes.h"
+
+#define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+#define PBWIDTH 60
 
 /* Basic notions */
 // ATTENTION: x, y doesn't follow the reperes in real world. Here x is the indicator of line and y is the indicator of column
@@ -26,11 +30,22 @@
 #define OK 1 // navire added on the boats list (parallel to boats checklist)
 
 #define VIDE 0
-#define NAVIRE 1	  // navire placed on position
-#define AUCUN_NAVIRE -1 //deja joue et pas trouve un point de n'importe quelle navire
-#define NAVIRE_TROUVE 2 //one point was found
+#define NAVIRE 1		// navire placed on position
+#define AUCUN_NAVIRE -1 // deja joue et pas trouve un point de n'importe quelle navire
+#define NAVIRE_TROUVE 2 // one point was found
 
 #define COULE 10 // congratsulations
+
+void waitForKeypress() 
+{
+    getchar(); // Waits for a key press
+}
+
+void clearScreen()
+{
+	const char *CLEAR_SCREEN_ANSI = "\e[1;1H\e[2J";
+	write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
+}
 
 int msleep(long tms)
 {
@@ -166,13 +181,13 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 	printf("x/y ");
 	for (int k = 0; k < taille_plateau; k++)
 	{
-		if (k <= 9)
+		if (k < 9)
 		{
-			printf("| %d ", k);
+			printf("| %d ", k + 1);
 		}
 		else
 		{
-			printf("|%d ", k);
+			printf("|%d ", k + 1);
 		}
 	}
 	printf("|");
@@ -194,13 +209,13 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 	int h;
 	for (i = 0; i < taille_plateau; i++)
 	{
-		if (i <= 9)
+		if (i < 9)
 		{
-			printf("%d  ||", i);
+			printf("%d  ||", i + 1);
 		}
 		else
 		{
-			printf("%d ||", i);
+			printf("%d ||", i + 1);
 		}
 		for (h = 0; h < taille_plateau; h++)
 		{
@@ -222,7 +237,7 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 					break;
 
 				case COULE:
-					printf(" \033[1;36mx\033[1;0m |");
+					printf(" \033[0;31mx\033[1;0m |");
 					break;
 
 				case NAVIRE: // TO BE REMOVED. IT WAS PLACED TO VISUALIZE THE DIFFERENT BOATS. IT HAS TO BE REPLACED WITH A .
@@ -236,7 +251,7 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 				switch (state)
 				{
 				case VIDE:
-					printf(" \033[1;34m.\033[1;0m |"); //no points of navire here
+					printf(" \033[1;34m.\033[1;0m |"); // no points of navire here
 					break;
 
 				case NAVIRE_TROUVE:
@@ -244,11 +259,11 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 					break;
 
 				case AUCUN_NAVIRE:
-					printf(" \033[1;35mo\033[1;0m |"); //already played this point and no point of a navire was found
+					printf(" \033[1;35mo\033[1;0m |"); // already played this point and no point of a navire was found
 					break;
 
 				case COULE:
-					printf(" \033[1;36mx\033[1;0m |"); //all the points of a navire were found
+					printf(" \033[0;31mx\033[1;0m |"); // all the points of a navire were found
 					break;
 
 				case NAVIRE: // TO BE REMOVED. IT WAS PLACED TO VISUALIZE THE DIFFERENT BOATS. IT HAS TO BE REPLACED WITH A .
@@ -407,48 +422,175 @@ void ajouter_element_liste_Navire(Liste_Navire *L, Navire e)
 	return;
 }
 
-/* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
-void proposition_joueur(int **plateau, int **prop, int *NbTouche, int *NbJoue, int *NbToucheNav, int taille_plateau)
+bool navire_found(int **prop, Liste_Navire L) //this functionw as optimized to sscan the gaeme according to the list of navires created and not the plateau and the prop tables
 {
-	int x, y;
+	Cellule_Liste_Navire *el = L.first;
 
-	printf("Entrez les coordonnées (x, y) pour tirer: ");
-	if (scanf("%d %d", &x, &y) != 2)
+	int counter = 0;
+	while (el != NULL)
 	{
-		printf("Entrée invalide. Veuillez entrer des nombres.\n");
-		while (getchar() != '\n')
-			; // cleaning the buffer entrance
-		return;
+		switch (el->data.sens)
+		{
+		case UP:
+			for (int j = el->data.premiere_case.x; j > el->data.premiere_case.x - el->data.taille; j--)
+			{
+				if (prop[j][el->data.premiere_case.y] == 2)
+				{
+					counter++;
+				}
+			}
+
+			if (counter == el->data.taille)
+			{
+				for (int j = el->data.premiere_case.x; j > el->data.premiere_case.x - el->data.taille; j--)
+				{
+					prop[j][el->data.premiere_case.y] = 10;
+				}
+				return true;
+			}
+
+			break;
+
+		case LEFT:
+			for (int j = el->data.premiere_case.y; j > el->data.premiere_case.y - el->data.taille; j--)
+			{
+				if (prop[el->data.premiere_case.x][j] == 2)
+				{
+					counter++;
+				}
+			}
+
+			if (counter == el->data.taille)
+			{
+				for (int j = el->data.premiere_case.y; j > el->data.premiere_case.y - el->data.taille; j--)
+				{
+					prop[el->data.premiere_case.x][j] = 10;
+				}
+				return true;
+			}
+
+			break;
+
+		case DOWN:
+			for (int j = el->data.premiere_case.x; j < el->data.premiere_case.x + el->data.taille; j++)
+			{
+				if (prop[j][el->data.premiere_case.y] == 2)
+				{
+					counter++;
+				}
+			}
+
+			if (counter == el->data.taille)
+			{
+				for (int j = el->data.premiere_case.x; j < el->data.premiere_case.x + el->data.taille; j++)
+				{
+					prop[j][el->data.premiere_case.y] = 10;
+				}
+				return true;
+			}
+
+			break;
+
+		case RIGHT:
+			for (int j = el->data.premiere_case.y; j < el->data.premiere_case.y + el->data.taille; j++)
+			{
+				if (prop[el->data.premiere_case.x][j] == 2)
+				{
+					counter++;
+				}
+			}
+
+			if (counter == el->data.taille)
+			{
+				for (int j = el->data.premiere_case.y; j < el->data.premiere_case.y + el->data.taille; j++)
+				{
+					prop[el->data.premiere_case.x][j] = 10;
+				}
+				return true;
+			}
+
+			break;
+
+		default:
+			break;
+		}
+
+		counter = 0; //reinitialize counter
+		el = el->suiv;
 	}
 
-	x--;
-	y--; // Ajustement pour l'indexation
+	return false;
+}
 
-	if (x < 0 || x >= taille_plateau || y < 0 || y >= taille_plateau)
+void update_prop(int **prop, int x, int y)
+{
+	if (prop[x][y] == 1)
 	{
-		printf("Coordonnées hors du plateau. Veuillez réessayer.\n");
-		return;
-	}
-
-	(*NbJoue)++;
-
-	if (prop[x][y] != 0)
-	{
-		printf("Deja joué.\n");
-	}
-	else if (plateau[x][y] > 0)
-	{
-		printf("Touché!\n");
-		prop[x][y] = 1;
-		(*NbTouche)++;
-		int idNavire = plateau[x][y];
-		NbToucheNav[idNavire - 1]++; // Considering that every navire has a unique ID (1, 2, 3, ...)
+		prop[x][y] = 2;
 	}
 	else
 	{
-		printf("À l'eau.\n");
-		prop[x][y] = 0;
+		prop[x][y] = -1;
 	}
+
+	return;
+}
+
+/* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
+bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plateau, int *NbNav)
+{
+	int x, y;
+	bool coordinates = true; // used to ask the use new coordinates for a vessel if the previous ones are not inside the specified limits mentioned on the instructions
+	bool navire_founded;
+
+	while (coordinates)
+	{
+		printf("Entrez les coordonnées (x, y) pour tirer: ");
+		if (scanf("%d %d", &x, &y) != 2)
+		{
+			printf("\033[0;33mEntrée invalide. Veuillez entrer des nombres\033[0m\n");
+			while (getchar() != '\n')
+				; // cleaning the buffer entrance
+			return false;
+		}
+
+		if (!(x < 1 || x > taille_plateau || y < 1 || y > taille_plateau)) // coordinates verification out of limit
+		{
+
+			coordinates = false;
+		}
+		else
+		{
+			printf("\033[0;33mThe coordinates x & y can take any value between 1 and %d. TRY AGAIN!\033[0m\n\n", taille_plateau);
+		}
+	}
+
+	coordinates = true;
+
+	x--;
+	y--; // Adjustment for the indexes
+
+	update_prop(prop, x, y);
+	(*NbJoue)++; // next round
+
+	navire_founded = navire_found(prop, L);
+	if (navire_founded == true)
+	{
+		(*NbNav)++;
+		return true;
+	}
+
+	clearScreen();
+	return false;
+}
+
+void printProgress(double percentage)
+{
+	int val = (int)(percentage * 100);
+	int lpad = (int)(percentage * PBWIDTH);
+	int rpad = PBWIDTH - lpad;
+	printf("\r%3d%% [%.*s%*s]", val, lpad, PBSTR, rpad, "");
+	fflush(stdout);
 }
 
 // Allocation et initialisation des navires
@@ -460,11 +602,15 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau)
 
 	int randing, random_orientation, x_tmp, y_tmp;
 	bool verification;
+	int percentage = 16;
 
 	// creating the six boats and putting them on the plateau (invisible to the user)
-	printf("Initializing the game\n\n");
 	for (int i = 0; i < 6; i++)
 	{
+		printf("Initializing the game...\n\n");
+		printProgress(0.01 * percentage * i);
+
+
 		/* Initialising navire randomly on the game's plate */
 		msleep(1000); // delay process for 2 seconds in order to provide real aleartory results
 
@@ -495,6 +641,9 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau)
 		nav.premiere_case.x = x_tmp;
 		nav.premiere_case.y = y_tmp;
 		nav.id = i;
+
+		//TO BE REMOVED ONCE TESTS ARE COMPLETED
+		//printf("Taille: %d\n (x ,y): %d,%d\nDirection: %d\n, ID: %d\n\n", nav.taille, nav.premiere_case.x+1, nav.premiere_case.y+1, random_orientation, nav.id);
 
 		switch (random_orientation)
 		{
@@ -539,10 +688,7 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau)
 		}
 
 		ajouter_element_liste_Navire(&liste, nav);
-		//TO BE REMOVED ONCE TESTS ARE COMPLETED
-		printf("\n");
-		printing_the_grille_v3(plateau, taille_plateau);
-		printf("\n================================================================\n");
+		clearScreen();
 	}
 
 	return liste;
@@ -559,115 +705,4 @@ void copier_navires(int **prop, int **plateau, int taille_plateau)
 		}
 	}
 	return;
-}
-
-bool navire_found(int **plateau, int **prop, Liste_Navire L)
-{
-	Cellule_Liste_Navire *el = L.first;
-
-	int counter = 0;
-	while (el != NULL)
-	{
-		switch (el->data.sens)
-		{
-		case UP:
-			for (int j = el->data.premiere_case.x; j > el->data.premiere_case.x - el->data.taille; j--)
-			{
-				if (plateau[j][el->data.premiere_case.y] == 2)
-				{
-					counter++;
-				}
-			}
-
-			break;
-
-		case LEFT:
-			for (int j = el->data.premiere_case.y; j > el->data.premiere_case.y - el->data.taille; j--)
-			{
-				if (plateau[el->data.premiere_case.x][j] == 2)
-				{
-					counter++;
-				}
-			}
-
-			break;
-
-		case DOWN:
-			for (int j = el->data.premiere_case.x; j < el->data.premiere_case.x + el->data.taille; j++)
-			{
-				if (plateau[j][el->data.premiere_case.y] == 2)
-				{
-					counter++;
-				}
-			}
-
-			break;
-
-		case RIGHT:
-			for (int j = el->data.premiere_case.y; j < el->data.premiere_case.y + el->data.taille; j++)
-			{
-				if (plateau[el->data.premiere_case.x][j] == 2)
-				{
-					counter++;
-				}
-			}
-
-			break;
-
-		default:
-			break;
-		}
-
-		if (counter == el->data.taille)
-		{
-			switch (el->data.sens)
-			{
-			case UP:
-				for (int j = el->data.premiere_case.x; j > el->data.premiere_case.x - el->data.taille; j--)
-				{
-					prop[j][el->data.premiere_case.y] = 10;
-				}
-
-				break;
-
-			case LEFT:
-				for (int j = el->data.premiere_case.y; j > el->data.premiere_case.y - el->data.taille; j--)
-				{
-					prop[el->data.premiere_case.x][j] = 10;
-				}
-
-				break;
-
-			case DOWN:
-				for (int j = el->data.premiere_case.x; j < el->data.premiere_case.x + el->data.taille; j++)
-				{
-					prop[j][el->data.premiere_case.y] = 10;
-				}
-
-				break;
-
-			case RIGHT:
-				for (int j = el->data.premiere_case.y; j < el->data.premiere_case.y + el->data.taille; j++)
-				{
-					prop[el->data.premiere_case.x][j] = 10;
-				}
-
-				break;
-
-			default:
-				break;
-			}
-
-			return true;
-		}
-
-		el = el->suiv;
-	}
-
-	return false;
-}
-
-void update_prop(int **prop, int x, int y)
-{
-	
 }

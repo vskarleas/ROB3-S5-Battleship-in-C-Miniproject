@@ -42,12 +42,16 @@ int get_user_input()
             }
         }
     }
-    printf("C'est parti!\n\n");
+    printf("Merci beaucoup!\n\n");
 
     return taille_plateau;
 }
 
-int user_plays()
+void rules_interface(int rounds, int taille_plateau)
 {
-    
+    printf("\nRULES\n");
+    printf("We are playing in a field of %dx%d. On every round you will be asked to provide the coordinates x & y for a vessel. \nThe goal is to find the hiden vessels coordinates. There are %d rounds.\n\n", taille_plateau, taille_plateau, rounds);
+    printf("The coordinates x & y can take any value between 1 and %d\n", taille_plateau);
+    printf("\n\033[1;36mWhen you are ready to start, press ENTER on the keyboard\033[0m\n");
+    printf("================================================================\n");
 }

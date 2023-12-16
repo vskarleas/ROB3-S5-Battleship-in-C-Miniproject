@@ -3,6 +3,7 @@
 * 15/11/2023: Creation de la structure et initialisation de tous les fnctionnes principales du programme
 * 16/11/2023: Creation du fichier compte-rendu
 * 17/11/2023: Correction du problem de Debuger - Maintenant c'est possible de debauger le code + Cleaned the source code + Added
+* 16/12/2023: The main game has been completed
 
 # Notes - Problems
 
@@ -22,7 +23,7 @@
    for optimization reasons.
 5. A new function was created called msleep that adds a controled delay in ms whenever it's called. It's useful when you want to ensure the uniqueness of aleartory values since the leartory principle is based on the ms inside the processor's clock.
 6. Report the problem with taille = 4 and how wee resolved => created a new if on th elogic since teh tabke couldn't be completed with 6 navales.
-7. The function that copies the two tables doesn't work.
+7. We can use only one table thansk to the liste chainee qui s'appelle liste sur le programme
 
 # Crucial changes
 
@@ -58,10 +59,11 @@
 
 # To be created
 
-* [ ] Game's whole logic on the main to be completed
-* [ ] complet the function void update_prop(int**prop, int x, int y) and the function user_plays()
-* [ ] A function that updates the coordinates according to the unes given by the user to be created (on the prop table)
-* [ ] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided]) IF WE WANT
+* [X] Game's whole logic on the main to be completed
+* [X] A bool function that verifies if every boat has been found or not
+* [X] A logic/algorythm that detects a boat according to the points placed from the user
+* [ ] Sauvegarder le jeu et continuer un autre moment
+* [X] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided]) IF WE WANT
 
 ![1702659377345](image/README/1702659377345.png)
 
@@ -69,7 +71,11 @@
 
 # Ameliorations
 
-* Try to use est_valide_pro_v2 instead of using est_valide_pro since it's written more cleverly while using pointers
+* Create a menu game
+  * Add a functionality to choose if he wants to play against an AI on the computer or againt another player
+  * Add a personalisation functionality for the user to save his name
+    * Add a multiplayer (2 players maximum) where each one is placing navires on his own plateau and the other one tries to find them respectfully
+* Add a functionality to save the game
 
 # Versions
 
@@ -81,3 +87,4 @@
 * V2.2 Makefile updated
 * V3.1 Explained different things and added the function copier_navires . The part 'To be created' was updated. Check the proto on that section of what needs to be done.
 * V3.2 Fixes copier_navire error and added the main game loop including the functions discused on the board. NOTE: Code is not optimised and it can not be runned until teh game loop logic is completed
+* v4.5
