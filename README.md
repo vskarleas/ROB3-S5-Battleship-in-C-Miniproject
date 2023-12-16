@@ -67,8 +67,9 @@
 * [X] A logic/algorythm that detects a boat according to the points placed from the user
 * [ ] Sauvegarder le jeu et continuer un autre moment - functions to be created and complete the logic for jeu_v2 (COMPUTER mode call and LOAD case for continuing the game)
 * [ ] Complete the multiplayer mode (2 individual players). It needs a function to manually insert the selected amount of navires on the game and then we have to complete the logic of game for jeu_v2
+* [ ] Improve the code by fixing the function suprimer_navire and using an advanced logic of L.taille on the jeu and jeu_v2 game loops
 
-* *** Don't think that we will include the AI version due to lack of time and inutility as functionality***
+*** Don't think that we will include the AI version due to lack of time and inutility as functionality***
 
 * [X] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided]) IF WE WANT
 
