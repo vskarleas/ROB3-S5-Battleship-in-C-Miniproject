@@ -40,7 +40,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = jeu
+EXECUTABLES = jeu jeu_v2
 
 #############################################################################
 # definition des regles
@@ -71,12 +71,17 @@ programmes.o : programmes.c
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-user_input.o : user_input.c
+user_input.o : ui.c programmes.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-jeu.o : jeu.c programmes.h user_input.h structures.h
+jeu.o : jeu.c programmes.h ui.h structures.h
+	@echo ""
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
+jeu_v2.o : jeu_v2.c programmes.h ui.h structures.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
@@ -86,7 +91,14 @@ jeu.o : jeu.c programmes.h user_input.h structures.h
 ########################################################
 # regles explicites de creation des executables
 
-jeu : jeu.o programmes.o user_input.o
+jeu : jeu.o programmes.o ui.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
+
+jeu_v2 : jeu_v2.o programmes.o ui.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@

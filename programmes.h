@@ -31,6 +31,8 @@ void initialize_plate(int taille_plateau, int **table);
 /*Verifies if a navire can be placed on a specific location with a specific size and orientation */
 bool est_valide_pro(int **table_navire, int x, int y, int sens, int taille, int taille_plateau);
 
+void suprimer_navire(Cellule_Liste_Navire *principal, Liste_Navire *liste);
+
 Cellule_Liste_Navire *creer_element_liste_Navire(Navire v);
 
 Liste_Navire creer_liste_Navire_vide();
@@ -47,7 +49,7 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 void printProgress(double percentage);
 
 // Allocation et initialisation des navires
-Liste_Navire initialisation_plateau(int **plateau, int taille_plateau);
+Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int number_of_navires);
 
 void copier_navires(int **prop, int **plateau, int taille_plateau);
 

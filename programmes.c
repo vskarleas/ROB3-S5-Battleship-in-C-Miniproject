@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "programmes.h"
+#include "ui.h"
 
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 #define PBWIDTH 60
@@ -36,9 +37,9 @@
 
 #define COULE 10 // congratsulations
 
-void waitForKeypress() 
+void waitForKeypress()
 {
-    getchar(); // Waits for a key press
+	getchar(); // Waits for a key press
 }
 
 void clearScreen()
@@ -383,14 +384,39 @@ bool est_valide_pro(int **table_navire, int x, int y, int sens, int taille, int 
 	}
 }
 
+void suprimer_navire(Cellule_Liste_Navire *principal, Liste_Navire *liste)
+{
+	// Si on est sur le premier maillon (cas particulier à la con)
+	if (principal == liste->first)
+	{
+		// on modifie le premier élément
+		liste->first = principal->suiv;
+	}
+	else
+	{
+		Cellule_Liste_Navire *prec;
+		// il faut rechercher le maillon précédent
+		for (prec = liste->first; prec->suiv != principal; prec = prec->suiv)
+			;
+
+		// on modifie le précédent
+		prec->suiv = principal->suiv;
+	}
+	// Le lien est sauvegardé, on peut libérer le maillon
+	free(principal);
+	liste->taille--;
+	/* Attention, si ton maillon contient des tableaux d'éléments alloués par malloc, faut d'abord libérer les
+		éléments avant de nettoyer le maillon => d'où l'utilité de créer des fonctions de nettoyage associées
+		 à chaque type => c'est le premier pas vers la programmation objet                                               */
+}
+
 Cellule_Liste_Navire *creer_element_liste_Navire(Navire v)
 {
 	Cellule_Liste_Navire *el;
 	el = (Cellule_Liste_Navire *)malloc(sizeof(Cellule_Liste_Navire));
 	if (el == NULL)
 	{
-		fprintf(stderr, "creer_element_liste_Navire : allocation impossible\n");
-		exit(-1);
+		allocation_error_print_general("creer_element_liste_Navire");
 	}
 	el->data = v;
 	el->suiv = NULL;
@@ -422,7 +448,7 @@ void ajouter_element_liste_Navire(Liste_Navire *L, Navire e)
 	return;
 }
 
-bool navire_found(int **prop, Liste_Navire L) //this functionw as optimized to sscan the gaeme according to the list of navires created and not the plateau and the prop tables
+bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to sscan the gaeme according to the list of navires created and not the plateau and the prop tables
 {
 	Cellule_Liste_Navire *el = L.first;
 
@@ -442,6 +468,7 @@ bool navire_found(int **prop, Liste_Navire L) //this functionw as optimized to s
 
 			if (counter == el->data.taille)
 			{
+				// suprimer_navire(el, &L);
 				for (int j = el->data.premiere_case.x; j > el->data.premiere_case.x - el->data.taille; j--)
 				{
 					prop[j][el->data.premiere_case.y] = 10;
@@ -462,6 +489,7 @@ bool navire_found(int **prop, Liste_Navire L) //this functionw as optimized to s
 
 			if (counter == el->data.taille)
 			{
+				// suprimer_navire(el, &L);
 				for (int j = el->data.premiere_case.y; j > el->data.premiere_case.y - el->data.taille; j--)
 				{
 					prop[el->data.premiere_case.x][j] = 10;
@@ -482,6 +510,7 @@ bool navire_found(int **prop, Liste_Navire L) //this functionw as optimized to s
 
 			if (counter == el->data.taille)
 			{
+				// suprimer_navire(el, &L);
 				for (int j = el->data.premiere_case.x; j < el->data.premiere_case.x + el->data.taille; j++)
 				{
 					prop[j][el->data.premiere_case.y] = 10;
@@ -502,6 +531,7 @@ bool navire_found(int **prop, Liste_Navire L) //this functionw as optimized to s
 
 			if (counter == el->data.taille)
 			{
+				// suprimer_navire(el, &L);
 				for (int j = el->data.premiere_case.y; j < el->data.premiere_case.y + el->data.taille; j++)
 				{
 					prop[el->data.premiere_case.x][j] = 10;
@@ -515,7 +545,7 @@ bool navire_found(int **prop, Liste_Navire L) //this functionw as optimized to s
 			break;
 		}
 
-		counter = 0; //reinitialize counter
+		counter = 0; // reinitialize counter
 		el = el->suiv;
 	}
 
@@ -542,7 +572,6 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 	int x, y;
 	bool coordinates = true; // used to ask the use new coordinates for a vessel if the previous ones are not inside the specified limits mentioned on the instructions
 	bool navire_founded;
-
 	while (coordinates)
 	{
 		printf("Entrez les coordonnées (x, y) pour tirer: ");
@@ -594,7 +623,7 @@ void printProgress(double percentage)
 }
 
 // Allocation et initialisation des navires
-Liste_Navire initialisation_plateau(int **plateau, int taille_plateau)
+Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int number_of_navires)
 {
 	Liste_Navire liste;
 	liste = creer_liste_Navire_vide();
@@ -602,14 +631,13 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau)
 
 	int randing, random_orientation, x_tmp, y_tmp;
 	bool verification;
-	int percentage = 16;
+	float percentage = 100 / number_of_navires;
 
 	// creating the six boats and putting them on the plateau (invisible to the user)
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < number_of_navires; i++)
 	{
 		printf("Initializing the game...\n\n");
 		printProgress(0.01 * percentage * i);
-
 
 		/* Initialising navire randomly on the game's plate */
 		msleep(1000); // delay process for 2 seconds in order to provide real aleartory results
@@ -642,8 +670,8 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau)
 		nav.premiere_case.y = y_tmp;
 		nav.id = i;
 
-		//TO BE REMOVED ONCE TESTS ARE COMPLETED
-		//printf("Taille: %d\n (x ,y): %d,%d\nDirection: %d\n, ID: %d\n\n", nav.taille, nav.premiere_case.x+1, nav.premiere_case.y+1, random_orientation, nav.id);
+		// TO BE REMOVED ONCE TESTS ARE COMPLETED
+		// printf("Taille: %d\n (x ,y): %d,%d\nDirection: %d\n, ID: %d\n\n", nav.taille, nav.premiere_case.x+1, nav.premiere_case.y+1, random_orientation, nav.id);
 
 		switch (random_orientation)
 		{

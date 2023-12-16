@@ -62,7 +62,9 @@
 * [X] Game's whole logic on the main to be completed
 * [X] A bool function that verifies if every boat has been found or not
 * [X] A logic/algorythm that detects a boat according to the points placed from the user
-* [ ] Sauvegarder le jeu et continuer un autre moment
+* [ ] Sauvegarder le jeu et continuer un autre moment - functions to be created and complete the logic for jeu_v2 (COMPUTER mode call and LOAD case for continuing the game)
+* [ ] Complete the multiplayer mode (2 individual players). It needs a function to manually insert the selected amount of navires on the game and then we have to complete the logic of game for jeu_v2
+* *** Don't think that we will include the AI version due to lack of time and inutility as functionality***
 * [X] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided]) IF WE WANT
 
 ![1702659377345](image/README/1702659377345.png)
@@ -87,4 +89,5 @@
 * V2.2 Makefile updated
 * V3.1 Explained different things and added the function copier_navires . The part 'To be created' was updated. Check the proto on that section of what needs to be done.
 * V3.2 Fixes copier_navire error and added the main game loop including the functions discused on the board. NOTE: Code is not optimised and it can not be runned until teh game loop logic is completed
-* v4.5
+* v4.5 Game logic has been completed and improvements were made on the source code
+* V5.0 All the UI has been completed. Introduction to different game modes was included on this version. Needs to be done: create the saving functionality (check to be done section) and comeplete the multiplayer mode.
