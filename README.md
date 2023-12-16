@@ -24,6 +24,7 @@
 5. A new function was created called msleep that adds a controled delay in ms whenever it's called. It's useful when you want to ensure the uniqueness of aleartory values since the leartory principle is based on the ms inside the processor's clock.
 6. Report the problem with taille = 4 and how wee resolved => created a new if on th elogic since teh tabke couldn't be completed with 6 navales.
 7. We can use only one table thansk to the liste chainee qui s'appelle liste sur le programme
+8. That way on our code we are using the listes chainees principles that allows to add whatever number kf navires we want in case that we didnt want to be exclusivky 6 (even the percentage affichage function is ufoated dynamicly accoridng to the number of navires) 
 
 # Crucial changes
 
