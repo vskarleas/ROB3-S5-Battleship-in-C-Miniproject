@@ -24,23 +24,25 @@
 5. A new function was created called msleep that adds a controled delay in ms whenever it's called. It's useful when you want to ensure the uniqueness of aleartory values since the leartory principle is based on the ms inside the processor's clock.
 6. Report the problem with taille = 4 and how wee resolved => created a new if on th elogic since teh tabke couldn't be completed with 6 navales.
 7. We can use only one table thansk to the liste chainee qui s'appelle liste sur le programme
-8. That way on our code we are using the listes chainees principles that allows to add whatever number kf navires we want in case that we didnt want to be exclusivky 6 (even the percentage affichage function is ufoated dynamicly accoridng to the number of navires) 
+8. That way on our code we are using the listes chainees principles that allows to add whatever number kf navires we want in case that we didnt want to be exclusivky 6 (even the percentage affichage function is ufoated dynamicly accoridng to the number of navires)
 
 # Crucial changes
 
 * Created a new file called structures.h that includes all the custom created structures required for the project like Case or even Navire
 * Part of the main's program code was transfered to the new file called user_input to minimize the main's code
 * Structure of navire was updated to include a unique ID
-* A boats checlist was created as well that includes the id of every placed boat and 1 if it's placed (value to be updated every time a user finds a boat - it's going to be used in order to verify if the game is completed or not). The table looks like the following:
+* A liste chainne with type Liste_Navire is used in order to make all the required verifications. Ideally we would like to use the method that deletes a navire from that liste in irder to minimise the processing time. However we need to fix the function responsible for doing that.
 
-| ID | Placement |
-| -- | --------- |
-| 0  | 1         |
-| 1  | 1         |
-| 2  | 1         |
-| 3  | 1         |
-| 4  | 1         |
-| 5  | 1         |
+  To be noted that this procedure allows us to have only one plateau where everything is parsed dynamicly. The liste looks like the following:
+
+| ID | Data                      |
+| -- | ------------------------- |
+| 0  | Data of navire 0 -> 1     |
+| 1  | Data of navire 1 -> 2    |
+| 2  | Data of navire 2 -> 3    |
+| 3  | Data of navire 3 -> 4    |
+| 4  | Data of navire 4 -> 5    |
+| 5  | Data of navire 5 -> NULL |
 
 * A new verison of the printing function is available called printing_the_grille_v3 that is more UI friendly
 
@@ -65,7 +67,9 @@
 * [X] A logic/algorythm that detects a boat according to the points placed from the user
 * [ ] Sauvegarder le jeu et continuer un autre moment - functions to be created and complete the logic for jeu_v2 (COMPUTER mode call and LOAD case for continuing the game)
 * [ ] Complete the multiplayer mode (2 individual players). It needs a function to manually insert the selected amount of navires on the game and then we have to complete the logic of game for jeu_v2
+
 * *** Don't think that we will include the AI version due to lack of time and inutility as functionality***
+
 * [X] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided]) IF WE WANT
 
 ![1702659377345](image/README/1702659377345.png)
