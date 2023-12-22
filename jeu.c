@@ -79,7 +79,7 @@ int main(int argc, char **argv)
                 clearScreen();
                 printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n", *NbNav, number_of_navires);
                 printing_the_grille_v3(prop, taille_plateau);
-                msleep(2000);
+                msleep(300);
             }
             clearScreen();
 

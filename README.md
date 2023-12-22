@@ -25,6 +25,9 @@
 6. Report the problem with taille = 4 and how wee resolved => created a new if on th elogic since teh tabke couldn't be completed with 6 navales.
 7. We can use only one table thansk to the liste chainee qui s'appelle liste sur le programme
 8. That way on our code we are using the listes chainees principles that allows to add whatever number kf navires we want in case that we didnt want to be exclusivky 6 (even the percentage affichage function is ufoated dynamicly accoridng to the number of navires)
+9. On the jeu_v2 we hasd used a switch for the mode_game, however during compilation there were many misunderstadnign for the compiler to understand if the treated cases were correct and it was responding with incorrect errors for the variables declaration. To by pass this problem it needed to declare everything before the switch, however we didn't want to do it (allocate more ressources that we won't use). That's why we sticked with the if statements.
+10. Our API calls are responsible to connect the game to the external environment (computer or server) - that's why the name that was chosen was API from Application Programming Interface.
+11. **Create a graph with the association of the different files between them (check INF404 for references)**
 
 # Crucial changes
 
@@ -44,7 +47,8 @@
 | 4  | Data of navire 4 -> 5    |
 | 5  | Data of navire 5 -> NULL |
 
-* A new verison of the printing function is available called printing_the_grille_v3 that is more UI friendly
+* A new verison of the printing function is available called printing_the_grille_v3 that is more UI friendly and it's the one that is used on the latest version of the code
+* There are two versions of main functions. The version 2 is the more stable one that includes for more functionality than version 1.
 
 # Discovered
 
@@ -65,9 +69,10 @@
 * [X] Game's whole logic on the main to be completed
 * [X] A bool function that verifies if every boat has been found or not
 * [X] A logic/algorythm that detects a boat according to the points placed from the user
-* [ ] Sauvegarder le jeu et continuer un autre moment - functions to be created and complete the logic for jeu_v2 (COMPUTER mode call and LOAD case for continuing the game)
+* [X] Continuer un autre moment - functions to be created and complete the logic for jeu_v2 (COMPUTER mode call and LOAD case for continuing the game)
+* [ ] Save the game function needs to be created. Its signature should definetly include Liste_Navire, taille_plateau, coulle, round, number_of_navires and prop. Create the file according to the filing codec as described at **Filing codec** section. NOTE: If the file already exists, use the function api_clearFile to clean the file before write on it. In the end of that file we can include the text "COPYRIGHT 2023-2024 NAVALE FILING CODEC BY YANIS SADOUN & VASILEIOS FILIPPOS SKARLEAS | ALL RIGHTS RESERVED"
 * [ ] Complete the multiplayer mode (2 individual players). It needs a function to manually insert the selected amount of navires on the game and then we have to complete the logic of game for jeu_v2
-* [ ] Improve the code by fixing the function suprimer_navire and using an advanced logic of L.taille on the jeu and jeu_v2 game loops
+* [ ] OPTIONAL Improve the code by fixing the function suprimer_navire and using an advanced logic of L.taille on the jeu and jeu_v2 game loops
 
 *** Don't think that we will include the AI version due to lack of time and inutility as functionality***
 
@@ -83,7 +88,7 @@
   * Add a functionality to choose if he wants to play against an AI on the computer or againt another player
   * Add a personalisation functionality for the user to save his name
     * Add a multiplayer (2 players maximum) where each one is placing navires on his own plateau and the other one tries to find them respectfully
-* Add a functionality to save the game
+* Add a functionality to save the game & load the game
 
 # Versions
 
@@ -97,3 +102,15 @@
 * V3.2 Fixes copier_navire error and added the main game loop including the functions discused on the board. NOTE: Code is not optimised and it can not be runned until teh game loop logic is completed
 * v4.5 Game logic has been completed and improvements were made on the source code
 * V5.0 All the UI has been completed. Introduction to different game modes was included on this version. Needs to be done: create the saving functionality (check to be done section) and comeplete the multiplayer mode.
+* V6.1 load game functionality has been added and fixed some bugs regarding the UI as well as the repsonse of the program n several extreme scenarions
+
+# Filing codec
+
+`number_of_navires taille_plateau coulle round sens_nav_1 x_nav_1 y_nav_1 taille_nav_1 id_nav_1 sens_nav_2 ...  $ prop_table_codec`
+
+# Game's exit codes / errors
+
+| Codes    | Status | Explanation                                       | Solution                                                                         |
+| -------- | ------ | ------------------------------------------------- | -------------------------------------------------------------------------------- |
+| exit(-1) | ERROR  | There is an allocation memory error               | Check output on terminal that indicates the row, column and table with the error |
+| exit(5)  | OUTPUT | The game has been saved succesfully on the server | N/A                                                                              |

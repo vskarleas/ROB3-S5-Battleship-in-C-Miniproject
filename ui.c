@@ -19,16 +19,17 @@ int get_user_input(char message[1024], char error_message[1024], char error_mess
     int var;
     printf("%s", message);
     scanf("%d", &var);
-    if (var < min || var > max)
+    while (repeater)
     {
-        while (repeater)
+        if (var < min || var > max)
         {
+
             if (var < min)
             {
                 printf("\033[0;33mATTENTION!\033[1;0m%s", error_message);
                 scanf("%d", &var);
                 printf("\n");
-                if (var >= 4)
+                if (var >= min && var <= max)
                 {
                     repeater = false;
                 }
@@ -38,7 +39,7 @@ int get_user_input(char message[1024], char error_message[1024], char error_mess
                 printf("\033[0;33mATTENTION!\033[1;0m%s", error_message_2);
                 scanf("%d", &var);
                 printf("\n");
-                if (var >= min)
+                if (var >= min && var <= max)
                 {
                     repeater = false;
                 }
@@ -77,18 +78,18 @@ void lost_graphics()
 
 void win_graphics(int taille_plateau, int **prop, int round_nb)
 {
-            clearScreen();
-            printf("Total numbers of rounds that were played: %d\n\n", round_nb);
-            printing_the_grille_v3(prop, taille_plateau);
-            printf("\n=====================================\n");
-            printf("=========== Game finished ===========\n");
-            printf("=====================================\n");
-            printf("              YOU WIN                \n");
+    clearScreen();
+    printf("Total numbers of rounds that were played: %d\n\n", round_nb);
+    printing_the_grille_v3(prop, taille_plateau);
+    printf("\n=====================================\n");
+    printf("=========== Game finished ===========\n");
+    printf("=====================================\n");
+    printf("              YOU WIN                \n");
 }
 
 void allocation_error_print_with_id(char reference[512], int i)
 {
-    fprintf(stderr, "Failed to allocate memory for %s %d.\n",reference, i);
+    fprintf(stderr, "Failed to allocate memory for %s %d.\n", reference, i);
     exit(-1);
 }
 
@@ -101,27 +102,40 @@ void allocation_error_print_general(char reference[512])
 int game_mode_menu()
 {
     char userInput[20];
-    
-    while (true) {
+
+    while (true)
+    {
         printf("Choose an option (AI, Computer, Multiplayer or Load). Load alloes to continue a game from a previous session [suitable for computer mode only]. You can close the game by taping Cancel: ");
         scanf("%s", userInput);
 
         // Convert input to lowercase for case-insensitive comparison and returns
-        for (int i = 0; i < strlen(userInput); i++) {
+        for (int i = 0; i < strlen(userInput); i++)
+        {
             userInput[i] = tolower(userInput[i]);
         }
 
-        if (strcmp(userInput, "multiplayer") == 0) {
+        if (strcmp(userInput, "multiplayer") == 0)
+        {
             return 2;
-        } else if (strcmp(userInput, "computer") == 0) {
+        }
+        else if (strcmp(userInput, "computer") == 0)
+        {
             return 1;
-        } else if (strcmp(userInput, "ai") == 0) {
+        }
+        else if (strcmp(userInput, "ai") == 0)
+        {
             return 3;
-        } else if (strcmp(userInput, "cancel") == 0) {
+        }
+        else if (strcmp(userInput, "cancel") == 0)
+        {
             return -1;
-        } else if (strcmp(userInput, "load") == 0) {
+        }
+        else if (strcmp(userInput, "load") == 0)
+        {
             return 5;
-        }else {
+        }
+        else
+        {
             printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from AI, Computer, Load, or Multiplayer.\n");
         }
     }
@@ -134,60 +148,72 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode)
     clearScreen();
     printf("\nPAUSED\n");
 
-    while (true) {
+    while (true)
+    {
         printf("What do you want to do ? Choose an option (Save, Cancel, Rules or Exit): ");
         scanf("%s", userInput);
 
         // Convert input to lowercase for case-insensitive comparison and returns
-        for (int i = 0; i < strlen(userInput); i++) {
+        for (int i = 0; i < strlen(userInput); i++)
+        {
             userInput[i] = tolower(userInput[i]);
         }
 
-        if (strcmp(userInput, "save") == 0) {
-            if (version == 2 && mode == 2) //multiplayer mode
+        if (strcmp(userInput, "save") == 0)
+        {
+            if (version == 2 && mode == 2) // multiplayer mode
             {
                 clearScreen();
                 return 1;
             }
             else
             {
-            float progress = 0.0;
-            for (int i=0; i < 100; i++) {
-                progress = 0.01 + progress;
-                msleep(73);
-                clearScreen();
-                printf("\nGAME IS GETTING SAVED...\n");
-                printProgress(progress);
+                float progress = 0.0;
+                for (int i = 0; i < 100; i++)
+                {
+                    progress = 0.01 + progress;
+                    msleep(73);
+                    clearScreen();
+                    printf("\nGAME IS GETTING SAVED...\n");
+                    printProgress(progress);
+                }
+                return 1;
             }
-            return 1; 
         }
-        } else if (strcmp(userInput, "cancel") == 0) {
+        else if (strcmp(userInput, "cancel") == 0)
+        {
             clearScreen();
             printf("\nGAME CONTINUED\n");
             return 2;
-        } else if (strcmp(userInput, "rules") == 0){
+        }
+        else if (strcmp(userInput, "rules") == 0)
+        {
             clearScreen();
             rules_reminder(rounds, taille_plateau);
             return 3;
         }
-         else if (strcmp(userInput, "exit") == 0) {
+        else if (strcmp(userInput, "exit") == 0)
+        {
             clearScreen();
-            printf("\033[1;36mThe game has been terminated and it's not saved on the server. See you next time!\033[0m\n");
-            exit(4); //code on the log that determines that the game was exited without any saving action taking place
-        } else {
+            printf("\n\033[1;36mThe game has been terminated and it's not saved on the server. See you next time!\033[0m\n");
+            exit(4); // code on the log that determines that the game was exited without any saving action taking place
+        }
+        else
+        {
             printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Save, Cancel, or Exit. Try again!\n");
         }
     }
 }
 
-
-bool waitForMenuKeypress() {
+bool waitForMenuKeypress()
+{
     char userInput[20];
     printf("Press any key and enter to play this round or type Menu to open it: ");
     scanf("%s", userInput);
 
     // Convert input to lowercase for case-insensitive comparison
-    for (int i = 0; i < strlen(userInput); i++) {
+    for (int i = 0; i < strlen(userInput); i++)
+    {
         userInput[i] = tolower(userInput[i]);
     }
 

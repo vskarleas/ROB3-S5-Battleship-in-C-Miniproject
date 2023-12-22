@@ -460,7 +460,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 		case UP:
 			for (int j = el->data.premiere_case.x; j > el->data.premiere_case.x - el->data.taille; j--)
 			{
-				if (prop[j][el->data.premiere_case.y] == 2)
+				if (prop[j][el->data.premiere_case.y] == 2 || prop[j][el->data.premiere_case.y] == -1)
 				{
 					counter++;
 				}
@@ -481,7 +481,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 		case LEFT:
 			for (int j = el->data.premiere_case.y; j > el->data.premiere_case.y - el->data.taille; j--)
 			{
-				if (prop[el->data.premiere_case.x][j] == 2)
+				if (prop[el->data.premiere_case.x][j] == 2 || prop[el->data.premiere_case.x][j] == -1)
 				{
 					counter++;
 				}
@@ -502,7 +502,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 		case DOWN:
 			for (int j = el->data.premiere_case.x; j < el->data.premiere_case.x + el->data.taille; j++)
 			{
-				if (prop[j][el->data.premiere_case.y] == 2)
+				if (prop[j][el->data.premiere_case.y] == 2 || prop[j][el->data.premiere_case.y] == -1)
 				{
 					counter++;
 				}
@@ -523,7 +523,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 		case RIGHT:
 			for (int j = el->data.premiere_case.y; j < el->data.premiere_case.y + el->data.taille; j++)
 			{
-				if (prop[el->data.premiere_case.x][j] == 2)
+				if (prop[el->data.premiere_case.x][j] == 2 || prop[el->data.premiere_case.x][j] == -1)
 				{
 					counter++;
 				}

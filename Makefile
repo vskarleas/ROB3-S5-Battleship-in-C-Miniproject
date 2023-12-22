@@ -40,7 +40,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = jeu jeu_v2
+EXECUTABLES = jeu test jeu_v2
 
 #############################################################################
 # definition des regles
@@ -71,7 +71,7 @@ programmes.o : programmes.c
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-user_input.o : ui.c programmes.h
+ui.o : ui.c programmes.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
@@ -81,11 +81,20 @@ jeu.o : jeu.c programmes.h ui.h structures.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-jeu_v2.o : jeu_v2.c programmes.h ui.h structures.h
+jeu_v2.o : jeu_v2.c programmes.h ui.h structures.h api.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
+test.o : test.c
+	@echo ""
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
+api.o : api.c 
+	@echo ""
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
 
 		
 ########################################################
@@ -98,7 +107,14 @@ jeu : jeu.o programmes.o ui.o
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-jeu_v2 : jeu_v2.o programmes.o ui.o
+jeu_v2 : jeu_v2.o programmes.o ui.o api.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
+
+test : test.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
