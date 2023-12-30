@@ -102,35 +102,88 @@ Liste_Navire api_load_game(const char *filename, int *ptr1, int *ptr2, int *ptr3
 	return liste;
 }
 
-
 int api_table_size(const char *filename)
 {
 	FILE *file = fopen(filename, "r");
+	if (file == NULL)
+	{
+		clearScreen();
+		perror("\n\nWe did not find any saved game. Start a new game, save it and try again :-");
+		exit(-2);
+	}
+
+	char buffer[256];
+	fscanf(file, "%s", buffer);
+	fscanf(file, "%s", buffer); // it's placed second on the header of the file!!!
+	return (atoi(buffer));
+}
+
+void api_clearFile(const char *filename)
+{
+	// Open the file in write mode, which truncates the file if it exists
+	FILE *file = fopen(filename, "w");
+
 	if (file == NULL)
 	{
 		perror("Error opening file");
 		exit(EXIT_FAILURE);
 	}
 
-	char buffer[256];
-	fscanf(file, "%s", buffer);
-	fscanf(file, "%s", buffer); //it's placed second on the header of the file!!!
-	return (atoi(buffer));
+	// Close the file
+	fclose(file);
+
+	printf("Content removed from %s.\n", filename);
 }
 
-
-void api_clearFile(const char *filename) 
+void api_save_game(int number_of_navires, int taille_plateau, int coulle, int round, int **matrix, Liste_Navire liste)
 {
-    // Open the file in write mode, which truncates the file if it exists
-    FILE *file = fopen(filename, "w");
+	FILE *fptr;
+	bool exists = false;
 
-    if (file == NULL) {
-        perror("Error opening file");
-        exit(EXIT_FAILURE);
-    }
+	fptr = fopen("filecodec239012V1.txt", "w");
+	if (fptr != NULL)
+	{
+		exists = true;
+	}
 
-    // Close the file
-    fclose(file);
+	if (exists)
+	{
+		// deleting any existing content on the file that we have verfied that it exists
+		api_clearFile("filecodec239012V1.txt");
 
-    printf("Content removed from %s.\n", filename);
+		// saving the game
+		fprintf(fptr, "%d ", number_of_navires);
+		fprintf(fptr, "%d ", taille_plateau);
+		fprintf(fptr, "%d ", coulle);
+		fprintf(fptr, "%d ", round);
+
+		Cellule_Liste_Navire *el = liste.first;
+		while(el != NULL)
+		{
+			fprintf(fptr, "%d ", el->data.sens);
+			fprintf(fptr, "%d ", el->data.premiere_case.x);
+			fprintf(fptr, "%d ", el->data.premiere_case.y);
+			fprintf(fptr, "%d ", el->data.taille);
+			fprintf(fptr, "%d ", el->data.id);
+
+			el = el->suiv;
+		}
+
+		fprintf(fptr, "$ ");
+
+		for (int i = 0; i < taille_plateau; i++)
+		{
+			for (int j = 0; j < taille_plateau; j++)
+			{
+				fprintf(fptr, "%d ", matrix[i][j]);
+			}
+		}
+	}
+	else
+	{
+		perror("Error opening file");
+		exit(EXIT_FAILURE);
+	}
+
+	fclose(fptr);
 }

@@ -1,3 +1,4 @@
+
 # Calendrier
 
 * 15/11/2023: Creation de la structure et initialisation de tous les fnctionnes principales du programme
@@ -108,9 +109,12 @@
 
 `number_of_navires taille_plateau coulle round sens_nav_1 x_nav_1 y_nav_1 taille_nav_1 id_nav_1 sens_nav_2 ...  $ prop_table_codec`
 
+We can modify the codec in order to include a timestamp that will indicate to the user when it was the last time it was saved the game, as well as from which user if we want to use this functionality for the multiplayer.
+
 # Game's exit codes / errors
 
-| Codes    | Status | Explanation                                       | Solution                                                                         |
-| -------- | ------ | ------------------------------------------------- | -------------------------------------------------------------------------------- |
-| exit(-1) | ERROR  | There is an allocation memory error               | Check output on terminal that indicates the row, column and table with the error |
-| exit(5)  | OUTPUT | The game has been saved succesfully on the server | N/A                                                                              |
+| Codes    | Status | Explanation                                       | Solution                                                                                                                    |
+| -------- | ------ | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| exit(-1) | ERROR  | There is an allocation memory error               | Check output on terminal that indicates the row, column and table with the error                                            |
+| exit(5)  | OUTPUT | The game has been saved succesfully on the server | N/A                                                                                                                         |
+| exit(-2) | STATE  | No file of saved game found                       | Play a game at least once and save it, then try again in order to load it and continue from were you stoppe dthe last time. |

@@ -88,9 +88,13 @@ int main(int argc, char **argv)
     */
 
     int mode = game_mode_menu();
-    if ( mode == COMPUTER){
+    if (mode == COMPUTER)
+    {
+        clearScreen();
         init_nb_aleatoire();
         int taille_plateau = get_user_input("Donner la taille du tableau: ", " La taille doit etre au minimum 4. Redonner la taille: ", "Tu est sur pour une telle taille. Pour un jeu optimisé on ne recommend pas d'avoir une taille du tableau plus grand que 20. Redonner la taille: ", 4, 20);
+        msleep(1500);
+        clearScreen();
         int number_of_navires = get_user_input("How many boats do you want to be included on the game ? ", "It has to be minimum 1 for an optimized game. Try again: ", "For a game that respects the rules, you can place up to 6 navires. Try again: ", 1, 6);
 
         // Allocation de la mémoire pour prop
@@ -142,9 +146,9 @@ int main(int argc, char **argv)
             {
                 if (midle_game_menu(ROUNDS, taille_plateau, 2, COMPUTER) == 1) // 1 is internal code foe saving the progress and continuing another time
                 {
-                    // TO BE ADDED THE SAVING FUNCTIONALITY
-                    // function here
-                    printf("\n\n\e[0;32mTHE GAME HAS BEEN SAVED SUCCESFULLY\e[0m\n");
+                    api_save_game(number_of_navires, taille_plateau, coulle, round, prop, liste);
+                    clearScreen();
+                    printf("\n\e[0;32mThe game has been saved succesfully on server!\e[0m\n");
                     exit(5);
                 }
             }
@@ -173,12 +177,15 @@ int main(int argc, char **argv)
                 }
             }
         }
+    }
 
-}
-
-    if (mode==MULTIPLAYER){
+    if (mode == MULTIPLAYER)
+    {
+        clearScreen();
         init_nb_aleatoire();
         int taille_plateau_multi = get_user_input("Donner la taille du tableau: ", " La taille doit etre au minimum 4. Redonner la taille: ", "Tu est sur pour une telle taille. Pour un jeu optimisé on ne recommend pas d'avoir une taille du tableau plus grand que 20. Redonner la taille: ", 4, 20);
+        msleep(1500);
+        clearScreen();
         int number_of_navires_multi = get_user_input("How many boats do you want to be included on the game ? ", "It has to be minimum 1 for an optimized game. Try again: ", "For a game that respects the rules, you can place up to 6 navires. Try again: ", 1, 6);
 
         // Allocation de la mémoire pour prop
@@ -238,7 +245,7 @@ int main(int argc, char **argv)
         clearScreen();
         /* TO BE COMPLETED THE MULTIPLAYER FUNCTIONALITY - A NEW FUNCTION initialisation_plateau with name initialisation_plateau_multiplayer
          WILL BE CREATED FOR MANUAL ADDITION OF NAVIRES ON THE PLATEAU ACCORDING TO THE number_of_navires_multi. MANY VERIFICATIONS NEED TO BE
-          DONE IN ORDER TO MAKE SURE THAT THE USER USES ADDS UNIQUE NAVIRES ON THE GAME. ATTENTION: THE NAVIRES NEED TO BE PASSED WITH SENS, 
+          DONE IN ORDER TO MAKE SURE THAT THE USER USES ADDS UNIQUE NAVIRES ON THE GAME. ATTENTION: THE NAVIRES NEED TO BE PASSED WITH SENS,
           TAILLE, STARTING POINT X & Y. THOSE ARE THE INFORMATION THAT WE NEED TO VERIFY BEFORE MOVING TO THE NEXT NAVIRE
         */
         liste1 = initialisation_plateau(prop1, taille_plateau_multi, number_of_navires_multi);
@@ -289,23 +296,26 @@ int main(int argc, char **argv)
                 }
             }
         }
-}
-    if (mode==AI){
+    }
+    if (mode == AI)
+    {
         clearScreen();
         // TO BE ADDED THE AI FUNCTIONALITY
-}
-    if (mode==LOAD){
+    }
+    if (mode == LOAD)
+    {
+        clearScreen();
         int round_load;
         int coulle_load;
         int number_of_navires_load;
-        int taille_plateau_load ;
+        int taille_plateau_load;
 
         int *number = &number_of_navires_load;
         int *taille = &taille_plateau_load;
         int *NbNav_load = &coulle_load;
-        int *NbJoue_load = &round_load; 
+        int *NbJoue_load = &round_load;
 
-        int api_response = api_table_size("test.txt");
+        int api_response = api_table_size("filecodec239012V1.txt");
 
         int **prop_load;
         prop_load = malloc(api_response * sizeof(int *));
@@ -325,9 +335,8 @@ int main(int argc, char **argv)
 
         Liste_Navire liste_load;
 
-        liste_load = api_load_game("test.txt", number, taille, NbNav_load, NbJoue_load, prop_load);
+        liste_load = api_load_game("filecodec239012V1.txt", number, taille, NbNav_load, NbJoue_load, prop_load);
         bool repeat_load = true;
-
 
         clearScreen();
 
@@ -349,9 +358,9 @@ int main(int argc, char **argv)
             {
                 if (midle_game_menu(ROUNDS, taille_plateau_load, 2, COMPUTER) == 1) // 1 is internal code foe saving the progress and continuing another time
                 {
-                    // TO BE ADDED THE SAVING FUNCTIONALITY
-                    // function here
-                    printf("\n\n\e[0;32mTHE GAME HAS BEEN SAVED SUCCESFULLY\e[0m\n");
+                    api_save_game(number_of_navires_load, taille_plateau_load, coulle_load, round_load, prop_load, liste_load);
+                    clearScreen();
+                    printf("\n\e[0;32mThe game has been saved succesfully on the server!\e[0m\n");
                     exit(5);
                 }
             }
@@ -380,7 +389,6 @@ int main(int argc, char **argv)
                 }
             }
         }
-        
     }
 
     return 1;

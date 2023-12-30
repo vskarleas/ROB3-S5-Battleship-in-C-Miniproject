@@ -671,7 +671,7 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 		nav.id = i;
 
 		// TO BE REMOVED ONCE TESTS ARE COMPLETED
-		// printf("Taille: %d\n (x ,y): %d,%d\nDirection: %d\n, ID: %d\n\n", nav.taille, nav.premiere_case.x+1, nav.premiere_case.y+1, random_orientation, nav.id);
+		printf("Taille: %d\n (x ,y): %d,%d\nDirection: %d\n, ID: %d\n\n", nav.taille, nav.premiere_case.x+1, nav.premiere_case.y+1, random_orientation, nav.id);
 
 		switch (random_orientation)
 		{

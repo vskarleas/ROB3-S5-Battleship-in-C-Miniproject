@@ -14,38 +14,28 @@
 
 int get_user_input(char message[1024], char error_message[1024], char error_message_2[1024], int min, int max)
 {
-    bool repeater = true;
-
     int var;
-    printf("%s", message);
-    scanf("%d", &var);
-    while (repeater)
-    {
-        if (var < min || var > max)
-        {
 
-            if (var < min)
-            {
-                printf("\033[0;33mATTENTION!\033[1;0m%s", error_message);
-                scanf("%d", &var);
-                printf("\n");
-                if (var >= min && var <= max)
-                {
-                    repeater = false;
-                }
-            }
-            else
-            {
-                printf("\033[0;33mATTENTION!\033[1;0m%s", error_message_2);
-                scanf("%d", &var);
-                printf("\n");
-                if (var >= min && var <= max)
-                {
-                    repeater = false;
-                }
-            }
+    printf("\n%s", message);
+    scanf("%d", &var);
+
+    while (var < min || var > max)
+    {
+        if (var < min)
+        {
+            clearScreen();
+            printf("\n\033[0;33mATTENTION!\033[1;0m%s", error_message);
         }
+        else
+        {
+            clearScreen();
+            printf("\n\033[0;33mATTENTION!\033[1;0m%s", error_message_2);
+        }
+
+        scanf("%d", &var);
+        printf("\n");
     }
+
     printf("Merci beaucoup!\n\n");
 
     return var;
@@ -79,7 +69,7 @@ void lost_graphics()
 void win_graphics(int taille_plateau, int **prop, int round_nb)
 {
     clearScreen();
-    printf("Total numbers of rounds that were played: %d\n\n", round_nb);
+    printf("\nTotal numbers of rounds that were played: %d\n\n", round_nb);
     printing_the_grille_v3(prop, taille_plateau);
     printf("\n=====================================\n");
     printf("=========== Game finished ===========\n");
