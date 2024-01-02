@@ -619,7 +619,7 @@ void printProgress(double percentage)
 	int lpad = (int)(percentage * PBWIDTH);
 	int rpad = PBWIDTH - lpad;
 	printf("\r%3d%% [%.*s%*s]", val, lpad, PBSTR, rpad, "");
-	fflush(stdout);
+	fflush(stdout); //TO BE COMMENTED
 }
 
 // Allocation et initialisation des navires

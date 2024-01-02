@@ -50,6 +50,15 @@ void rules_interface(int rounds, int taille_plateau)
     printf("================================================================\n");
 }
 
+void rules_interface_temps(int rounds, int taille_plateau)
+{
+    printf("\nRULES\n");
+    printf("We are playing in a field of %dx%d. On every round you will be asked to provide the coordinates x & y for a vessel. \nThe goal is to find the hiden vessels coordinates. You have %d seconds to find the navires.\n\n", taille_plateau, taille_plateau, rounds);
+    printf("The coordinates x & y can take any value between 1 and %d\n", taille_plateau);
+    printf("\n\033[1;36mWhen you are ready to start, press ENTER on the keyboard\033[0m\n");
+    printf("================================================================\n");
+}
+
 void rules_reminder(int rounds, int taille_plateau)
 {
     printf("\nRULES\n");
@@ -58,12 +67,20 @@ void rules_reminder(int rounds, int taille_plateau)
     printf("================================================================\n");
 }
 
+void rules_reminder_temps(int rounds, int taille_plateau)
+{
+    printf("\nRULES\n");
+    printf("We are playing in a field of %dx%d. On every round you will be asked to provide the coordinates x & y for a vessel. \nThe goal is to find the hiden vessels coordinates. You have %d seconds to find the navires.\n\n", taille_plateau, taille_plateau, rounds);
+    printf("The coordinates x & y can take any value between 1 and %d\n", taille_plateau);
+    printf("================================================================\n");
+}
+
 void lost_graphics()
 {
-    printf("=================================\n");
+    printf("\n=================================\n");
     printf("=========== Game over ===========\n");
     printf("=================================\n");
-    printf("           YOU LOSE              \n");
+    printf("      YOU RAN OUT OF TIME        \n");
 }
 
 void win_graphics(int taille_plateau, int **prop, int round_nb)
@@ -132,6 +149,37 @@ int game_mode_menu()
     return 0;
 }
 
+int game_mode_solo()
+{
+    char userInput[20];
+
+    while (true)
+    {
+        printf("\nChoose now between the modes Temps or Rounds: ");
+        scanf("%s", userInput);
+
+        // Convert input to lowercase for case-insensitive comparison and returns
+        for (int i = 0; i < strlen(userInput); i++)
+        {
+            userInput[i] = tolower(userInput[i]);
+        }
+
+        if (strcmp(userInput, "temps") == 0)
+        {
+            return 2;
+        }
+        else if (strcmp(userInput, "rounds") == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Temps and Rounds.\n");
+        }
+    }
+    return 0;
+}
+
 int midle_game_menu(int rounds, int taille_plateau, int version, int mode)
 {
     char userInput[20];
@@ -195,6 +243,59 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode)
     }
 }
 
+int midle_game_menu_temps(int rounds, int taille_plateau, int version, int mode)
+{
+    char userInput[20];
+    clearScreen();
+    printf("\nPAUSED\n");
+
+    while (true)
+    {
+        printf("What do you want to do ? Choose an option (Save, Cancel, Rules or Exit): ");
+        scanf("%s", userInput);
+
+        // Convert input to lowercase for case-insensitive comparison and returns
+        for (int i = 0; i < strlen(userInput); i++)
+        {
+            userInput[i] = tolower(userInput[i]);
+        }
+
+        if (strcmp(userInput, "save") == 0)
+        {
+
+            msleep(73);
+            clearScreen();
+            printf("\nThe game can not be saved on mode solo time.\n");
+            msleep(1000);
+            clearScreen();
+            printf("\nGAME CONTINUED\n");
+            return 1;
+        }
+        else if (strcmp(userInput, "cancel") == 0)
+        {
+            clearScreen();
+            printf("\nGAME CONTINUED\n");
+            return 2;
+        }
+        else if (strcmp(userInput, "rules") == 0)
+        {
+            clearScreen();
+            rules_reminder_temps(rounds, taille_plateau);
+            return 3;
+        }
+        else if (strcmp(userInput, "exit") == 0)
+        {
+            clearScreen();
+            printf("\n\033[1;36mThe game has been terminated and it's not saved on the server. See you next time!\033[0m\n");
+            exit(4); // code on the log that determines that the game was exited without any saving action taking place
+        }
+        else
+        {
+            printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Save, Cancel, or Exit. Try again!\n");
+        }
+    }
+}
+
 bool waitForMenuKeypress()
 {
     char userInput[20];
@@ -208,4 +309,59 @@ bool waitForMenuKeypress()
     }
 
     return (strcmp(userInput, "menu") == 0);
+}
+
+void ajuster_temps(int taille_plateau, int *temps_limite) 
+{
+    if (taille_plateau <= 4) {
+        *temps_limite = 120; // 2 minutes pour un plateau 4x4
+    } else if (taille_plateau <= 10) {
+        *temps_limite = 300; // 5 minutes pour un plateau jusqu'à 10x10
+    } else {
+        *temps_limite = 600; // 10 minutes pour un plateau plus grand
+    }
+}
+
+void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires) 
+{
+    if (taille_plateau <= 4) {
+        switch(nb_navires)
+        {
+            case 1:
+                *max_tours = 10;
+            case 2:
+                *max_tours = 12;
+            case 3:
+                *max_tours = 13;
+            case 4:
+                *max_tours = 14;
+            case 5:
+                *max_tours = 15;
+            case 6:
+                *max_tours = 20;
+            default:
+                *max_tours = 20;
+        }
+        
+    } else if (taille_plateau <= 10) {
+        switch(nb_navires)
+        {
+            case 1:
+                *max_tours = 20;
+            case 2:
+                *max_tours = 22;
+            case 3:
+                *max_tours = 23;
+            case 4:
+                *max_tours = 24;
+            case 5:
+                *max_tours = 35;
+            case 6:
+                *max_tours = 40;
+            default:
+                *max_tours = 40;
+        }
+    } else {
+        *max_tours = 60;
+    }
 }
