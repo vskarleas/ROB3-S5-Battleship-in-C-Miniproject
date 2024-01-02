@@ -722,15 +722,331 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 	return liste;
 }
 
-void copier_navires(int **prop, int **plateau, int taille_plateau)
-{
+/*
 
-	for (int i = 0; i < taille_plateau; i++)
-	{
-		for (int j = 0; j < taille_plateau; j++)
-		{
-			prop[i][j] = plateau[i][j];
-		}
-	}
-	return;
+void tour_ia_random(int **grille, int taille_plateau, int **boats_checklist) {
+    int x, y;
+
+    do {
+        x = rand() % taille_plateau;
+        y = rand() % taille_plateau;
+    } while (grille[x][y] != VIDE); // Keep choosing until an unattacked position is found
+
+    // Mark the chosen position as attacked
+    if (boats_checklist[x][y] == NAVIRE) {
+        grille[x][y] = NAVIRE_TROUVE;
+        printf("L'IA a touché un navire en (%d, %d)!\n", x, y);
+    } else {
+        grille[x][y] = AUCUN_NAVIRE;
+        printf("L'IA a manqué en (%d, %d).\n", x, y);
+    }
 }
+
+
+
+// si necessaire utiliser <ctype.h> à la place de toupper 
+void tour_joueur(const char *nom, int **grille, int taille_plateau) {
+    int x, y;
+    char colonne;
+
+    printf("%s, entrez les coordonnées pour tirer (par exemple 'C5' ou 'c5'): ", nom);
+    do {
+        scanf(" %c%d", &colonne, &y);
+        colonne = toupper(colonne); // Convertit en majuscule si nécessaire
+        x = colonne - 'A';
+        y -= 1;
+
+        if (x < 0 || x >= taille_plateau || y < 0 || y >= taille_plateau || grille[x][y] != VIDE) {
+            printf("Coordonnées invalides ou déjà attaquées. Veuillez réessayer: ");
+        } else {
+            break;
+        }
+    } while (true);
+
+    if (grille[x][y] == NAVIRE) {
+        grille[x][y] = NAVIRE_TROUVE;
+        printf("Touché en %c%d!\n", colonne, y + 1);
+    } else {
+        grille[x][y] = AUCUN_NAVIRE;
+        printf("Manqué en %c%d.\n", colonne, y + 1);
+    }
+}
+
+
+void evaluer_zones_probables(int **grille, int taille_plateau, int **boats_checklist, int probabilités[taille_plateau][taille_plateau]) {
+    // Initialiser les probabilités à 0
+    for (int i = 0; i < taille_plateau; i++) {
+        for (int j = 0; j < taille_plateau; j++) {
+            probabilités[i][j] = 0;
+        }
+    }
+
+    // Parcourir la grille pour estimer les probabilités
+    for (int x = 0; x < taille_plateau; x++) {
+        for (int y = 0; y < taille_plateau; y++) {
+            // Si la case n'a pas été attaquée
+            if (grille[x][y] == VIDE) {
+                // Vérifier les cases adjacentes pour augmenter la probabilité
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        if (x + dx >= 0 && x + dx < taille_plateau && y + dy >= 0 && y + dy < taille_plateau) {
+                            // Augmenter la probabilité si la case adjacente est un navire trouvé
+                            if (grille[x + dx][y + dy] == NAVIRE_TROUVE) {
+                                probabilités[x][y]++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+void tour_ia_better_random(int **grille, int taille_plateau, int **boats_checklist, int *last_hit_x, int *last_hit_y, int *direction, int probabilités[taille_plateau][taille_plateau]) {
+    int x, y;
+    bool found_target = false;
+
+    // Si un navire a été touché précédemment
+    if (*last_hit_x != -1 && *last_hit_y != -1) {
+        // Essaie de suivre la direction du navire
+        int dx[] = {-1, 1, 0, 0}; // Gauche, Droite
+        int dy[] = {0, 0, -1, 1}; // Haut, Bas
+
+        for (int k = 0; k < 4; k++) {
+            if (*direction == -1 || *direction == k) {
+                int test_x = *last_hit_x + dx[k];
+                int test_y = *last_hit_y + dy[k];
+
+                if (test_x >= 0 && test_x < taille_plateau && test_y >= 0 && test_y < taille_plateau && grille[test_x][test_y] == VIDE) {
+                    x = test_x;
+                    y = test_y;
+                    found_target = true;
+                    *direction = k; // Mise à jour de la direction
+                    break;
+                }
+            }
+        }
+    }
+
+    if (!found_target) {
+        // Réinitialise les variables pour la recherche aléatoire
+        *last_hit_x = -1;
+        *last_hit_y = -1;
+        *direction = -1;
+
+        // Tir aléatoire avec une stratégie avancée
+        evaluer_zones_probables(grille, taille_plateau, probabilités);
+        int max_probabilité = 0;
+        for (int i = 0; i < taille_plateau; i++) {
+            for (int j = 0; j < taille_plateau; j++) {
+                if (probabilités[i][j] > max_probabilité && grille[i][j] == VIDE) {
+                    max_probabilité = probabilités[i][j];
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+        if (max_probabilité == 0) { // Si aucune zone probable n'est trouvée, choisit aléatoirement
+            do {
+                x = rand() % taille_plateau;
+                y = rand() % taille_plateau;
+            } while (grille[x][y] != VIDE);
+        }
+    }
+
+    // Effectue le tir
+    if (boats_checklist[x][y] == NAVIRE) {
+        grille[x][y] = NAVIRE_TROUVE;
+        printf("L'IA a touché un navire en (%d, %d)!\n", x, y);
+        *last_hit_x = x;
+        *last_hit_y = y;
+        if (!found_target) {
+            // Réinitialise la direction si un nouveau navire est touché
+            *direction = -1;
+        }
+    } else {
+        grille[x][y] = AUCUN_NAVIRE;
+        printf("L'IA a manqué en (%d, %d).\n", x, y);
+        if (found_target) {
+            // Change la direction pour le prochain tour si un navire était suivi
+            *direction = (*direction + 1) % 4;
+        }
+    }
+}
+
+
+
+
+
+void test_fin_partie(const char *nom, int **grille, Navire **flotte, int taille_plateau, int nb_tour) {
+    bool flotte_detruite = true;
+
+    // Vérifiez si tous les navires sont coulés
+    for (int i = 0; i < taille_plateau; i++) {
+        for (int j = 0; j < taille_plateau; j++) {
+            if (grille[i][j] == NAVIRE) {
+                flotte_detruite = false;
+                break;
+            }
+        }
+        if (!flotte_detruite) break;
+    }
+
+    // Annonce du résultat et fin du programme
+    if (flotte_detruite) {
+        printf("%s a gagné la partie en %d tours!\n", nom, nb_tour);
+        exit(0);
+    }
+}
+
+
+
+void joueur_vs_ia(int **grille, int taille_plateau, Navire **flotte, int **boats_checklist) {
+    int nb_tour = 0;
+    char nom_joueur[50];
+    int choix_ia;
+
+    printf("Entrez votre nom: ");
+    fgets(nom_joueur, 50, stdin); // Utilise fgets pour gérer les espaces et les longs noms
+    nom_joueur[strcspn(nom_joueur, "\n")] = 0; // Enlève le saut de ligne final
+
+    printf("Choisissez le type d'IA :\n1. IA Aléatoire\n2. IA Améliorée\n");
+    scanf("%d", &choix_ia);
+
+    init_nb_aleatoire();
+    initialisation_plateau(grille, taille_plateau, flotte, boats_checklist);
+
+    bool jeu_en_cours = true;
+    while (jeu_en_cours) {
+        printf("\nTour %d\n", ++nb_tour);
+        
+        tour_joueur(nom_joueur, grille, taille_plateau);
+        jeu_en_cours = !flotte_detruite(grille, taille_plateau);
+        if (!jeu_en_cours) break;
+
+        if (choix_ia == 1) {
+            tour_ia_random(grille, taille_plateau, boats_checklist);
+        } else {
+            tour_ia_better_random(grille, taille_plateau, boats_checklist);
+        }
+        jeu_en_cours = !flotte_detruite(grille, taille_plateau);
+    }
+
+    if (flotte_detruite(grille, taille_plateau)) {
+        printf("%s a gagné la partie en %d tours!\n", nom_joueur, nb_tour);
+    } else {
+        printf("IA a gagné la partie en %d tours!\n", nb_tour);
+    }
+}
+
+
+
+void hide() {
+    #ifdef _WIN32
+    system("cls");
+    #else
+    system("clear");
+    #endif
+}
+
+
+
+
+void deux_joueurs(int **grille, int taille_plateau, Navire **flotte, int **boats_checklist) {
+    char nom_joueur1[50], nom_joueur2[50];
+    int nb_tour = 0;
+
+    printf("Nom du Joueur 1: ");
+    fgets(nom_joueur1, 50, stdin);
+    nom_joueur1[strcspn(nom_joueur1, "\n")] = 0;
+    printf("Nom du Joueur 2: ");
+    fgets(nom_joueur2, 50, stdin);
+    nom_joueur2[strcspn(nom_joueur2, "\n")] = 0;
+
+    init_nb_aleatoire();
+    initialisation_plateau(grille, taille_plateau, flotte, boats_checklist);
+
+    bool jeu_en_cours = true;
+    while (jeu_en_cours) {
+        printf("\nTour %d - %s\n", ++nb_tour, nom_joueur1);
+        tour_joueur(nom_joueur1, grille, taille_plateau);
+        if (flotte_detruite(grille, taille_plateau)) {
+            jeu_en_cours = false;
+            continue;
+        }
+        hide();
+
+        printf("\nTour %d - %s\n", nb_tour, nom_joueur2);
+        tour_joueur(nom_joueur2, grille, taille_plateau);
+        if (flotte_detruite(grille, taille_plateau)) {
+            jeu_en_cours = false;
+        }
+        hide();
+    }
+
+    printf("%s a gagné la partie en %d tours!\n", jeu_en_cours ? nom_joueur2 : nom_joueur1, nb_tour);
+}
+
+
+// le main réecrit avec les ameliorations : 
+
+int main(int argc, char **argv) {
+    // Initialisation du générateur de nombres aléatoires
+    init_nb_aleatoire();
+
+    // Obtention de la taille du plateau de jeu de l'utilisateur
+    int taille_plateau = get_user_input();
+
+    // Création dynamique du tableau de jeu
+    int **grille = malloc(taille_plateau * sizeof(int *));
+    for (int i = 0; i < taille_plateau; i++) {
+        grille[i] = malloc(taille_plateau * sizeof(int));
+    }
+    initialize_plate(taille_plateau, grille);
+
+    // Initialisation des navires et des listes de contrôle
+    Navire *flotte[6];
+    int **boats_checklist = malloc(6 * sizeof(int *));
+    for (int i = 0; i < 6; i++) {
+        boats_checklist[i] = malloc(2 * sizeof(int));
+    }
+    initialisation_plateau(grille, taille_plateau, flotte, boats_checklist);
+
+    // Variables supplémentaires pour l'IA améliorée
+    int last_hit_x = -1, last_hit_y = -1, direction = -1;
+    int probabilités[taille_plateau][taille_plateau];
+
+    // Choix du mode de jeu
+    int mode_jeu;
+    do {
+        printf("Choisissez le mode de jeu :\n1. Joueur vs IA\n2. Deux joueurs\n");
+        scanf("%d", &mode_jeu);
+        getchar(); // Nettoyage du buffer
+    } while (mode_jeu != 1 && mode_jeu != 2);
+
+    // Exécution du mode de jeu
+    switch (mode_jeu) {
+        case 1:
+            joueur_vs_ia(grille, taille_plateau, flotte, boats_checklist, &last_hit_x, &last_hit_y, &direction, probabilités);
+            break;
+        case 2:
+            deux_joueurs(grille, taille_plateau, flotte, boats_checklist);
+            break;
+    }
+
+    // Libération de la mémoire
+    for (int i = 0; i < taille_plateau; i++) {
+        free(grille[i]);
+    }
+    free(grille);
+    for (int i = 0; i < 6; i++) {
+        free(boats_checklist[i]);
+    }
+    free(boats_checklist);
+
+    return 0;
+}
+
+*/

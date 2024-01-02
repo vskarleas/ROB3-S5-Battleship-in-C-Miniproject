@@ -25,47 +25,47 @@ int main(int argc, char **argv)
         int mode_solo = game_mode_solo();
 
         clearScreen();
-            init_nb_aleatoire();
-            int taille_plateau = get_user_input("Donner la taille du tableau: ", " La taille doit etre au minimum 4. Redonner la taille: ", "Tu est sur pour une telle taille. Pour un jeu optimisé on ne recommend pas d'avoir une taille du tableau plus grand que 20. Redonner la taille: ", 4, 20);
-            msleep(1500);
-            clearScreen();
-            int number_of_navires = get_user_input("How many boats do you want to be included on the game ? ", "It has to be minimum 1 for an optimized game. Try again: ", "For a game that respects the rules, you can place up to 6 navires. Try again: ", 1, 6);
+        init_nb_aleatoire();
+        int taille_plateau = get_user_input("Donner la taille du tableau: ", " La taille doit etre au minimum 4. Redonner la taille: ", "Tu est sur pour une telle taille. Pour un jeu optimisé on ne recommend pas d'avoir une taille du tableau plus grand que 20. Redonner la taille: ", 4, 20);
+        msleep(1500);
+        clearScreen();
+        int number_of_navires = get_user_input("How many boats do you want to be included on the game ? ", "It has to be minimum 1 for an optimized game. Try again: ", "For a game that respects the rules, you can place up to 6 navires. Try again: ", 1, 6);
 
-            // Allocation de la mémoire pour prop
-            int **prop;
-            prop = malloc(taille_plateau * sizeof(int *));
-            if (prop == NULL)
+        // Allocation de la mémoire pour prop
+        int **prop;
+        prop = malloc(taille_plateau * sizeof(int *));
+        if (prop == NULL)
+        {
+            allocation_error_print_general("prop");
+        }
+
+        for (int i = 0; i < taille_plateau; i++)
+        {
+            prop[i] = malloc(taille_plateau * sizeof(int));
+            if (prop[i] == NULL)
             {
-                allocation_error_print_general("prop");
+                allocation_error_print_with_id("prop row", i);
             }
+        }
 
-            for (int i = 0; i < taille_plateau; i++)
-            {
-                prop[i] = malloc(taille_plateau * sizeof(int));
-                if (prop[i] == NULL)
-                {
-                    allocation_error_print_with_id("prop row", i);
-                }
-            }
+        initialize_plate(taille_plateau, prop);
+        Liste_Navire liste;
 
-            initialize_plate(taille_plateau, prop);
-            Liste_Navire liste;
+        int coulle = 0;
+        int *NbNav = &coulle;
 
-            int coulle = 0;
-            int *NbNav = &coulle;
+        int round = 1; // used to show the number of the round
+        int *NbJoue = &round;
 
-            int round = 1; // used to show the number of the round
-            int *NbJoue = &round;
+        bool repeat = true; // be used when positioning ships in the begining and to repeat the game procedure
 
-            bool repeat = true; // be used when positioning ships in the begining and to repeat the game procedure
-
-            clearScreen();
-            liste = initialisation_plateau(prop, taille_plateau, number_of_navires);
+        clearScreen();
+        liste = initialisation_plateau(prop, taille_plateau, number_of_navires);
 
         if (mode_solo == 1)
         {
             int max_rounds;
-            ajuster_tours(taille_plateau, &max_rounds, number_of_navires);
+            ajuster_tours(taille_plateau, &max_rounds, number_of_navires, 1);
 
             // game loop
             rules_interface(max_rounds, taille_plateau);
@@ -105,23 +105,21 @@ int main(int argc, char **argv)
                     if (round == max_rounds && *NbNav < number_of_navires)
                     {
                         repeat = false;
-                        lost_graphics();
+                        lost_graphics(1);
                         return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                     }
                     if (*NbNav == number_of_navires)
                     {
-                        win_graphics(taille_plateau, prop, *NbJoue - 1);
+                        win_graphics(taille_plateau, prop, *NbJoue - 1, 1, "");
                         return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                     }
                 }
             }
         }
-        if (mode_solo == 2) //2 equals to mode temps
+        if (mode_solo == 2) // 2 equals to mode temps
         {
             int duree_limite;
             ajuster_temps(taille_plateau, &duree_limite);
-
-            
 
             // game loop
             rules_interface_temps(duree_limite, taille_plateau);
@@ -147,13 +145,13 @@ int main(int argc, char **argv)
                 {
                     clearScreen();
                     repeat = false;
-                    lost_graphics();
+                    lost_graphics(2);
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
 
                 if (waitForMenuKeypress())
                 {
-                    midle_game_menu_temps(duree_limite, taille_plateau, 2, COMPUTER);
+                    midle_game_menu_saving_unavailable(duree_limite, taille_plateau, 2); // case solo option temps for mode = 2
                 }
                 else
                 {
@@ -168,7 +166,7 @@ int main(int argc, char **argv)
 
                     if (*NbNav == number_of_navires)
                     {
-                        win_graphics(taille_plateau, prop, *NbJoue - 1);
+                        win_graphics(taille_plateau, prop, *NbJoue - 1, 1, "");
                         return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                     }
                 }
@@ -184,8 +182,16 @@ int main(int argc, char **argv)
         msleep(1500);
         clearScreen();
         int number_of_navires_multi = get_user_input("How many boats do you want to be included on the game ? ", "It has to be minimum 1 for an optimized game. Try again: ", "For a game that respects the rules, you can place up to 6 navires. Try again: ", 1, 6);
+        msleep(1500);
+        clearScreen();
+        char *player1 = get_user_name("What's the name of the player No 1 ? ");
+        msleep(1500);
+        clearScreen();
+        char *player2 = get_user_name("What's the name of the player No 2 ? ");
+        msleep(1500);
+        clearScreen();
 
-        // Allocation de la mémoire pour prop
+        // Allocation de la mémoire pour prop1
         int **prop1;
         prop1 = malloc(taille_plateau_multi * sizeof(int *));
         if (prop1 == NULL)
@@ -228,14 +234,11 @@ int main(int argc, char **argv)
         int coulle1 = 0;
         int *NbNav1 = &coulle1;
 
-        int round1 = 1; // used to show the number of the round
-        int *NbJoue1 = &round1;
+        int round_global = 3; // used to show the number of the round
+        int *NbJoue_global = &round_global;
 
         int coulle2 = 0;
         int *NbNav2 = &coulle2;
-
-        int round2 = 1; // used to show the number of the round
-        int *NbJoue2 = &round2;
 
         bool repeat_multi = true; // be used when positioning ships in the begining and to repeat the game procedure
 
@@ -247,9 +250,9 @@ int main(int argc, char **argv)
         */
         liste1 = initialisation_plateau(prop1, taille_plateau_multi, number_of_navires_multi);
         liste2 = initialisation_plateau(prop2, taille_plateau_multi, number_of_navires_multi);
-        
+
         int max_rounds_multi;
-        ajuster_tours(taille_plateau_multi, &max_rounds_multi, number_of_navires_multi);
+        ajuster_tours(taille_plateau_multi, &max_rounds_multi, number_of_navires_multi, 2);
 
         rules_interface(max_rounds_multi, taille_plateau_multi);
         msleep(100);
@@ -258,42 +261,68 @@ int main(int argc, char **argv)
         clearScreen();
         rules_reminder(max_rounds_multi, taille_plateau_multi);
 
-        while (taille_plateau_multi)
+        while (repeat_multi)
         {
             // loop's logic
-            printf("\nRound No %d\n\n", *NbJoue1);
-            printing_the_grille_v3(prop1, taille_plateau_multi);
+            printf("\nRound No %d\n\n", (*NbJoue_global) / 2); //the function proposition_jouer changes the NbJoue_global on every call and there are two calls (two players) before we change the number of round, that's why we divide by 2
+            printf("\n\e[1;32m%s\e[0m is playing\n", player1);
+            printing_the_grille_v3(prop2, taille_plateau_multi);
             if (waitForMenuKeypress())
             {
-                if (midle_game_menu(max_rounds_multi, taille_plateau_multi, 2, MULTIPLAYER) == 1) // 1 is internal code foe saving the progress and continuing another time
-                {
-                    printf("\n\e[4;37mNo saving functionality for Multiplayer mode is available on that version. Sorry :/\e[0m\n");
-                    continue;
-                }
+                midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_multi, 1); // case mupliplayer for mode = 1
             }
             else
             {
-                if (proposition_joueur(prop1, NbJoue1, liste1, taille_plateau_multi, NbNav1)) // NbNav and NbJoue are updated on the function's core via pointers
+                // prop2 is created by the player2 for the player1 and vice versa (the same for liste2)
+                if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_multi, NbNav1)) // NbNav_global and NbJoue are updated on the function's core via pointers
                 {
                     clearScreen();
-                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n", *NbNav1, number_of_navires_multi);
+                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire %s. %d so far out of %d!!!  =====================\033[0m\n", player1, *NbNav1, number_of_navires_multi);
+                    printing_the_grille_v3(prop2, taille_plateau_multi);
+                    msleep(3000);
+                }
+            }
+
+            clearScreen();
+            printf("\nRound No %d\n\n", ((*NbJoue_global) / 2)-1); //in that case there is also -1 because there was an iteration that increased the number of NbJoue_global before really changing the number of current round. It's based on the principles of the euclidian division in c that takes the part before the comma
+            printf("\n\e[1;33m%s\e[0m is playing\n", player2);
+            printing_the_grille_v3(prop1, taille_plateau_multi);
+
+            if (waitForMenuKeypress())
+            {
+                midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_multi, 1); // case mupliplayer for mode = 1
+            }
+            else
+            {
+                // prop2 is created by the player2 for the player1 and vice versa
+                if (proposition_joueur(prop1, NbJoue_global, liste1, taille_plateau_multi, NbNav2)) // NbNav_global and NbJoue are updated on the function's core via pointers
+                {
+                    clearScreen();
+                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire %s. %d so far out of %d!!!  =====================\033[0m\n", player2, *NbNav1, number_of_navires_multi);
                     printing_the_grille_v3(prop1, taille_plateau_multi);
                     msleep(3000);
                 }
-                clearScreen();
+            }
 
-                // decision making if the user wins or loses the game
-                if (round1 == max_rounds_multi && *NbNav1 < number_of_navires_multi)
+            // decision making if the user wins or loses the game
+            if (round_global == max_rounds_multi && (*NbNav1 < number_of_navires_multi || *NbNav2 < number_of_navires_multi))
+            {
+                repeat_multi = false;
+                lost_graphics(1);
+                return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
+            }
+            if (*NbNav1 == number_of_navires_multi || *NbNav2 == number_of_navires_multi)
+            {
+                if (*NbNav1 > *NbNav2)
                 {
-                    repeat_multi = false;
-                    lost_graphics();
-                    return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
+                    win_graphics(taille_plateau_multi, prop1, (*NbJoue_global - 1) / 2, 2, player1);
                 }
-                if (*NbNav1 == number_of_navires_multi)
+                else
                 {
-                    win_graphics(taille_plateau_multi, prop1, *NbJoue1 - 1);
-                    return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
+                    win_graphics(taille_plateau_multi, prop1, (*NbJoue_global - 1) / 2, 2, player2);
                 }
+
+                return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
             }
         }
     }
@@ -339,7 +368,7 @@ int main(int argc, char **argv)
         bool repeat_load = true;
 
         int max_rounds_load;
-        ajuster_tours(taille_plateau_load, &max_rounds_load, number_of_navires_load);
+        ajuster_tours(taille_plateau_load, &max_rounds_load, number_of_navires_load, 1);
 
         clearScreen();
 
@@ -382,12 +411,12 @@ int main(int argc, char **argv)
                 if (round_load == max_rounds_load && *NbNav_load < number_of_navires_load)
                 {
                     repeat_load = false;
-                    lost_graphics();
+                    lost_graphics(1);
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav_load == number_of_navires_load)
                 {
-                    win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1);
+                    win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "");
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
             }

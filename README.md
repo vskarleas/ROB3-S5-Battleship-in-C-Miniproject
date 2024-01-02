@@ -28,6 +28,7 @@
 9. On the jeu_v2 we hasd used a switch for the mode_game, however during compilation there were many misunderstadnign for the compiler to understand if the treated cases were correct and it was responding with incorrect errors for the variables declaration. To by pass this problem it needed to declare everything before the switch, however we didn't want to do it (allocate more ressources that we won't use). That's why we sticked with the if statements.
 10. Our API calls are responsible to connect the game to the external environment (computer or server) - that's why the name that was chosen was API from Application Programming Interface.
 11. **Create a graph with the association of the different files between them (check INF404 for references)**
+12. For every play mode, we decided to create unique global variables for each section in order to eliminate warnongs from the Makefile that were saying that we maybe forgot that we already had declared a function.
 
 # Crucial changes
 
@@ -105,6 +106,7 @@
 * V6.1 load game functionality has been added and fixed some bugs regarding the UI as well as the repsonse of the program n several extreme scenarions
 * V6.2 Loading and saving game functionality was completed, fixed some bugs on the get_user_input ui and we fixed some UI customisation issues as well.
 * V6.3 Added the temps choice on Solo mode and there were some bug fixes as well
+* v7.0 multiplayer added and more functionality was added on the ui with intelligent logic printing modes as well as there were some bug fixes on the source code
 
 # Filing codec
 

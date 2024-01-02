@@ -41,6 +41,23 @@ int get_user_input(char message[1024], char error_message[1024], char error_mess
     return var;
 }
 
+char *get_user_name(char message[1024])
+{
+    char *name = (char *)malloc(30 * sizeof(char));
+
+    if (name == NULL) {
+        fprintf(stderr, "Memory allocation failed for name\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("\n%s", message);
+    scanf("%29s", name);  // Use a width specifier to prevent buffer overflow
+
+    printf("Merci beaucoup!\n\n");
+
+    return name;
+}
+
 void rules_interface(int rounds, int taille_plateau)
 {
     printf("\nRULES\n");
@@ -75,23 +92,40 @@ void rules_reminder_temps(int rounds, int taille_plateau)
     printf("================================================================\n");
 }
 
-void lost_graphics()
+void lost_graphics(int mode)
 {
     printf("\n=================================\n");
     printf("=========== Game over ===========\n");
     printf("=================================\n");
-    printf("      YOU RAN OUT OF TIME        \n");
+    if (mode == 1)
+    {
+        printf("     YOU RAN OUT OF ROUNDS       \n");
+    }
+    else if (mode == 2) //case solo option temps
+    {
+        printf("      YOU RAN OUT OF TIME        \n");
+    }
 }
 
-void win_graphics(int taille_plateau, int **prop, int round_nb)
+void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char name[30])
 {
     clearScreen();
     printf("\nTotal numbers of rounds that were played: %d\n\n", round_nb);
-    printing_the_grille_v3(prop, taille_plateau);
-    printf("\n=====================================\n");
-    printf("=========== Game finished ===========\n");
-    printf("=====================================\n");
-    printf("              YOU WIN                \n");
+    if (mode == 1)
+    {
+        printing_the_grille_v3(prop, taille_plateau);
+        printf("\n=====================================\n");
+        printf("=========== Game finished ===========\n");
+        printf("=====================================\n");
+        printf("              YOU WIN                \n");
+    }
+    else if (mode == 2) // case multiplayer
+    {
+        printf("\n=====================================\n");
+        printf("=========== Game finished ===========\n");
+        printf("=====================================\n");
+        printf("\033[0;33m%s\033[1;0m wins since he/she found more navires\n", name);
+    }
 }
 
 void allocation_error_print_with_id(char reference[512], int i)
@@ -243,7 +277,7 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode)
     }
 }
 
-int midle_game_menu_temps(int rounds, int taille_plateau, int version, int mode)
+int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode)
 {
     char userInput[20];
     clearScreen();
@@ -280,7 +314,14 @@ int midle_game_menu_temps(int rounds, int taille_plateau, int version, int mode)
         else if (strcmp(userInput, "rules") == 0)
         {
             clearScreen();
+            if (mode == 2) //case solo option temps
+            {
             rules_reminder_temps(rounds, taille_plateau);
+            }
+            else if (mode == 1) //case multiplayer 
+            {
+                rules_reminder(rounds, taille_plateau);
+            }
             return 3;
         }
         else if (strcmp(userInput, "exit") == 0)
@@ -311,22 +352,30 @@ bool waitForMenuKeypress()
     return (strcmp(userInput, "menu") == 0);
 }
 
-void ajuster_temps(int taille_plateau, int *temps_limite) 
+void ajuster_temps(int taille_plateau, int *temps_limite)
 {
-    if (taille_plateau <= 4) {
+    if (taille_plateau <= 4)
+    {
         *temps_limite = 120; // 2 minutes pour un plateau 4x4
-    } else if (taille_plateau <= 10) {
+    }
+    else if (taille_plateau <= 10)
+    {
         *temps_limite = 300; // 5 minutes pour un plateau jusqu'à 10x10
-    } else {
+    }
+    else
+    {
         *temps_limite = 600; // 10 minutes pour un plateau plus grand
     }
 }
 
-void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires) 
+void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
 {
-    if (taille_plateau <= 4) {
-        switch(nb_navires)
+    if (mode == 1)
+    {
+        if (taille_plateau <= 4)
         {
+            switch (nb_navires)
+            {
             case 1:
                 *max_tours = 10;
             case 2:
@@ -341,11 +390,12 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires)
                 *max_tours = 20;
             default:
                 *max_tours = 20;
+            }
         }
-        
-    } else if (taille_plateau <= 10) {
-        switch(nb_navires)
+        else if (taille_plateau <= 10)
         {
+            switch (nb_navires)
+            {
             case 1:
                 *max_tours = 20;
             case 2:
@@ -360,8 +410,15 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires)
                 *max_tours = 40;
             default:
                 *max_tours = 40;
+            }
         }
-    } else {
-        *max_tours = 60;
+        else
+        {
+            *max_tours = 60;
+        }
+    }
+    else if (mode == 2) // case multiplayer
+    {
+        *max_tours = 40;
     }
 }

@@ -51,6 +51,4 @@ void printProgress(double percentage);
 // Allocation et initialisation des navires
 Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int number_of_navires);
 
-void copier_navires(int **prop, int **plateau, int taille_plateau);
-
 #endif

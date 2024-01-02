@@ -87,12 +87,12 @@ int main(int argc, char **argv)
             if (round == ROUNDS && *NbNav < number_of_navires)
             {
                 repeat = false;
-                lost_graphics();
+                lost_graphics(2);
                 return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
             }
             if (*NbNav == number_of_navires)
             {
-                win_graphics(taille_plateau, prop, *NbJoue - 1);
+                win_graphics(taille_plateau, prop, *NbJoue - 1, 1, "");
                 return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
             }
         }
