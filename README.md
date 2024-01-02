@@ -104,6 +104,7 @@
 * V5.0 All the UI has been completed. Introduction to different game modes was included on this version. Needs to be done: create the saving functionality (check to be done section) and comeplete the multiplayer mode.
 * V6.1 load game functionality has been added and fixed some bugs regarding the UI as well as the repsonse of the program n several extreme scenarions
 * V6.2 Loading and saving game functionality was completed, fixed some bugs on the get_user_input ui and we fixed some UI customisation issues as well.
+* V6.3 Added the temps choice on Solo mode and there were some bug fixes as well
 
 # Filing codec
 
