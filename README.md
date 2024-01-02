@@ -70,7 +70,7 @@
 * [X] A bool function that verifies if every boat has been found or not
 * [X] A logic/algorythm that detects a boat according to the points placed from the user
 * [X] Continuer un autre moment - functions to be created and complete the logic for jeu_v2 (COMPUTER mode call and LOAD case for continuing the game)
-* [ ] Save the game function needs to be created. Its signature should definetly include Liste_Navire, taille_plateau, coulle, round, number_of_navires and prop. Create the file according to the filing codec as described at **Filing codec** section. NOTE: If the file already exists, use the function api_clearFile to clean the file before write on it. In the end of that file we can include the text "COPYRIGHT 2023-2024 NAVALE FILING CODEC BY YANIS SADOUN & VASILEIOS FILIPPOS SKARLEAS | ALL RIGHTS RESERVED"
+* [X] Save the game function needs to be created. Its signature should definetly include Liste_Navire, taille_plateau, coulle, round, number_of_navires and prop. Create the file according to the filing codec as described at **Filing codec** section. NOTE: If the file already exists, use the function api_clearFile to clean the file before write on it. In the end of that file we can include the text "COPYRIGHT 2023-2024 NAVALE FILING CODEC BY YANIS SADOUN & VASILEIOS FILIPPOS SKARLEAS | ALL RIGHTS RESERVED"
 * [ ] Complete the multiplayer mode (2 individual players). It needs a function to manually insert the selected amount of navires on the game and then we have to complete the logic of game for jeu_v2
 * [ ] OPTIONAL Improve the code by fixing the function suprimer_navire and using an advanced logic of L.taille on the jeu and jeu_v2 game loops
 
