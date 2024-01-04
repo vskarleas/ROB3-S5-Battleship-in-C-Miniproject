@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <time.h>
 #include <stdbool.h>
 
 #include "api.h"
@@ -45,13 +46,14 @@ char *get_user_name(char message[1024])
 {
     char *name = (char *)malloc(30 * sizeof(char));
 
-    if (name == NULL) {
+    if (name == NULL)
+    {
         fprintf(stderr, "Memory allocation failed for name\n");
         exit(EXIT_FAILURE);
     }
 
     printf("\n%s", message);
-    scanf("%29s", name);  // Use a width specifier to prevent buffer overflow
+    scanf("%29s", name); // Use a width specifier to prevent buffer overflow
 
     printf("Merci beaucoup!\n\n");
 
@@ -101,7 +103,7 @@ void lost_graphics(int mode)
     {
         printf("     YOU RAN OUT OF ROUNDS       \n");
     }
-    else if (mode == 2) //case solo option temps
+    else if (mode == 2) // case solo option temps
     {
         printf("      YOU RAN OUT OF TIME        \n");
     }
@@ -111,19 +113,17 @@ void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char n
 {
     clearScreen();
     printf("\nTotal numbers of rounds that were played: %d\n\n", round_nb);
+
+    printing_the_grille_v3(prop, taille_plateau);
+    printf("\n=====================================\n");
+    printf("=========== Game finished ===========\n");
+    printf("=====================================\n");
     if (mode == 1)
     {
-        printing_the_grille_v3(prop, taille_plateau);
-        printf("\n=====================================\n");
-        printf("=========== Game finished ===========\n");
-        printf("=====================================\n");
         printf("              YOU WIN                \n");
     }
-    else if (mode == 2) // case multiplayer
+    else if (mode == 2)
     {
-        printf("\n=====================================\n");
-        printf("=========== Game finished ===========\n");
-        printf("=====================================\n");
         printf("\033[0;33m%s\033[1;0m wins since he/she found more navires\n", name);
     }
 }
@@ -177,6 +177,7 @@ int game_mode_menu()
         }
         else
         {
+            clearScreen();
             printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from AI, Computer, Load, or Multiplayer.\n");
         }
     }
@@ -208,6 +209,7 @@ int game_mode_solo()
         }
         else
         {
+            clearScreen();
             printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Temps and Rounds.\n");
         }
     }
@@ -273,6 +275,76 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode)
         }
         else
         {
+            clearScreen();
+            printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Save, Cancel, or Exit. Try again!\n");
+        }
+    }
+}
+
+int midle_game_menu_saving_unavailable_temps(int rounds, int taille_plateau, int mode, int *time_paused)
+{
+    time_t pause_start = time(NULL);
+    time_t pause;
+
+    char userInput[20];
+    clearScreen();
+    printf("\nPAUSED\n");
+
+    while (true)
+    {
+        pause = time(NULL);
+        printf("What do you want to do ? Choose an option (Save, Cancel, Rules or Exit): ");
+        scanf("%s", userInput);
+
+        // Convert input to lowercase for case-insensitive comparison and returns
+        for (int i = 0; i < strlen(userInput); i++)
+        {
+            userInput[i] = tolower(userInput[i]);
+        }
+
+        if (strcmp(userInput, "save") == 0)
+        {
+
+            msleep(73);
+            clearScreen();
+            printf("\nThe game can not be saved on mode solo time.\n");
+            msleep(1000);
+            clearScreen();
+            printf("\nGAME CONTINUED\n");
+            *time_paused = (int)difftime(pause, pause_start);
+            return 1;
+        }
+        else if (strcmp(userInput, "cancel") == 0)
+        {
+            clearScreen();
+            printf("\nGAME CONTINUED\n");
+            *time_paused = (int)difftime(pause, pause_start);
+            return 2;
+        }
+        else if (strcmp(userInput, "rules") == 0)
+        {
+            clearScreen();
+            if (mode == 2) // case solo option temps
+            {
+                rules_reminder_temps(rounds, taille_plateau);
+            }
+            else if (mode == 1) // case multiplayer
+            {
+                rules_reminder(rounds, taille_plateau);
+            }
+            *time_paused = (int)difftime(pause, pause_start);
+            return 3;
+        }
+        else if (strcmp(userInput, "exit") == 0)
+        {
+            clearScreen();
+            printf("\n\033[1;36mThe game has been terminated and it's not saved on the server. See you next time!\033[0m\n");
+            api_delete_game_file();
+            exit(4); // code on the log that determines that the game was exited without any saving action taking place
+        }
+        else
+        {
+            clearScreen();
             printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Save, Cancel, or Exit. Try again!\n");
         }
     }
@@ -315,11 +387,11 @@ int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode)
         else if (strcmp(userInput, "rules") == 0)
         {
             clearScreen();
-            if (mode == 2) //case solo option temps
+            if (mode == 2) // case solo option temps
             {
-            rules_reminder_temps(rounds, taille_plateau);
+                rules_reminder_temps(rounds, taille_plateau);
             }
-            else if (mode == 1) //case multiplayer 
+            else if (mode == 1) // case multiplayer
             {
                 rules_reminder(rounds, taille_plateau);
             }
@@ -334,6 +406,7 @@ int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode)
         }
         else
         {
+            clearScreen();
             printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Save, Cancel, or Exit. Try again!\n");
         }
     }

@@ -1,5 +1,10 @@
 #ifndef _USER_INPUT_
 
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 int get_user_input(char message[1024], char error_message[1024], char error_message_2[1024], int min, int max);
 
 char *get_user_name(char message[1024]);
@@ -25,6 +30,8 @@ int game_mode_menu();
 int game_mode_solo();
 
 int midle_game_menu(int rounds, int taille_plateau, int version, int mode);
+
+int midle_game_menu_saving_unavailable_temps(int rounds, int taille_plateau, int mode, int *time_paused);
 
 int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode);
 

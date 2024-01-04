@@ -130,12 +130,14 @@ int main(int argc, char **argv)
             rules_reminder_temps(duree_limite, taille_plateau);
             time_t start = time(NULL);
             time_t now;
+            int diff_time = 0;
 
             while (repeat)
             {
                 now = time(NULL);
                 int temps_ecoule = (int)difftime(now, start);
-                int temps_restant = duree_limite - temps_ecoule;
+                int temps_restant = (duree_limite - temps_ecoule) + diff_time;
+                diff_time = 0;
 
                 // loop's logic
                 printf("\nRound No %d | Temps restant: %d secondes\n\n", *NbJoue, temps_restant);
@@ -151,7 +153,7 @@ int main(int argc, char **argv)
 
                 if (waitForMenuKeypress())
                 {
-                    midle_game_menu_saving_unavailable(duree_limite, taille_plateau, 2); // case solo option temps for mode = 2
+                    midle_game_menu_saving_unavailable_temps(duree_limite, taille_plateau, 2, &diff_time); // case solo option temps for mode = 2
                 }
                 else
                 {
