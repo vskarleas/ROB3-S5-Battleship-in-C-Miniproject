@@ -108,7 +108,7 @@
 * V6.3 Added the temps choice on Solo mode and there were some bug fixes as well
 * v7.0 multiplayer added and more functionality was added on the ui with intelligent logic printing modes as well as there were some bug fixes on the source code programmes.c
 * v7.1 Imporved the program to have the exact signatures that the prof asked for and added some functionality for the points that were selected at least twice. Moreover the logic for the end of LOAD mode new logic was added to prevent a user to play again with a game file that was played before.
-* v7.2 Tried to fix the non paused time for solo mode option temps with no
+* v7.2 Tried to fix the non paused time for solo mode option temps with no sucess
 
 # Filing codec
 
