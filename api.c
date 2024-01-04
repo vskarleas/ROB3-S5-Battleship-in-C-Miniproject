@@ -158,7 +158,7 @@ void api_save_game(int number_of_navires, int taille_plateau, int coulle, int ro
 		fprintf(fptr, "%d ", round);
 
 		Cellule_Liste_Navire *el = liste.first;
-		while(el != NULL)
+		while (el != NULL)
 		{
 			fprintf(fptr, "%d ", el->data.sens);
 			fprintf(fptr, "%d ", el->data.premiere_case.x);
@@ -186,4 +186,14 @@ void api_save_game(int number_of_navires, int taille_plateau, int coulle, int ro
 	}
 
 	fclose(fptr);
+}
+
+void api_delete_game_file()
+{
+	if (remove("filecodec239012V1.txt") == 0)
+		printf("\n\nSee you next time...\n\n");
+	else
+		printf("\n\nSee you next time\n\n");
+
+	return;
 }

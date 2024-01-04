@@ -106,7 +106,8 @@
 * V6.1 load game functionality has been added and fixed some bugs regarding the UI as well as the repsonse of the program n several extreme scenarions
 * V6.2 Loading and saving game functionality was completed, fixed some bugs on the get_user_input ui and we fixed some UI customisation issues as well.
 * V6.3 Added the temps choice on Solo mode and there were some bug fixes as well
-* v7.0 multiplayer added and more functionality was added on the ui with intelligent logic printing modes as well as there were some bug fixes on the source code
+* v7.0 multiplayer added and more functionality was added on the ui with intelligent logic printing modes as well as there were some bug fixes on the source code programmes.c
+* v7.1 Imporved the program to have the exact signatures that the prof asked for and added some functionality for the points that were selected at least twice. Moreover the logic for the end of LOAD mode new logic was added to prevent a user to play again with a game file that was played before.
 
 # Filing codec
 

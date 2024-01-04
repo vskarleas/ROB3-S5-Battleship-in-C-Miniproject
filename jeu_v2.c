@@ -95,7 +95,7 @@ int main(int argc, char **argv)
                     if (proposition_joueur(prop, NbJoue, liste, taille_plateau, NbNav)) // NbNav and NbJoue are updated on the function's core via pointers
                     {
                         clearScreen();
-                        printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n", *NbNav, number_of_navires);
+                        printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n\n", *NbNav, number_of_navires);
                         printing_the_grille_v3(prop, taille_plateau);
                         msleep(3000);
                     }
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
                     if (proposition_joueur(prop, NbJoue, liste, taille_plateau, NbNav)) // NbNav and NbJoue are updated on the function's core via pointers
                     {
                         clearScreen();
-                        printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n", *NbNav, number_of_navires);
+                        printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n\n", *NbNav, number_of_navires);
                         printing_the_grille_v3(prop, taille_plateau);
                         msleep(3000);
                     }
@@ -264,7 +264,7 @@ int main(int argc, char **argv)
         while (repeat_multi)
         {
             // loop's logic
-            printf("\nRound No %d\n\n", (*NbJoue_global) / 2); //the function proposition_jouer changes the NbJoue_global on every call and there are two calls (two players) before we change the number of round, that's why we divide by 2
+            printf("\nRound No %d\n\n", (*NbJoue_global) / 2); // the function proposition_jouer changes the NbJoue_global on every call and there are two calls (two players) before we change the number of round, that's why we divide by 2
             printf("\n\e[1;32m%s\e[0m is playing\n", player1);
             printing_the_grille_v3(prop2, taille_plateau_multi);
             if (waitForMenuKeypress())
@@ -277,14 +277,14 @@ int main(int argc, char **argv)
                 if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_multi, NbNav1)) // NbNav_global and NbJoue are updated on the function's core via pointers
                 {
                     clearScreen();
-                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire %s. %d so far out of %d!!!  =====================\033[0m\n", player1, *NbNav1, number_of_navires_multi);
+                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire %s. %d so far out of %d!!!  =====================\033[0m\n\n", player1, *NbNav1, number_of_navires_multi);
                     printing_the_grille_v3(prop2, taille_plateau_multi);
                     msleep(3000);
                 }
             }
 
             clearScreen();
-            printf("\nRound No %d\n\n", ((*NbJoue_global) / 2)-1); //in that case there is also -1 because there was an iteration that increased the number of NbJoue_global before really changing the number of current round. It's based on the principles of the euclidian division in c that takes the part before the comma
+            printf("\nRound No %d\n\n", ((*NbJoue_global) / 2) - 1); // in that case there is also -1 because there was an iteration that increased the number of NbJoue_global before really changing the number of current round. It's based on the principles of the euclidian division in c that takes the part before the comma
             printf("\n\e[1;33m%s\e[0m is playing\n", player2);
             printing_the_grille_v3(prop1, taille_plateau_multi);
 
@@ -298,7 +298,7 @@ int main(int argc, char **argv)
                 if (proposition_joueur(prop1, NbJoue_global, liste1, taille_plateau_multi, NbNav2)) // NbNav_global and NbJoue are updated on the function's core via pointers
                 {
                     clearScreen();
-                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire %s. %d so far out of %d!!!  =====================\033[0m\n", player2, *NbNav1, number_of_navires_multi);
+                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire %s. %d so far out of %d!!!  =====================\033[0m\n\n", player2, *NbNav1, number_of_navires_multi);
                     printing_the_grille_v3(prop1, taille_plateau_multi);
                     msleep(3000);
                 }
@@ -401,7 +401,7 @@ int main(int argc, char **argv)
                 if (proposition_joueur(prop_load, NbJoue_load, liste_load, taille_plateau_load, NbNav_load))
                 {
                     clearScreen();
-                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n", *NbNav_load, number_of_navires_load);
+                    printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n\n", *NbNav_load, number_of_navires_load);
                     printing_the_grille_v3(prop_load, taille_plateau_load);
                     msleep(3000);
                 }
@@ -412,11 +412,13 @@ int main(int argc, char **argv)
                 {
                     repeat_load = false;
                     lost_graphics(1);
+                    api_delete_game_file();
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav_load == number_of_navires_load)
                 {
                     win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "");
+                    api_delete_game_file();
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
             }

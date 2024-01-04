@@ -29,7 +29,7 @@ void printing_the_grille_v3(int **table, int taille_plateau);
 void initialize_plate(int taille_plateau, int **table);
 
 /*Verifies if a navire can be placed on a specific location with a specific size and orientation */
-bool est_valide_pro(int **table_navire, int x, int y, int sens, int taille, int taille_plateau);
+bool est_valide_pro(int **table_navire, Navire nav, int taille_plateau);
 
 void suprimer_navire(Cellule_Liste_Navire *principal, Liste_Navire *liste);
 

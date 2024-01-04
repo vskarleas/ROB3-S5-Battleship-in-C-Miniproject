@@ -10,7 +10,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "programmes.h"
+#include "api.h"
 
 int get_user_input(char message[1024], char error_message[1024], char error_message_2[1024], int min, int max)
 {
@@ -268,6 +268,7 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode)
         {
             clearScreen();
             printf("\n\033[1;36mThe game has been terminated and it's not saved on the server. See you next time!\033[0m\n");
+            api_delete_game_file();
             exit(4); // code on the log that determines that the game was exited without any saving action taking place
         }
         else
@@ -328,6 +329,7 @@ int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode)
         {
             clearScreen();
             printf("\n\033[1;36mThe game has been terminated and it's not saved on the server. See you next time!\033[0m\n");
+            api_delete_game_file();
             exit(4); // code on the log that determines that the game was exited without any saving action taking place
         }
         else

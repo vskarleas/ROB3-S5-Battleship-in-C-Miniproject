@@ -77,7 +77,7 @@ int main(int argc, char **argv)
             if (proposition_joueur(prop, NbJoue, liste, taille_plateau, NbNav)) // NbNav and NbJoue are updated on the function's core via pointers
             {
                 clearScreen();
-                printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n", *NbNav, number_of_navires);
+                printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n\n", *NbNav, number_of_navires);
                 printing_the_grille_v3(prop, taille_plateau);
                 msleep(300);
             }

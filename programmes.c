@@ -34,6 +34,7 @@
 #define NAVIRE 1		// navire placed on position
 #define AUCUN_NAVIRE -1 // deja joue et pas trouve un point de n'importe quelle navire
 #define NAVIRE_TROUVE 2 // one point was found
+#define NAVIRE_TROUVE_PLUS_1 3 // one point of a navire was refound (it was choosen before)
 
 #define COULE 10 // congratsulations
 
@@ -233,6 +234,10 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 					printf(" \033[1;33m*\033[1;0m |");
 					break;
 
+				case NAVIRE_TROUVE_PLUS_1:
+					printf(" \033[1;36m*\033[1;0m |");
+					break;
+
 				case AUCUN_NAVIRE:
 					printf(" \033[1;35mo\033[1;0m |");
 					break;
@@ -256,7 +261,11 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 					break;
 
 				case NAVIRE_TROUVE:
-					printf(" \033[1;33m*\033[1;0m |");
+					printf(" \033[1;33m*\033[1;0m |"); //one point of navire found
+					break;
+
+				case NAVIRE_TROUVE_PLUS_1:
+					printf(" \033[1;36m*\033[1;0m |"); //one point of a navire typed at least twice
 					break;
 
 				case AUCUN_NAVIRE:
@@ -295,8 +304,12 @@ void initialize_plate(int taille_plateau, int **table)
 }
 
 /*Verifies if a navire can be placed on a specific location with a specific size and orientation */
-bool est_valide_pro(int **table_navire, int x, int y, int sens, int taille, int taille_plateau)
+bool est_valide_pro(int **table_navire, Navire nav, int taille_plateau)
 {
+	int x = nav.premiere_case.x;
+	int y = nav.premiere_case.y;
+	int sens = nav.sens;
+	int taille = nav.taille;
 	int max;
 	switch (sens)
 	{
@@ -460,7 +473,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 		case UP:
 			for (int j = el->data.premiere_case.x; j > el->data.premiere_case.x - el->data.taille; j--)
 			{
-				if (prop[j][el->data.premiere_case.y] == 2 || prop[j][el->data.premiere_case.y] == -1)
+				if (prop[j][el->data.premiere_case.y] == NAVIRE_TROUVE || prop[j][el->data.premiere_case.y] == NAVIRE_TROUVE_PLUS_1)
 				{
 					counter++;
 				}
@@ -471,7 +484,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 				// suprimer_navire(el, &L);
 				for (int j = el->data.premiere_case.x; j > el->data.premiere_case.x - el->data.taille; j--)
 				{
-					prop[j][el->data.premiere_case.y] = 10;
+					prop[j][el->data.premiere_case.y] = COULE;
 				}
 				return true;
 			}
@@ -481,7 +494,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 		case LEFT:
 			for (int j = el->data.premiere_case.y; j > el->data.premiere_case.y - el->data.taille; j--)
 			{
-				if (prop[el->data.premiere_case.x][j] == 2 || prop[el->data.premiere_case.x][j] == -1)
+				if (prop[el->data.premiere_case.x][j] == NAVIRE_TROUVE || prop[el->data.premiere_case.x][j] == NAVIRE_TROUVE_PLUS_1)
 				{
 					counter++;
 				}
@@ -492,7 +505,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 				// suprimer_navire(el, &L);
 				for (int j = el->data.premiere_case.y; j > el->data.premiere_case.y - el->data.taille; j--)
 				{
-					prop[el->data.premiere_case.x][j] = 10;
+					prop[el->data.premiere_case.x][j] = COULE;
 				}
 				return true;
 			}
@@ -502,7 +515,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 		case DOWN:
 			for (int j = el->data.premiere_case.x; j < el->data.premiere_case.x + el->data.taille; j++)
 			{
-				if (prop[j][el->data.premiere_case.y] == 2 || prop[j][el->data.premiere_case.y] == -1)
+				if (prop[j][el->data.premiere_case.y] == NAVIRE_TROUVE || prop[j][el->data.premiere_case.y] == NAVIRE_TROUVE_PLUS_1)
 				{
 					counter++;
 				}
@@ -513,7 +526,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 				// suprimer_navire(el, &L);
 				for (int j = el->data.premiere_case.x; j < el->data.premiere_case.x + el->data.taille; j++)
 				{
-					prop[j][el->data.premiere_case.y] = 10;
+					prop[j][el->data.premiere_case.y] = COULE;
 				}
 				return true;
 			}
@@ -523,7 +536,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 		case RIGHT:
 			for (int j = el->data.premiere_case.y; j < el->data.premiere_case.y + el->data.taille; j++)
 			{
-				if (prop[el->data.premiere_case.x][j] == 2 || prop[el->data.premiere_case.x][j] == -1)
+				if (prop[el->data.premiere_case.x][j] == NAVIRE_TROUVE || prop[el->data.premiere_case.x][j] == NAVIRE_TROUVE_PLUS_1)
 				{
 					counter++;
 				}
@@ -534,7 +547,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 				// suprimer_navire(el, &L);
 				for (int j = el->data.premiere_case.y; j < el->data.premiere_case.y + el->data.taille; j++)
 				{
-					prop[el->data.premiere_case.x][j] = 10;
+					prop[el->data.premiere_case.x][j] = COULE;
 				}
 				return true;
 			}
@@ -554,13 +567,21 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 
 void update_prop(int **prop, int x, int y)
 {
-	if (prop[x][y] == 1)
+	if (prop[x][y] == NAVIRE)
 	{
-		prop[x][y] = 2;
+		prop[x][y] = NAVIRE_TROUVE;
 	}
 	else
 	{
-		prop[x][y] = -1;
+		if (prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1)
+		{
+			prop[x][y] = NAVIRE_TROUVE_PLUS_1;
+		}
+		else
+		{
+			prop[x][y] = AUCUN_NAVIRE;
+		}
+		
 	}
 
 	return;
@@ -629,54 +650,48 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 	liste = creer_liste_Navire_vide();
 	Navire nav;
 
-	int randing, random_orientation, x_tmp, y_tmp;
 	bool verification;
 	float percentage = 100 / number_of_navires;
 
 	// creating the six boats and putting them on the plateau (invisible to the user)
 	for (int i = 0; i < number_of_navires; i++)
 	{
-		printf("Initializing the game...\n\n");
+		printf("\nInitializing the game...\n\n");
 		printProgress(0.01 * percentage * i);
 
 		/* Initialising navire randomly on the game's plate */
 		msleep(1000); // delay process for 2 seconds in order to provide real aleartory results
 
-		randing = nb_random(2, (taille_plateau < 6) ? taille_plateau : 6); // logic for choosing the maximum length of a navire depending the size of the plate
-		random_orientation = nb_random(0, 3);
-		x_tmp = nb_random(0, taille_plateau - 1);
-		y_tmp = nb_random(0, taille_plateau - 1);
+		nav.taille = nb_random(2, (taille_plateau < 6) ? taille_plateau : 6); // logic for choosing the maximum length of a navire depending the size of the plate
+		nav.sens = nb_random(0, 3);
+		nav.premiere_case.x = nb_random(0, taille_plateau - 1);
+		nav.premiere_case.y = nb_random(0, taille_plateau - 1);
 
 		verification = true;
 
 		while (verification)
 		{
-			if (est_valide_pro(plateau, x_tmp, y_tmp, random_orientation, randing, taille_plateau))
+			if (est_valide_pro(plateau, nav, taille_plateau))
 			{
 				verification = false;
 			}
 			else
 			{
-				random_orientation = nb_random(0, 3);
-				randing = nb_random(2, (taille_plateau < 6) ? taille_plateau : 6); // required, oterwiese we may arrive to situations that a new navire is impossible to be created with the previous taille taken before for a size 4x4 of a grille
-				x_tmp = nb_random(0, taille_plateau - 1);
-				y_tmp = nb_random(0, taille_plateau - 1);
+				nav.sens = nb_random(0, 3);
+				nav.taille = nb_random(2, (taille_plateau < 6) ? taille_plateau : 6); // required, oterwiese we may arrive to situations that a new navire is impossible to be created with the previous taille taken before for a size 4x4 of a grille
+				nav.premiere_case.x = nb_random(0, taille_plateau - 1);
+				nav.premiere_case.y = nb_random(0, taille_plateau - 1);
 			}
 		}
 
-		nav.taille = randing;
-
-		nav.premiere_case.x = x_tmp;
-		nav.premiere_case.y = y_tmp;
 		nav.id = i;
 
 		// TO BE REMOVED ONCE TESTS ARE COMPLETED
-		printf("Taille: %d\n (x ,y): %d,%d\nDirection: %d\n, ID: %d\n\n", nav.taille, nav.premiere_case.x+1, nav.premiere_case.y+1, random_orientation, nav.id);
+		printf("Taille: %d\n (x ,y): %d,%d\nDirection: %d\n, ID: %d\n\n", nav.taille, nav.premiere_case.x+1, nav.premiere_case.y+1, nav.sens, nav.id);
 
-		switch (random_orientation)
+		switch (nav.sens)
 		{
 		case UP:
-			nav.sens = UP;
 			for (int j = nav.premiere_case.x; j > nav.premiere_case.x - nav.taille; j--)
 			{
 				plateau[j][nav.premiere_case.y] = 1;
@@ -685,7 +700,6 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 			break;
 
 		case LEFT:
-			nav.sens = LEFT;
 			for (int j = nav.premiere_case.y; j > nav.premiere_case.y - nav.taille; j--)
 			{
 				plateau[nav.premiere_case.x][j] = 1;
@@ -694,7 +708,6 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 			break;
 
 		case DOWN:
-			nav.sens = DOWN;
 			for (int j = nav.premiere_case.x; j < nav.premiere_case.x + nav.taille; j++)
 			{
 				plateau[j][nav.premiere_case.y] = 1;
@@ -703,7 +716,6 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 			break;
 
 		case RIGHT:
-			nav.sens = RIGHT;
 			for (int j = nav.premiere_case.y; j < nav.premiere_case.y + nav.taille; j++)
 			{
 				plateau[nav.premiere_case.x][j] = 1;

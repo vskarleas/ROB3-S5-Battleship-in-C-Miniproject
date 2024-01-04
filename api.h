@@ -14,4 +14,6 @@ void api_clearFile(const char *filename) ;
 
 void api_save_game(int number_of_navires, int taille_plateau, int coulle, int round, int **matrix, Liste_Navire liste);
 
+void api_delete_game_file();
+
 #endif
