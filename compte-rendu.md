@@ -38,3 +38,19 @@ Dans notre jeu de bataille navale vous allez trouver d'autres modes de jeu qu'on
 Avant commencer il faudrait de se mettre en commun en ce qui concerne les regles du jeu. Comment on peut decider si quelqu'un a gagne ou pas quand il joue en solo ou contre un autre utilisateur ? Est-qu'il y a d'autres manieres de voir si quelq'un a gagné ou pas ?
 
 # Regles du jeu
+Inspiré par la version simple du jeu qu'on avait programmé pour le TP2, l'agorithme qui decide si le joueur a gagne ou pas, faudrait etre en relation avec un numero des essais global. Sauf qu'il faut prendre en compte que la taille du tableu de jeu n'est pas toujours la meme taille. Ainsi l'algorithme proposé decide selon la taille du plateau. 
+Algo general (language d'algo)
+
+De plus, on etait inspire par les arcades games qui sont surtout associé avec un trnps limité. C'etait une tres bonne occasion d'exploiter la librerie de time.h tout en integrant un systeme qui arrete le jeu si il y a plus de temps. Qu'est qu'il faut faire en cas ou on est en mode pause ? Ci-dessous vous allez trouver l'algorithme qui repond tous ces questions. 
+Algo temps
+
+# Indications
+Pour la creation du jeu il y avait quelques fonctions de base à creer et à respecter. Plus precisement:
+Ajouter les fonctions du jeu
+
+# Procedure
+Chaque projet infornatique est exigeant et durtout il demande la contribution de chaque membre de l'equipe pour eviter des erreurs sur la logique du prinet et sur le source code final. En ce qui concerne la communication, les messages direct sont la maniere le plus simple pour un equipe composé de deux membres. mais comment on fait pour orendre en conite tous les choses wu'on discuté en direct ou en messages ?
+
+L'utilisation de Git est essentiel qui nous permettra de reprendre le projet, tout en contribuant chaqu'un independement et avoir un archive de chaque chagrment qui était effectué. Git aussi permet d'analyser le code avant compiler et faire un backup sur une service destiné de maintenir le code et ses changements toujours accesibles par n'importe quel appareil. Comme attendue, Git etait associe pour un repertoire Github rt un Copilot gcc pour l'analyse du code envoyé vers Github. 
+
+Effectivement, on a toujours besoin d'avoir un planning qui permetra de rester actif tout en deposant le projet complet sans aucun retard. C'est pourquoi une charte GANTT etait crée avec des dates fixes et des taches glovales differents. 
