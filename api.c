@@ -192,7 +192,7 @@ void api_delete_game_file()
 {
 	if (remove("filecodec239012V1.txt") == 0)
 		printf("\n\nSee you next time...\n\n");
-	else
+	else //TO BE REPLACED WITH A SPACE
 		printf("\n\nSee you next time\n\n");
 
 	return;

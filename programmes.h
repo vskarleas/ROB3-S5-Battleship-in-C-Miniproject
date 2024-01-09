@@ -43,6 +43,8 @@ bool navire_found(int **prop, Liste_Navire L);
 
 void update_prop(int **prop, int x, int y);
 
+int point_decryption(char *input, int *number_returned, int *letter_returned);
+
 /* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
 bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plateau, int *NbNav);
 

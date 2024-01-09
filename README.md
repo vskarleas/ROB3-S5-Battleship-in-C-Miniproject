@@ -8,8 +8,8 @@
 # Notes - Problems
 
 1. est_valide_pro est une fonction qui repond au cahier de charge de la fonction demandé est_valide sauf que celui fait traite chaque sous ca seperament tout en en faisant la verification du placement d'une navire à une position à partir du premier moment que les coordonees x, y aleartoires sont cree. (NOTE)
-3. strcmpr -> 0 si ok, 1 sinon (for two strings) [0 si code number for false, and any other number is considered as true in C in an if or a bool]
-4. ```c
+2. strcmpr -> 0 si ok, 1 sinon (for two strings) [0 si code number for false, and any other number is considered as true in C in an if or a bool]
+3. ```c
    (taille_plateau < 6) ? nb_random(2, taille_plateau) : nb_random(2, 6);
    ```
 
@@ -20,14 +20,14 @@
    ```
 
    for optimization reasons.
-5. A new function was created called msleep that adds a controled delay in ms whenever it's called. It's useful when you want to ensure the uniqueness of aleartory values since the leartory principle is based on the ms inside the processor's clock.
-6. Report the problem with taille = 4 and how wee resolved => created a new if on th elogic since teh tabke couldn't be completed with 6 navales.
-7. We can use only one table thansk to the liste chainee qui s'appelle liste sur le programme
-8. That way on our code we are using the listes chainees principles that allows to add whatever number kf navires we want in case that we didnt want to be exclusivky 6 (even the percentage affichage function is ufoated dynamicly accoridng to the number of navires)
-9. On the jeu_v2 we hasd used a switch for the mode_game, however during compilation there were many misunderstadnign for the compiler to understand if the treated cases were correct and it was responding with incorrect errors for the variables declaration. To by pass this problem it needed to declare everything before the switch, however we didn't want to do it (allocate more ressources that we won't use). That's why we sticked with the if statements.
-10. Our API calls are responsible to connect the game to the external environment (computer or server) - that's why the name that was chosen was API from Application Programming Interface.
-11. **Create a graph with the association of the different files between them (check INF404 for references)**
-12. For every play mode, we decided to create unique global variables for each section in order to eliminate warnongs from the Makefile that were saying that we maybe forgot that we already had declared a function.
+4. A new function was created called msleep that adds a controled delay in ms whenever it's called. It's useful when you want to ensure the uniqueness of aleartory values since the leartory principle is based on the ms inside the processor's clock.
+5. Report the problem with taille = 4 and how wee resolved => created a new if on th elogic since teh tabke couldn't be completed with 6 navales.
+6. We can use only one table thansk to the liste chainee qui s'appelle liste sur le programme
+7. That way on our code we are using the listes chainees principles that allows to add whatever number kf navires we want in case that we didnt want to be exclusivky 6 (even the percentage affichage function is ufoated dynamicly accoridng to the number of navires)
+8. On the jeu_v2 we hasd used a switch for the mode_game, however during compilation there were many misunderstadnign for the compiler to understand if the treated cases were correct and it was responding with incorrect errors for the variables declaration. To by pass this problem it needed to declare everything before the switch, however we didn't want to do it (allocate more ressources that we won't use). That's why we sticked with the if statements.
+9. Our API calls are responsible to connect the game to the external environment (computer or server) - that's why the name that was chosen was API from Application Programming Interface.
+10. **Create a graph with the association of the different files between them (check INF404 for references)**
+11. For every play mode, we decided to create unique global variables for each section in order to eliminate warnongs from the Makefile that were saying that we maybe forgot that we already had declared a function.
 
 # Crucial changes
 
@@ -108,6 +108,7 @@
 * v7.0 multiplayer added and more functionality was added on the ui with intelligent logic printing modes as well as there were some bug fixes on the source code programmes.c
 * v7.1 Imporved the program to have the exact signatures that the prof asked for and added some functionality for the points that were selected at least twice. Moreover the logic for the end of LOAD mode new logic was added to prevent a user to play again with a game file that was played before.
 * v7.2 Tried to fix the non paused time for solo mode option temps with no sucess
+* v7.3 Added a functionality to accept the format 2B for points
 
 # Filing codec
 
@@ -117,8 +118,12 @@ We can modify the codec in order to include a timestamp that will indicate to th
 
 # Game's exit codes / errors
 
-| Codes    | Status | Explanation                                       | Solution                                                                                                                    |
-| -------- | ------ | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| exit(-1) | ERROR  | There is an allocation memory error               | Check output on terminal that indicates the row, column and table with the error                                            |
-| exit(5)  | OUTPUT | The game has been saved succesfully on the server | N/A                                                                                                                         |
-| exit(-2) | STATE  | No file of saved game found                       | Play a game at least once and save it, then try again in order to load it and continue from were you stoppe dthe last time. |
+| Codes     | Status | Explanation                                           | Solution                                                                                                                    |
+| --------- | ------ | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| exit(-1)  | ERROR  | There is an allocation memory error                   | Check output on terminal that indicates the row, column and table with the error                                            |
+| exit(5)   | OUTPUT | The game has been saved succesfully on the server     | N/A                                                                                                                         |
+| exit(-2)  | STATE  | No file of saved game found                           | Play a game at least once and save it, then try again in order to load it and continue from were you stoppe dthe last time. |
+| 7         | STATE  | the coordinates for a point are not wth a length of 2 |                                                                                                                             |
+| 8         | STATE  | Point choosen first carcater is not a letter          |                                                                                                                             |
+| exit(-4); | ERROR  | Unidentfied error with the point declaration          | Check the logic on the function proposition_joueur                                                                          |
+| 9         | STATE  | Point choosen first carcater is not a number          |                                                                                                                             |
