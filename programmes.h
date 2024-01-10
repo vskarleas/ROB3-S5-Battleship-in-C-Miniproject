@@ -53,4 +53,31 @@ void printProgress(double percentage);
 // Allocation et initialisation des navires
 Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int number_of_navires);
 
+void update_game_table_before_launch(int **prop, int taille_plateau);
+
+Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, int number_of_navires);
+
+void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue);
+
+
+/* cr�er une cellule de liste avec l'�l�ment v 
+   renvoie le pointeur sur la cellule de liste cr��e
+   la fonction s'arrete si la cr�ation n'a pas pu se faire */
+Cellule_Liste_Point *creer_element_liste_Point(int x, int y);
+
+/* cr�er une liste vide */
+Liste_Point creer_liste_Point_vide();
+
+/* ajouter l'�l�ment e en fin de la liste L, renvoie la liste L modifi�e */
+void ajouter_element_liste_Point(Liste_Point *L, int x, int y);
+
+/* suppression de tous les �l�ments de la liste, renvoie la liste L vide */
+Liste_Point supprimer_liste_Point(Liste_Point L);
+
+/* cr�er une s�quence de points sous forme d'un tableau de points 
+   � partir de la liste de points L */
+Tableau_Point sequence_points_liste_vers_tableau(Liste_Point L);
+
+bool tour_ia_random_v2(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x_prev, int y_prev, int x_now, int y_now, int *x_next, int *y_next);
+
 #endif

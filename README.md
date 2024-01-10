@@ -72,7 +72,7 @@
 * [X] Continuer un autre moment - functions to be created and complete the logic for jeu_v2 (COMPUTER mode call and LOAD case for continuing the game)
 * [X] Save the game function needs to be created. Its signature should definetly include Liste_Navire, taille_plateau, coulle, round, number_of_navires and prop. Create the file according to the filing codec as described at **Filing codec** section. NOTE: If the file already exists, use the function api_clearFile to clean the file before write on it. In the end of that file we can include the text "COPYRIGHT 2023-2024 NAVALE FILING CODEC BY YANIS SADOUN & VASILEIOS FILIPPOS SKARLEAS | ALL RIGHTS RESERVED"
 * [X] Complete the multiplayer mode (2 individual players). It needs a function to manually insert the selected amount of navires on the game and then we have to complete the logic of game for jeu_v2.
-* [ ] OPTIONAL Improve the code by fixing the function suprimer_navire and using an advanced logic of L.taille on the jeu and jeu_v2 game loops
+* [X] OPTIONAL Improve the code by fixing the function suprimer_navire and using an advanced logic of L.taille on the jeu and jeu_v2 game loops
 
 *** Don't think that we will include the AI version due to lack of time and inutility as functionality***
 
@@ -109,6 +109,7 @@
 * v7.1 Imporved the program to have the exact signatures that the prof asked for and added some functionality for the points that were selected at least twice. Moreover the logic for the end of LOAD mode new logic was added to prevent a user to play again with a game file that was played before.
 * v7.2 Tried to fix the non paused time for solo mode option temps with no sucess
 * v7.3 Added a functionality to accept the format 2B for points coordinates
+* V7.4 AI added and the module to create navires customly
 
 # Filing codec
 
@@ -127,3 +128,5 @@ We can modify the codec in order to include a timestamp that will indicate to th
 | 8         | STATE  | Point choosen first carcater is not a letter          |                                                                                                                             |
 | exit(-4); | ERROR  | Unidentfied error with the point declaration          | Check the logic on the function proposition_joueur                                                                          |
 | 9         | STATE  | Point choosen first carcater is not a number          |                                                                                                                             |
+| exit(-3)  | ERROR  | Multiplayer sub mode failed                           | Check the output of the function and try again                                                                              |
+| exit(-4)  | ERROR  | Solo sub mode failed                                  | Check the output of the function and try again                                                                              |

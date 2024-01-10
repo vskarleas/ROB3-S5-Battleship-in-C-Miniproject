@@ -146,7 +146,7 @@ int game_mode_menu()
 
     while (true)
     {
-        printf("Choose an option (AI, Computer, Multiplayer or Load). Load alloes to continue a game from a previous session [suitable for computer mode only]. You can close the game by taping Cancel: ");
+        printf("Choose an option (AI, Computer, Multiplayer or Load). \nLoad allows to continue a game from a previous session [suitable for computer mode only]. \nYou can close the game by taping Cancel\nYour choice: ");
         scanf("%s", userInput);
 
         // Convert input to lowercase for case-insensitive comparison and returns
@@ -211,6 +211,72 @@ int game_mode_solo()
         {
             clearScreen();
             printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Temps and Rounds.\n");
+        }
+    }
+    return 0;
+}
+
+int game_mode_multi()
+{
+    char userInput[20];
+
+    while (true)
+    {
+        printf("\nChoose now between the modes Automatic or Custom. Automatic creates different plates based on algorithm. Custom allow to every user to create his own plate.\n");
+        printf("Your choice : ");
+        scanf("%s", userInput);
+
+        // Convert input to lowercase for case-insensitive comparison and returns
+        for (int i = 0; i < strlen(userInput); i++)
+        {
+            userInput[i] = tolower(userInput[i]);
+        }
+
+        if (strcmp(userInput, "automatic") == 0)
+        {
+            return 2;
+        }
+        else if (strcmp(userInput, "custom") == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            clearScreen();
+            printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from Automatic and Custom.\n");
+        }
+    }
+    return 0;
+}
+
+int game_mode_ai()
+{
+    char userInput[20];
+
+    while (true)
+    {
+        printf("\nChoose now between the available AI versions Spark or Fireball. Fireball has a more advanced logic than Spark.\n");
+        printf("Your choice : ");
+        scanf("%s", userInput);
+
+        // Convert input to lowercase for case-insensitive comparison and returns
+        for (int i = 0; i < strlen(userInput); i++)
+        {
+            userInput[i] = tolower(userInput[i]);
+        }
+
+        if (strcmp(userInput, "spark") == 0)
+        {
+            return 2;
+        }
+        else if (strcmp(userInput, "fireball") == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            clearScreen();
+            printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose between Spark and Fireball.\n");
         }
     }
     return 0;

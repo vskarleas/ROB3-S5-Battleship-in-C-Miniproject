@@ -29,6 +29,10 @@ int game_mode_menu();
 
 int game_mode_solo();
 
+int game_mode_multi();
+
+int game_mode_ai();
+
 int midle_game_menu(int rounds, int taille_plateau, int version, int mode);
 
 int midle_game_menu_saving_unavailable_temps(int rounds, int taille_plateau, int mode, int *time_paused);
