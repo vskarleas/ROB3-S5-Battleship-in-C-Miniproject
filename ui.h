@@ -45,4 +45,14 @@ void ajuster_temps(int taille_plateau, int *temps_limite);
 
 void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode);
 
+void custom_graphics_on_proposition(int i, int **plateau, int taille_plateau, int colour, int mode, int id);
+
+void game_mode_graphics_congratulations(int **prop, int taille_plateau, int nb_navires, int nb_navires_found, int id, char *buffer);
+
+void error_graphics(int error_code);
+
+void game_loaded_graphics(int max_rounds_load, int taille_plateau_load);
+
+void new_round_graphics(int round, int taille_plateau, int **prop, int id, char *buffer, int temps);
+
 #endif

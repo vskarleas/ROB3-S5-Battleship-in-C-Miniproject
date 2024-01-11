@@ -86,6 +86,17 @@ int nb_random(int min, int max)
 	return min + rand() % (max + 1 - min);
 }
 
+int random_color() 
+{
+	int random_number;
+	do
+	{
+		random_number = nb_random(32, 36);
+	} while (random_number == 33);
+
+    return random_number;
+}
+
 /* It prints the plate - Treats table of any size and makes sure that the printing is done correctly */
 void printing_the_grille(int **table, int taille_plateau)
 {
@@ -178,7 +189,7 @@ void printing_the_grille(int **table, int taille_plateau)
 	}
 }
 
-void printing_the_grille_v3(int **table, int taille_plateau)
+void printing_the_grille_v2(int **table, int taille_plateau)
 {
 	int state;
 	char c = 'A';
@@ -254,7 +265,7 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 					printf(" \033[1;34m&\033[1;0m |");
 					break;
 				case CUSTOM_NAVIRE:
-					printf(" \e[0;101m@\033[1;0m |");
+					printf(" \e[0;101m \033[1;0m |");
 					break;
 				}
 			}
@@ -287,7 +298,7 @@ void printing_the_grille_v3(int **table, int taille_plateau)
 					printf(" \033[1;34m&\033[1;0m |");
 					break;
 				case CUSTOM_NAVIRE: // TO BE REMOVED. IT WAS PLACED TO VISUALIZE THE DIFFERENT BOATS. IT HAS TO BE REPLACED WITH A .
-					printf(" \e[0;101m@\033[1;0m |");
+					printf(" \e[0;101m \033[1;0m |");
 					break;
 				}
 			}
@@ -333,7 +344,7 @@ bool est_valide_pro(int **table_navire, Navire nav, int taille_plateau)
 		}
 		for (int j = x; j > max; j--)
 		{
-			if (table_navire[j][y] == 1)
+			if (table_navire[j][y] == NAVIRE || table_navire[j][y] == CUSTOM_NAVIRE) // custom navire identification is used for custom game plate creation
 			{
 				return false;
 				break;
@@ -352,7 +363,7 @@ bool est_valide_pro(int **table_navire, Navire nav, int taille_plateau)
 		}
 		for (int i = y; i < max; i++)
 		{
-			if (table_navire[x][i] == 1)
+			if (table_navire[x][i] == NAVIRE || table_navire[x][i] == CUSTOM_NAVIRE)
 			{
 				return false;
 				break;
@@ -372,7 +383,7 @@ bool est_valide_pro(int **table_navire, Navire nav, int taille_plateau)
 		}
 		for (int j = x; j < max; j++)
 		{
-			if (table_navire[j][y] == 1)
+			if (table_navire[j][y] == NAVIRE || table_navire[j][y] == CUSTOM_NAVIRE)
 			{
 				return false;
 				break;
@@ -392,7 +403,7 @@ bool est_valide_pro(int **table_navire, Navire nav, int taille_plateau)
 		}
 		for (int i = y; i > max; i--)
 		{
-			if (table_navire[x][i] == 1)
+			if (table_navire[x][i] == NAVIRE || table_navire[x][i] == CUSTOM_NAVIRE)
 			{
 				return false;
 				break;
@@ -649,8 +660,7 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 
 	while (coordinates)
 	{
-		printf("Entrez les coordonnées du point choisi. Le format accepté est number+letter (ex: 2B).\n");
-		printf("Votre choix: ");
+		custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 0, -1);
 		scanf("%s", input);
 
 		while (repeater)
@@ -662,26 +672,22 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 			}
 			else if (status_code == 8)
 			{
-				printf("\033[0;33mATTENTION!\033[1;0m Invalid input format. The second character must be a letter. Try again!\n\n");
-				printf("Votre choix: ");
-				scanf("%2s", input);
+				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 1, -1);
+				scanf("%s", input);
 			}
 			else if (status_code == 9)
 			{
-
-				printf("\033[0;33mATTENTION!\033[1;0m The first character must be a number. Try again!\n\n");
-				printf("Votre choix: ");
-				scanf("%2s", input);
+				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 2, -1);
+				scanf("%s", input);
 			}
 			else if (status_code == 7)
 			{
-				printf("\033[0;33mATTENTION!\033[1;0m Invalid input format. Please enter a number followed by a letter. Try again!\n\n");
-				scanf("%2s", input);
+				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 3, -1);
+				scanf("%s", input);
 			}
 			else
 			{
-				printf("Unidentfied error with the point declaration\n");
-				exit(-4);
+				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 4, 1);
 			}
 		}
 
@@ -694,7 +700,7 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 		}
 		else
 		{
-			printf("\033[0;33mThe slected coordinates are out of the game's plate. TRY AGAIN!\033[0m\n\n");
+			custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 5, -1);
 		}
 	}
 
@@ -739,11 +745,10 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 	// creating the six boats and putting them on the plateau (invisible to the user)
 	for (int i = 0; i < number_of_navires; i++)
 	{
-		printf("\nInitializing the game...\n\n");
-		printProgress(0.01 * percentage * i);
+		custom_graphics_on_proposition(i, plateau, taille_plateau, -2, percentage, -1);
 
 		/* Initialising navire randomly on the game's plate */
-		msleep(1000); // delay process for 1 second in order to provide real aleartory results
+		msleep(300); // delay process for 1 second in order to provide real aleartory results
 
 		nav.taille = nb_random(2, (taille_plateau < 6) ? taille_plateau : 6); // logic for choosing the maximum length of a navire depending the size of the plate
 		nav.sens = nb_random(0, 3);
@@ -836,60 +841,59 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 
 	int status_code;
 	int x, y;
-	char input[3];
-	bool verification;
+	char input[20]; // storing the input string
 	bool repeater = true;
+	int input_int;
+	int colour;
 
 	// creating the six boats and putting them on the plateau (invisible to the user)
 	for (int i = 0; i < number_of_navires; i++)
 	{
+		colour = random_color();
 		/* Initialising navire customly */
-		printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-		printf("\n");
-		printing_the_grille_v3(plateau, taille_plateau);
-		printf("\n");
-		printf("Taille du navire: ");
-		scanf("%d", &(nav.taille));
+		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 0, -1);
+		scanf("%s", input);
 		clearScreen();
 
-		while (nav.taille <= 0 || nav.taille > 6)
+		while (repeater)
 		{
-			printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-			printf("\n");
-			printing_the_grille_v3(plateau, taille_plateau);
-			printf("\n");
-			printf("La taille doit etre entre 1 et 6. Taille du navire: ");
-			scanf("%d", &(nav.taille));
-			clearScreen();
+			if (strlen(input) != 1 || (input[0] != '1' && input[0] != '2' && input[0] != '3' && input[0] != '4' && input[0] != '5' && input[0] != '6'))
+			{
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 1, -1);
+				scanf("%s", input);
+				clearScreen();
+			}
+			else
+			{
+				repeater = false;
+			}
 		}
+		input_int = atoi(input);
+		nav.taille = input_int;
+		repeater = true;
 
-		printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-		printf("\n");
-		printing_the_grille_v3(plateau, taille_plateau);
-		printf("\n");
-		printf("Choisir la direction: UP(0), DOWN(2), LEFT(1), RIGHT(3)\n");
-		printf("Direction: ");
-		scanf("%d", &(nav.sens));
+		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 4, -1);
+		scanf("%s", input);
 		clearScreen();
-		while (!(nav.sens == 0 || nav.sens == 1 || nav.sens == 2 || nav.sens == 3))
-		{
-			printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-			printf("\n");
-			printing_the_grille_v3(plateau, taille_plateau);
-			printf("\n");
-			printf("\033[0;33mATTENTION!\033[1;0m Invalid input format. We can accept only the values 0, 1, 2, 3. Try again!\n\n");
-			printf("Choisir la direction: UP(0), DOWN(2), LEFT(1), RIGHT(3)\n");
-			printf("Direction: ");
-			scanf("%d", &(nav.sens));
-			clearScreen();
-		}
 
-		printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-		printf("\n");
-		printing_the_grille_v3(plateau, taille_plateau);
-		printf("\n");
-		printf("Entrez les coordonnées du point de depart. Le format accepté est number+letter (ex: 2B).\n");
-		printf("Votre choix: ");
+		while (repeater)
+		{
+			if (strlen(input) != 1 || (input[0] != '0' && input[0] != '1' && input[0] != '2' && input[0] != '3'))
+			{
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 3, -1);
+				scanf("%s", input);
+				clearScreen();
+			}
+			else
+			{
+				repeater = false;
+			}
+		}
+		input_int = atoi(input);
+		nav.sens = input_int;
+		repeater = true;
+
+		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 5, -1);
 		scanf("%s", input);
 		clearScreen();
 
@@ -902,41 +906,25 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 			}
 			else if (status_code == 8)
 			{
-				printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-				printf("\n");
-				printing_the_grille_v3(plateau, taille_plateau);
-				printf("\n");
-				printf("\033[0;33mATTENTION!\033[1;0m Invalid input format. The second character must be a letter. Try again!\n\n");
-				printf("Votre choix: ");
-				scanf("%2s", input);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 6, -1);
+				scanf("%s", input);
 				clearScreen();
 			}
 			else if (status_code == 9)
 			{
-				printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-				printf("\n");
-				printing_the_grille_v3(plateau, taille_plateau);
-				printf("\n");
-				printf("\033[0;33mATTENTION!\033[1;0m The first character must be a number. Try again!\n\n");
-				printf("Votre choix: ");
-				scanf("%2s", input);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 7, -1);
+				scanf("%s", input);
 				clearScreen();
 			}
 			else if (status_code == 7)
 			{
-				printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-				printf("\n");
-				printing_the_grille_v3(plateau, taille_plateau);
-				printf("\n");
-				printf("\033[0;33mATTENTION!\033[1;0m Invalid input format. Please enter a number followed by a letter. Try again!\n\n");
-				scanf("%2s", input);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 2, -1);
+				scanf("%s", input);
 				clearScreen();
 			}
 			else
 			{
-				clearScreen();
-				printf("Unidentfied error with the point declaration\n");
-				exit(-4);
+				custom_graphics_on_proposition(-1, plateau, taille_plateau, -1, 4, -1);
 			}
 		}
 
@@ -948,64 +936,58 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 
 		nav.premiere_case.x = x;
 		nav.premiere_case.y = y;
-		nav.id = i;
 
-		verification = true;
-
-		while (verification)
+		while (repeater)
 		{
 			if (est_valide_pro(plateau, nav, taille_plateau))
 			{
-				verification = false;
+				repeater = false;
 			}
 			else
 			{
-				printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-				printf("\n");
-				printing_the_grille_v3(plateau, taille_plateau);
-				printf("\n");
-				printf("Taille du navire: ");
-				scanf("%d", &(nav.taille));
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 0, 0);
+				scanf("%s", input);
 				clearScreen();
 
-				while (nav.taille <= 0 || nav.taille > 6)
+				while (repeater)
 				{
-					printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-					printf("\n");
-					printing_the_grille_v3(plateau, taille_plateau);
-					printf("\n");
-					printf("La taille doit etre entre 1 et 6. Taille du navire: ");
-					scanf("%d", &(nav.taille));
-					clearScreen();
+					if (strlen(input) != 1 || (input[0] != '1' && input[0] != '2' && input[0] != '3' && input[0] != '4' && input[0] != '5' && input[0] != '6'))
+					{
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 1, -1);
+						scanf("%s", input);
+						clearScreen();
+					}
+					else
+					{
+						repeater = false;
+					}
 				}
+				input_int = atoi(input);
+				nav.taille = input_int;
+				repeater = true;
 
-				printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-				printf("\n");
-				printing_the_grille_v3(plateau, taille_plateau);
-				printf("\n");
-				printf("Choisir la direction: UP(0), DOWN(2), LEFT(1), RIGHT(3)\n");
-				printf("Direction: ");
-				scanf("%d", &(nav.sens));
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 4, -1);
+				scanf("%s", input);
 				clearScreen();
-				while (!(nav.sens == 0 || nav.sens == 1 || nav.sens == 2 || nav.sens == 3))
-				{
-					printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-					printf("\n");
-					printing_the_grille_v3(plateau, taille_plateau);
-					printf("\n");
-					printf("\033[0;33mATTENTION!\033[1;0m Invalid input format. We can accept only the values 0, 1, 2, 3. Try again!\n\n");
-					printf("Choisir la direction: UP(0), DOWN(2), LEFT(1), RIGHT(3)\n");
-					printf("Direction: ");
-					scanf("%d", &(nav.sens));
-					clearScreen();
-				}
 
-				printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-				printf("\n");
-				printing_the_grille_v3(plateau, taille_plateau);
-				printf("\n");
-				printf("Entrez les coordonnées du point de depart. Le format accepté est number+letter (ex: 2B).\n");
-				printf("Votre choix: ");
+				while (repeater)
+				{
+					if (strlen(input) != 1 || (input[0] != '0' && input[0] != '1' && input[0] != '2' && input[0] != '3'))
+					{
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 3, -1);
+						scanf("%s", input);
+						clearScreen();
+					}
+					else
+					{
+						repeater = false;
+					}
+				}
+				input_int = atoi(input);
+				nav.sens = input_int;
+				repeater = true;
+
+				custom_graphics_on_proposition(i, plateau, taille_plateau,colour, 5, -1);
 				scanf("%s", input);
 				clearScreen();
 
@@ -1018,41 +1000,25 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 					}
 					else if (status_code == 8)
 					{
-						printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-						printf("\n");
-						printing_the_grille_v3(plateau, taille_plateau);
-						printf("\n");
-						printf("\033[0;33mATTENTION!\033[1;0m Invalid input format. The second character must be a letter. Try again!\n\n");
-						printf("Votre choix: ");
-						scanf("%2s", input);
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 6, -1);
+						scanf("%s", input);
 						clearScreen();
 					}
 					else if (status_code == 9)
 					{
-						printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-						printf("\n");
-						printing_the_grille_v3(plateau, taille_plateau);
-						printf("\n");
-						printf("\033[0;33mATTENTION!\033[1;0m The first character must be a number. Try again!\n\n");
-						printf("Votre choix: ");
-						scanf("%2s", input);
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 7, -1);
+						scanf("%s", input);
 						clearScreen();
 					}
 					else if (status_code == 7)
 					{
-						printf("\n\e[4;35mNavire No %d\e[0m\n", i + 1);
-						printf("\n");
-						printing_the_grille_v3(plateau, taille_plateau);
-						printf("\n");
-						printf("\033[0;33mATTENTION!\033[1;0m Invalid input format. Please enter a number followed by a letter. Try again!\n\n");
-						scanf("%2s", input);
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 2, -1);
+						scanf("%s", input);
 						clearScreen();
 					}
 					else
 					{
-						clearScreen();
-						printf("Unidentfied error with the point declaration\n");
-						exit(-4);
+						custom_graphics_on_proposition(-1, plateau, taille_plateau, -1, 4, -1);
 					}
 				}
 
@@ -1119,12 +1085,21 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue)
 {
 	int x, y;
-
-	do
+	bool repeat = true;
+	x = nb_random(0, taille_plateau - 1);
+	y = nb_random(0, taille_plateau - 1);
+	while(repeat)
 	{
-		x = nb_random(0, taille_plateau - 1);
-		y = nb_random(0, taille_plateau - 1);
-	} while (prop[x][y] != VIDE);
+		if(prop[x][y] == AUCUN_NAVIRE || prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1 || prop[x][y] == COULE)
+		{
+			x = nb_random(0, taille_plateau - 1);
+			y = nb_random(0, taille_plateau - 1);
+		}
+		else
+		{
+			repeat = false;
+		}
+	}
 
 	update_prop(prop, x, y);
 	(*NbJoue)++; // next round added
@@ -1137,6 +1112,24 @@ void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNa
 	else
 	{
 		printf("L'IA a manqué en (%d, %d).\n", x + 1, y + 1);
+	}
+}
+
+bool random_choice(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y)
+{
+	update_prop(prop, x, y);
+	(*NbJoue)++; // next round added
+
+	if (navire_found(prop, L))
+	{
+		(*NbNav)++;
+		printf("L'IA a touché un navire en (%d, %d)!\n", x + 1, y + 1);
+		return (true);
+	}
+	else
+	{
+		printf("L'IA a manqué en (%d, %d).\n", x + 1, y + 1);
+		return true;
 	}
 }
 
@@ -1184,6 +1177,8 @@ void ajouter_element_liste_Point(Liste_Point *L, int x, int y)
 	L->taille++;
 	return;
 }
+
+//Liste_Point supprimer_liste_Navire(Liste_Navire L)
 
 /* suppression de tous les �l�ments de la liste, renvoie la liste L vide */
 Liste_Point supprimer_liste_Point(Liste_Point L)
@@ -1233,28 +1228,39 @@ Tableau_Point sequence_points_liste_vers_tableau(Liste_Point L)
 	return T;
 }
 
-bool tour_ia_random_v2(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x_prev, int y_prev, int x_now, int y_now, int *x_next, int *y_next) // returns true if it has found already the next step, otherwise false
+bool tour_ia_random_v2(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x_prev, int y_prev, int x_now, int y_now, int *x_next, int *y_next, int mode) // returns true if it has found already the next step, otherwise false
 {
-	if (prop[x_now][y_now] == NAVIRE)
+	if (mode == 0)
 	{
-		return false;
-		//TO BE COMPLETED THE ALGORITHM
-	}
-	else
-	{
-		update_prop(prop, x_now, y_now);
-		(*NbJoue)++; // next round added
-
-		if (navire_found(prop, L))
+		if (prop[x_now][y_now] == NAVIRE)
 		{
-			(*NbNav)++;
-			printf("L'IA a touché un navire en (%d, %d)!\n", x_now + 1, y_now + 1);
-			return(true);
+			return false;
+			// TO BE COMPLETED THE ALGORITHM
 		}
 		else
 		{
-			printf("L'IA a manqué en (%d, %d).\n", x_now + 1, y_now + 1);
-			return true;
+			return random_choice(prop, taille_plateau, L, NbNav, NbJoue, x_now, y_now);
 		}
 	}
+	else
+	{
+		return random_choice(prop, taille_plateau, L, NbNav, NbJoue, x_now, y_now);
+	}
+}
+
+void waitTime(int seconds, char *message, int colour1, int colour2, char *name1, char *name2)
+{
+	for (int i = seconds; i > 0; i--)
+	{
+		clearScreen();
+		printf("\n\e[0;%dm%s\e[0m %s \e[0;%dm%s\e[0m (%d)\n",colour1, name1, message, colour2, name2, i);
+		msleep(1000);
+	}
+	clearScreen();
+}
+
+void clearScreenWait(double seconds)
+{
+	msleep(1000*seconds);
+	clearScreen();
 }

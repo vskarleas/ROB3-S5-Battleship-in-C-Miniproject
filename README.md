@@ -47,7 +47,7 @@
 | 4  | Data of navire 4 -> 5    |
 | 5  | Data of navire 5 -> NULL |
 
-* A new verison of the printing function is available called printing_the_grille_v3 that is more UI friendly and it's the one that is used on the latest version of the code
+* A new verison of the printing function is available called printing_the_grille_v2 that is more UI friendly and it's the one that is used on the latest version of the code
 * There are two versions of main functions. The version 2 is the more stable one that includes for more functionality than version 1.
 
 # Discovered
@@ -73,10 +73,9 @@
 * [X] Save the game function needs to be created. Its signature should definetly include Liste_Navire, taille_plateau, coulle, round, number_of_navires and prop. Create the file according to the filing codec as described at **Filing codec** section. NOTE: If the file already exists, use the function api_clearFile to clean the file before write on it. In the end of that file we can include the text "COPYRIGHT 2023-2024 NAVALE FILING CODEC BY YANIS SADOUN & VASILEIOS FILIPPOS SKARLEAS | ALL RIGHTS RESERVED"
 * [X] Complete the multiplayer mode (2 individual players). It needs a function to manually insert the selected amount of navires on the game and then we have to complete the logic of game for jeu_v2.
 * [X] OPTIONAL Improve the code by fixing the function suprimer_navire and using an advanced logic of L.taille on the jeu and jeu_v2 game loops
-
-*** Don't think that we will include the AI version due to lack of time and inutility as functionality***
-
 * [X] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided]) IF WE WANT
+* [X] fix issues with Spark AI model that looks like it doesn't choose any point of the created navires on the table
+* [ ] Improve Fireball AI + finish the logic of the function tour_ia_random_v2 model and .
 
 ![1702659377345](image/README/1702659377345.png)
 
@@ -110,6 +109,8 @@
 * v7.2 Tried to fix the non paused time for solo mode option temps with no sucess
 * v7.3 Added a functionality to accept the format 2B for points coordinates
 * V7.4 AI added and the module to create navires customly
+* V8.0 Fixed issue with initialisatio_plateau_custom which couldn't detect the already existed navires, updated the UI files and transfered the majority of texts to the UI file as well. In addition to that, the code was optimised and there were several small bug fixes. The different game modes were seperated in order to be able to test them without the whole's game menu.
+* V8.1 Fixed some logique issues on the AI model called Spark and added some fixes.
 
 # Filing codec
 

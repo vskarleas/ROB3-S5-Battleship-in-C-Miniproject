@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     {
         // loop's logic
         printf("\nRound No %d\n\n", *NbJoue);
-        printing_the_grille_v3(prop, taille_plateau);
+        printing_the_grille_v2(prop, taille_plateau);
         if (waitForMenuKeypress())
         {
             if (midle_game_menu(ROUNDS, taille_plateau, 1, 1) == 1) // 1 is internal code foe saving the progress and continuing another time, second 1 is for game version and third one indicates the game mode
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
             {
                 clearScreen();
                 printf("\033[0;36m\n=====================  Congratsulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n\n", *NbNav, number_of_navires);
-                printing_the_grille_v3(prop, taille_plateau);
+                printing_the_grille_v2(prop, taille_plateau);
                 msleep(300);
             }
             clearScreen();

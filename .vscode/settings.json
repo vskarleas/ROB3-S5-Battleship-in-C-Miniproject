@@ -11,6 +11,7 @@
         "string.h": "c",
         "functions.h": "c",
         "user_input.h": "c",
-        "structures.h": "c"
+        "structures.h": "c",
+        "ctype.h": "c"
     }
 }

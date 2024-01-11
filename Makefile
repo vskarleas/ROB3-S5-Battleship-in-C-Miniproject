@@ -40,7 +40,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = jeu test jeu_v2
+EXECUTABLES = jeu test jeu_v2 ai multiplayer solo load
 
 #############################################################################
 # definition des regles
@@ -81,6 +81,26 @@ jeu_v2.o : jeu_v2.c programmes.h ui.h structures.h api.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
+ai.o : ai.c programmes.h ui.h structures.h api.h
+	@echo ""
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
+load.o : load.c programmes.h ui.h structures.h api.h
+	@echo ""
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
+multiplayer.o : multiplayer.c programmes.h ui.h structures.h api.h
+	@echo ""
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
+solo.o : solo.c programmes.h ui.h structures.h api.h
+	@echo ""
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
 test.o : test.c
 	@echo ""
 	@echo "---------------------------------------------"
@@ -108,6 +128,34 @@ jeu : jeu.o programmes.o ui.o api.o
 	$(CC) $^ $(LDOPTS) -o $@
 
 jeu_v2 : jeu_v2.o programmes.o ui.o api.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
+
+ai : ai.o programmes.o ui.o api.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
+
+load : load.o programmes.o ui.o api.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
+
+solo : solo.o programmes.o ui.o api.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
+
+multiplayer : multiplayer.o programmes.o ui.o api.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@

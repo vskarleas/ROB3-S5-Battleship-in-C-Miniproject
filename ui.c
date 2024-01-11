@@ -16,25 +16,49 @@
 int get_user_input(char message[1024], char error_message[1024], char error_message_2[1024], int min, int max)
 {
     int var;
+    bool repeater = true;
+    char buffer[20];
 
-    printf("\n%s", message);
-    scanf("%d", &var);
-
-    while (var < min || var > max)
+    while (repeater)
     {
-        if (var < min)
+        printf("\n%s", message);
+        scanf("%s", buffer);
+
+        while (repeater)
         {
-            clearScreen();
-            printf("\n\033[0;33mATTENTION!\033[1;0m%s", error_message);
+            if (strlen(buffer) != 1 && strlen(buffer) != 2)
+            {
+                clearScreen();
+                printf("\n\033[0;33mATTENTION!\033[1;0m Make sure you type a number between %d and %d\n", min, max);
+                printf("\n%s", message);
+                scanf("%s", buffer);
+            }
+            else
+            {
+                repeater = false;
+            }
+        }
+
+        var = atoi(buffer);
+        repeater = true;
+
+        if (var < min || var > max)
+        {
+            if (var < min)
+            {
+                clearScreen();
+                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n", error_message);
+            }
+            else
+            {
+                clearScreen();
+                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n", error_message_2);
+            }
         }
         else
         {
-            clearScreen();
-            printf("\n\033[0;33mATTENTION!\033[1;0m%s", error_message_2);
+            repeater = false;
         }
-
-        scanf("%d", &var);
-        printf("\n");
     }
 
     printf("Merci beaucoup!\n\n");
@@ -114,7 +138,7 @@ void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char n
     clearScreen();
     printf("\nTotal numbers of rounds that were played: %d\n\n", round_nb);
 
-    printing_the_grille_v3(prop, taille_plateau);
+    printing_the_grille_v2(prop, taille_plateau);
     printf("\n=====================================\n");
     printf("=========== Game finished ===========\n");
     printf("=====================================\n");
@@ -124,7 +148,7 @@ void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char n
     }
     else if (mode == 2)
     {
-        printf("\033[0;33m%s\033[1;0m wins since he/she found more navires\n", name);
+        printf("\033[0;33m%s\033[1;0m wins since he/she found more navires on time\n", name);
     }
 }
 
@@ -146,7 +170,7 @@ int game_mode_menu()
 
     while (true)
     {
-        printf("Choose an option (AI, Computer, Multiplayer or Load). \nLoad allows to continue a game from a previous session [suitable for computer mode only]. \nYou can close the game by taping Cancel\nYour choice: ");
+        printf("Choose an option (AI, Solo, Multiplayer or Load). \nLoad allows to continue a game from a previous \nsession [suitable for Solo mode only]. \nYou can close the game by taping Cancel.\nYour choice: ");
         scanf("%s", userInput);
 
         // Convert input to lowercase for case-insensitive comparison and returns
@@ -159,7 +183,7 @@ int game_mode_menu()
         {
             return 2;
         }
-        else if (strcmp(userInput, "computer") == 0)
+        else if (strcmp(userInput, "solo") == 0)
         {
             return 1;
         }
@@ -178,7 +202,7 @@ int game_mode_menu()
         else
         {
             clearScreen();
-            printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from AI, Computer, Load, or Multiplayer.\n");
+            printf("\n\033[0;33mATTENTION!\033[1;0m: You can only choose from AI, Solo, Load, or Multiplayer.\n");
         }
     }
     return 0;
@@ -222,7 +246,7 @@ int game_mode_multi()
 
     while (true)
     {
-        printf("\nChoose now between the modes Automatic or Custom. Automatic creates different plates based on algorithm. Custom allow to every user to create his own plate.\n");
+        printf("\nChoose now between the modes Automatic or Custom. Automatic creates \ndifferent plates based on algorithm. Custom allow to every user to create his own plate.\n");
         printf("Your choice : ");
         scanf("%s", userInput);
 
@@ -312,7 +336,7 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode)
                 for (int i = 0; i < 100; i++)
                 {
                     progress = 0.01 + progress;
-                    msleep(73);
+                    msleep(18);
                     clearScreen();
                     printf("\nGAME IS GETTING SAVED...\n");
                     printProgress(progress);
@@ -562,4 +586,160 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
     {
         *max_tours = 40;
     }
+}
+
+void custom_graphics_on_proposition(int i, int **plateau, int taille_plateau, int colour, int mode, int id)
+{
+    if (colour == -2) // initilaising game mode
+    {
+        printf("\nInitializing the game...\n\n");
+        printProgress(0.01 * mode * i);
+    }
+    else
+    {
+        if (i == -1) // proposition jour graphics
+        {
+            switch (mode)
+            {
+            case 0:
+                printf("Entrez les coordonnées du point choisi. Le format accepté est number+letter (ex: 2B).\nVotre choix: ");
+                break;
+            case 1:
+                printf("\n\033[0;33mATTENTION!\033[1;0m Invalid input format. The second character must be a letter. Try again!\nVotre choix: ");
+                break;
+            case 2:
+                printf("\n\033[0;33mATTENTION!\033[1;0m The first character must be a number. Try again!\nVotre choix: ");
+                break;
+            case 3:
+                printf("\n\033[0;33mATTENTION!\033[1;0m Invalid input format. Please enter a number followed by a letter. Try again!\nVotre choix: ");
+                break;
+            case 4:
+                if (id == -1)
+                {
+                    clearScreen();
+                }
+                printf("Unidentfied error with the point declaration\n");
+                exit(-4);
+                break;
+            case 5:
+                printf("\033[0;33mThe slected coordinates are out of the game's plate. TRY AGAIN!\033[0m\n\n");
+                break;
+            default:
+                break;
+            }
+        }
+        else
+        {
+            switch (id)
+            {
+            case 0:
+                printf("\nOOOPPPPSSSS...\nWe couldn't generate your previous navire because either \nthere was conflict with another navire or\nbecause it would be out of the game table\n\n\e[4;35mLet's try again Navire No %d\e[0m\n\n", i + 1);
+                break;
+            default:
+                printf("\n\e[4;%dmNavire No %d\e[0m\n\n", colour, i + 1);
+                break;
+            }
+            printing_the_grille_v2(plateau, taille_plateau);
+            switch (mode)
+            {
+            case 0:
+                printf("\nTaille du navire: ");
+                break;
+            case 1:
+                printf("\nLa taille doit etre entre 1 et 6. Taille du navire: ");
+                break;
+            case 2:
+                printf("\n\033[0;33mATTENTION!\033[1;0m Invalid input format. Please enter a number followed by a letter. Try again!\nVotre choix: ");
+                break;
+            case 3:
+                printf("\n\033[0;33mATTENTION!\033[1;0m Invalid input format. We can accept only the values 0, 1, 2, 3. Try again!\nChoisir la direction: UP(0), DOWN(2), LEFT(1), RIGHT(3)\nDirection: ");
+                break;
+            case 4:
+                printf("\nChoisir la direction: UP(0), DOWN(2), LEFT(1), RIGHT(3)\nDirection: ");
+                break;
+            case 5:
+                printf("\nEntrez les coordonnées du point de depart. Le format accepté est number+letter (ex: 2B).\nVotre choix: ");
+                break;
+            case 6:
+                printf("\n\n\033[0;33mATTENTION!\033[1;0m Invalid input format. The second character must be a letter. Try again!\nVotre choix: ");
+                break;
+            case 7:
+                printf("\n\n\033[0;33mATTENTION!\033[1;0m The first character must be a number. Try again!\nVotre choix: ");
+                break;
+            default:
+                break;
+            }
+        }
+    }
+}
+
+void game_mode_graphics_congratulations(int **prop, int taille_plateau, int nb_navires, int nb_navires_found, int id, char *buffer)
+{
+    clearScreen();
+    switch (id)
+    {
+    case 1:
+        printf("\033[0;36m\n=====================  Congratsulations, you found a navire %s. %d so far out of %d!!!  =====================\033[0m\n\n", buffer, nb_navires_found, nb_navires);
+        break;
+    default:
+        printf("\033[0;36m\n=====================  Congratulations, you found a navire. %d so far out of %d!!!  =====================\033[0m\n\n", nb_navires_found, nb_navires);
+        break;
+    }
+    printing_the_grille_v2(prop, taille_plateau);
+    msleep(3000);
+}
+
+void error_graphics(int error_code)
+{
+    clearScreen();
+    switch (error_code)
+    {
+    case 6:
+        printf("Error entering a sub mode in AI\n");
+        exit(-6);
+        break;
+    case 4:
+        printf("Error entering a sub-mode on solo\n");
+        exit(-4);
+        break;
+    case 3:
+        printf("Error entering a sub-mode on multiplayer\n");
+        exit(-3);
+        break;
+    case 5:
+        printf("\n\e[0;32mThe game has been saved succesfully on server!\e[0m\n");
+        exit(5);
+        break;
+    default:
+        break;
+    }
+}
+
+void game_loaded_graphics(int max_rounds_load, int taille_plateau_load)
+{
+    printf("\n\033[1;36mThe previous game has been loaded from the server succesfully! For your reference, here are the rules:\033[0m\n");
+    rules_interface(max_rounds_load, taille_plateau_load);
+    msleep(100);
+}
+
+void new_round_graphics(int round, int taille_plateau, int **prop, int id, char *buffer, int temps)
+{
+    switch (id)
+    {
+    case 0:
+        printf("\n\e[4;32mRound No %d\e[0m\n\n", round);
+        break;
+    case 1:
+        printf("\n\e[4;32mRound No %d | Temps restant: %d secondes\e[0m\n\n", round, temps);
+        break;
+    case 2:
+        printf("\n\e[4;32mRound No %d\e[0m\n\n\e[1;32m%s\e[0m is playing\n\n", (round) / 2, buffer); // the function proposition_jouer changes the NbJoue_global on every call and there are two calls (two players) before we change the number of round, that's why we divide by 2
+        break;
+    case 3:
+        printf("\n\e[4;32mRound No %d\e[0m\n\n\e[1;32m%s\e[0m is playing\n\n", ((round) / 2) - 1, buffer);
+        break;
+    default:
+        break;
+    }
+    printing_the_grille_v2(prop, taille_plateau);
 }

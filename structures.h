@@ -1,5 +1,4 @@
 
-
 typedef struct une_case {
   int x; /* position de la case en x*/
   int y; /* position de la case en y*/
