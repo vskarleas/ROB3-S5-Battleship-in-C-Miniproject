@@ -18,6 +18,12 @@
 #define LOAD 5
 
 #define VIDE 0
+#define NAVIRE 1			   // navire placed on position
+#define AUCUN_NAVIRE -1		   // deja joue et pas trouve un point de n'importe quelle navire
+#define NAVIRE_TROUVE 2		   // one point was found
+#define NAVIRE_TROUVE_PLUS_1 3 // one point of a navire was refound (it was choosen before)
+
+#define COULE 10 // congratsulations
 
 int main(int argc, char **argv)
 {
@@ -136,7 +142,7 @@ int main(int argc, char **argv)
             {
                 if (*NbNav11 > *NbNav22)
                 {
-                    win_graphics(taille_plateau_multi, prop1, (*NbJoue_global_custom - 1) / 2, 2, player1);
+                    win_graphics(taille_plateau_multi, prop2, (*NbJoue_global_custom - 1) / 2, 2, player1);
                 }
                 else
                 {
@@ -159,12 +165,12 @@ int main(int argc, char **argv)
         y_now = nb_random(0, taille_plateau_multi - 1);
         ajouter_element_liste_Point(&our_list, x_now, y_now);
 
-        int x_next, y_next, x_prev, y_prev;
-        tour_ia_random_v2(prop1, taille_plateau_multi, liste11, NbNav11, NbJoue_global_custom, 0, 0, x_now, y_now, &x_next, &y_next, 1);
+        int x_prev, y_prev;
         printf("%s as already played once!\n", player2);
 
         bool repeat_generator = true;
-        bool not_skip_action = true;
+        bool not_skip_action;
+        not_skip_action = random_point(prop1, taille_plateau_multi, liste11, NbNav22, NbJoue_global_custom, x_now, y_now);
 
         while (repeat_multi_custom)
         {
@@ -182,22 +188,20 @@ int main(int argc, char **argv)
             printf("\n\e[4;32mRound No %d\e[0m\n\n\e[1;33m%s\e[0m is playing\n\n", ((*NbJoue_global_custom) / 2) - 1, player2); // in that case there is also -1 because there was an iteration that increased the number of NbJoue_global before really changing the number of current round. It's based on the principles of the euclidian division in c that takes the part before the comma
 
             // Calling AI V2
+            proposition_ai(prop1, taille_plateau_multi, liste11, NbNav22);
             if (not_skip_action)
             {
-                x_prev = x_now;
-                y_prev = y_now;
-
                 while (repeat_generator)
                 {
                     state = 0;
                     x_now = nb_random(0, taille_plateau_multi - 1);
                     y_now = nb_random(0, taille_plateau_multi - 1);
-                    Tableau_Point T = sequence_points_liste_vers_tableau(our_list); // loto_numbers liste to a table
+                    Tableau_Point T = sequence_points_liste_vers_tableau(our_list); // points list to a table
 
                     // verifying the uniqueness
                     for (int i = 0; i < T.taille; i++)
                     {
-                        if (prop1[(T.tab[i]).x][(T.tab[i]).y] != VIDE)
+                        if (prop1[(T.tab[i]).x][(T.tab[i]).y] == AUCUN_NAVIRE || prop1[(T.tab[i]).x][(T.tab[i]).y] == NAVIRE_TROUVE || prop1[(T.tab[i]).x][(T.tab[i]).y] == NAVIRE_TROUVE_PLUS_1 || prop1[(T.tab[i]).x][(T.tab[i]).y] == COULE)
                         {
                             state = 1; // action 1 means that this number already found before
                         }
@@ -207,24 +211,23 @@ int main(int argc, char **argv)
                     {
                         repeat_generator = false;
                     }
-
-                    // when exited from the previous loop, it means that we found a unique number
+                    // when exited from the previous loop, it means that we found a unique point (unique x,y from the ones that were choosen or played before)
                 }
 
                 repeat_generator = true; // re-initialize the variable to be used in another round
 
                 ajouter_element_liste_Point(&our_list, x_now, y_now);
-                not_skip_action = tour_ia_random_v2(prop1, taille_plateau_multi, liste11, NbNav11, NbJoue_global_custom, x_prev, y_prev, x_now, y_now, &x_next, &y_next, 0);
+                not_skip_action = random_point(prop1, taille_plateau_multi, liste11, NbNav22, NbJoue_global_custom, x_now, y_now);
             }
             else
             {
                 x_prev = x_now;
                 y_prev = y_now;
 
-                x_now = x_next; // was updated from the previous
-                y_now = y_next;
+                next_point(prop1, taille_plateau_multi, x_prev, y_prev, &x_now, &y_now);
+                ajouter_element_liste_Point(&our_list, x_now, y_now);
 
-                not_skip_action = tour_ia_random_v2(prop1, taille_plateau_multi, liste11, NbNav11, NbJoue_global_custom, x_prev, y_prev, x_now, y_now, &x_next, &y_next, 0);
+                not_skip_action = random_point(prop1, taille_plateau_multi, liste11, NbNav22, NbJoue_global_custom, x_now, y_now);
             }
 
             // printing the evolutuon of AI
@@ -241,7 +244,7 @@ int main(int argc, char **argv)
             {
                 if (*NbNav11 > *NbNav22)
                 {
-                    win_graphics(taille_plateau_multi, prop1, (*NbJoue_global_custom - 1) / 2, 2, player1);
+                    win_graphics(taille_plateau_multi, prop2, (*NbJoue_global_custom - 1) / 2, 2, player1);
                 }
                 else
                 {

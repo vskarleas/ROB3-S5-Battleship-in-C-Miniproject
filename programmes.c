@@ -39,7 +39,7 @@
 
 #define CUSTOM_NAVIRE 8
 
-#define COULE 10 // congratsulations
+#define COULE 10 // congratsulations you find the whole navire
 
 void waitForKeypress()
 {
@@ -86,7 +86,7 @@ int nb_random(int min, int max)
 	return min + rand() % (max + 1 - min);
 }
 
-int random_color() 
+int random_color()
 {
 	int random_number;
 	do
@@ -94,7 +94,7 @@ int random_color()
 		random_number = nb_random(32, 36);
 	} while (random_number == 33);
 
-    return random_number;
+	return random_number;
 }
 
 /* It prints the plate - Treats table of any size and makes sure that the printing is done correctly */
@@ -987,7 +987,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 				nav.sens = input_int;
 				repeater = true;
 
-				custom_graphics_on_proposition(i, plateau, taille_plateau,colour, 5, -1);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 5, -1);
 				scanf("%s", input);
 				clearScreen();
 
@@ -1088,9 +1088,9 @@ void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNa
 	bool repeat = true;
 	x = nb_random(0, taille_plateau - 1);
 	y = nb_random(0, taille_plateau - 1);
-	while(repeat)
+	while (repeat)
 	{
-		if(prop[x][y] == AUCUN_NAVIRE || prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1 || prop[x][y] == COULE)
+		if (prop[x][y] == AUCUN_NAVIRE || prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1 || prop[x][y] == COULE)
 		{
 			x = nb_random(0, taille_plateau - 1);
 			y = nb_random(0, taille_plateau - 1);
@@ -1115,21 +1115,77 @@ void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNa
 	}
 }
 
-bool random_choice(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y)
+void proposition_ai(int **prop, int taille_plateau, Liste_Navire L, int *NbNav)
+{
+	if (navire_found(prop, L))
+	{
+		(*NbNav)++;
+	}
+	return;
+}
+
+bool random_point(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y)
 {
 	update_prop(prop, x, y);
 	(*NbJoue)++; // next round added
 
-	if (navire_found(prop, L))
+	if (prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1)
 	{
-		(*NbNav)++;
-		printf("L'IA a touché un navire en (%d, %d)!\n", x + 1, y + 1);
-		return (true);
+		return false; // not_to_skip_action = FALSE
 	}
 	else
 	{
-		printf("L'IA a manqué en (%d, %d).\n", x + 1, y + 1);
 		return true;
+	}
+}
+
+void next_point(int **table, int taille_plateau, int x, int y, int *x_new, int *y_new)
+{
+	*x_new = -1;
+	*y_new = -1;
+
+	// Check neighbors in the same row
+	for (int i = y - 1; i <= y + 1; ++i)
+	{
+		if (i >= 0 && i < taille_plateau && table[x][i] == NAVIRE_TROUVE)
+		{
+			*x_new = x;
+			*y_new = i;
+			return;
+		}
+	}
+
+	// Check neighbors in the same column
+	for (int i = x - 1; i <= x + 1; ++i)
+	{
+		if (i >= 0 && i < taille_plateau && table[i][y] == NAVIRE_TROUVE)
+		{
+			*x_new = i;
+			*y_new = y;
+			return;
+		}
+	}
+
+	// Check extreme cases on the perimeter
+	if (y == 0 && table[x][taille_plateau - 1] == NAVIRE_TROUVE)
+	{
+		*x_new = x;
+		*y_new = taille_plateau - 1;
+	}
+	else if (y == taille_plateau - 1 && table[x][0] == NAVIRE_TROUVE)
+	{
+		*x_new = x;
+		*y_new = 0;
+	}
+	else if (x == 0 && table[taille_plateau - 1][y] == NAVIRE_TROUVE)
+	{
+		*x_new = taille_plateau - 1;
+		*y_new = y;
+	}
+	else if (x == taille_plateau - 1 && table[0][y] == NAVIRE_TROUVE)
+	{
+		*x_new = 0;
+		*y_new = y;
 	}
 }
 
@@ -1178,7 +1234,7 @@ void ajouter_element_liste_Point(Liste_Point *L, int x, int y)
 	return;
 }
 
-//Liste_Point supprimer_liste_Navire(Liste_Navire L)
+// Liste_Point supprimer_liste_Navire(Liste_Navire L)
 
 /* suppression de tous les �l�ments de la liste, renvoie la liste L vide */
 Liste_Point supprimer_liste_Point(Liste_Point L)
@@ -1228,32 +1284,12 @@ Tableau_Point sequence_points_liste_vers_tableau(Liste_Point L)
 	return T;
 }
 
-bool tour_ia_random_v2(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x_prev, int y_prev, int x_now, int y_now, int *x_next, int *y_next, int mode) // returns true if it has found already the next step, otherwise false
-{
-	if (mode == 0)
-	{
-		if (prop[x_now][y_now] == NAVIRE)
-		{
-			return false;
-			// TO BE COMPLETED THE ALGORITHM
-		}
-		else
-		{
-			return random_choice(prop, taille_plateau, L, NbNav, NbJoue, x_now, y_now);
-		}
-	}
-	else
-	{
-		return random_choice(prop, taille_plateau, L, NbNav, NbJoue, x_now, y_now);
-	}
-}
-
 void waitTime(int seconds, char *message, int colour1, int colour2, char *name1, char *name2)
 {
 	for (int i = seconds; i > 0; i--)
 	{
 		clearScreen();
-		printf("\n\e[0;%dm%s\e[0m %s \e[0;%dm%s\e[0m (%d)\n",colour1, name1, message, colour2, name2, i);
+		printf("\n\e[0;%dm%s\e[0m %s \e[0;%dm%s\e[0m (%d)\n", colour1, name1, message, colour2, name2, i);
 		msleep(1000);
 	}
 	clearScreen();
@@ -1261,6 +1297,6 @@ void waitTime(int seconds, char *message, int colour1, int colour2, char *name1,
 
 void clearScreenWait(double seconds)
 {
-	msleep(1000*seconds);
+	msleep(1000 * seconds);
 	clearScreen();
 }

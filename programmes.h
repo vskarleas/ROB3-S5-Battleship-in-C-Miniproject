@@ -63,7 +63,13 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 
 void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue);
 
-bool random_choice(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y);
+void proposition_ai(int **prop, int taille_plateau, Liste_Navire L, int *NbNav);
+
+bool random_point(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y);
+
+void next_point_original(int **table, int taille_plateau, int x, int y, int *x_new, int *y_new);
+
+void next_point(int **table, int taille_plateau, int x, int y, int *x_new, int *y_new);
 
 /* cr�er une cellule de liste avec l'�l�ment v 
    renvoie le pointeur sur la cellule de liste cr��e
@@ -82,8 +88,6 @@ Liste_Point supprimer_liste_Point(Liste_Point L);
 /* cr�er une s�quence de points sous forme d'un tableau de points 
    � partir de la liste de points L */
 Tableau_Point sequence_points_liste_vers_tableau(Liste_Point L);
-
-bool tour_ia_random_v2(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x_prev, int y_prev, int x_now, int y_now, int *x_next, int *y_next, int mode);
 
 void waitTime(int seconds, char *message, int colour1, int colour2, char *name1, char *name2);
 

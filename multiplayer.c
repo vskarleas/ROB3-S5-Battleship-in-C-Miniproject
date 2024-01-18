@@ -149,7 +149,7 @@ int main(int argc, char **argv)
             {
                 if (*NbNav1 > *NbNav2)
                 {
-                    win_graphics(taille_plateau_multi, prop1, (*NbJoue_global - 1) / 2, 2, player1);
+                    win_graphics(taille_plateau_multi, prop2, (*NbJoue_global - 1) / 2, 2, player1);
                 }
                 else
                 {
@@ -218,7 +218,7 @@ int main(int argc, char **argv)
             {
                 if (*NbNav1 > *NbNav2)
                 {
-                    win_graphics(taille_plateau_multi, prop1, (*NbJoue_global - 1) / 2, 2, player1);
+                    win_graphics(taille_plateau_multi, prop2, (*NbJoue_global - 1) / 2, 2, player1);
                 }
                 else
                 {

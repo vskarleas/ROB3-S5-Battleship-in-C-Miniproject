@@ -111,6 +111,7 @@
 * V7.4 AI added and the module to create navires customly
 * V8.0 Fixed issue with initialisatio_plateau_custom which couldn't detect the already existed navires, updated the UI files and transfered the majority of texts to the UI file as well. In addition to that, the code was optimised and there were several small bug fixes. The different game modes were seperated in order to be able to test them without the whole's game menu.
 * V8.1 Fixed some logique issues on the AI model called Spark and added some fixes.
+* V8.2 optimizzed the main program and added code to Fireball AI version
 
 # Filing codec
 

@@ -148,7 +148,7 @@ void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char n
     }
     else if (mode == 2)
     {
-        printf("\033[0;33m%s\033[1;0m wins since he/she found more navires on time\n", name);
+        printf("\033[0;33m%s\033[1;0m wins since he/she found more navires on time (before running out of rounds)\n", name);
     }
 }
 
@@ -170,7 +170,7 @@ int game_mode_menu()
 
     while (true)
     {
-        printf("Choose an option (AI, Solo, Multiplayer or Load). \nLoad allows to continue a game from a previous \nsession [suitable for Solo mode only]. \nYou can close the game by taping Cancel.\nYour choice: ");
+        printf("\nChoose an option (AI, Solo, Multiplayer or Load). \nLoad allows to continue a game from a previous \nsession [suitable for Solo mode only]. \nYou can close the game by taping Cancel.\nYour choice: ");
         scanf("%s", userInput);
 
         // Convert input to lowercase for case-insensitive comparison and returns
