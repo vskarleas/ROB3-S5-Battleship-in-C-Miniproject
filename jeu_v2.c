@@ -442,7 +442,7 @@ int main(int argc, char **argv)
                 }
             }
         }
-        else if (mode_AI == 1) // mode Firewall
+        else if (mode_AI == 1) // mode Fireball
         {
             int x_now, y_now;
 
