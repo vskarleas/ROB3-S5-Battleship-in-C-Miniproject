@@ -542,19 +542,19 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
             switch (nb_navires)
             {
             case 1:
-                *max_tours = 10;
+                *max_tours = 20;
             case 2:
-                *max_tours = 12;
+                *max_tours = 22;
             case 3:
-                *max_tours = 13;
+                *max_tours = 23;
             case 4:
-                *max_tours = 14;
+                *max_tours = 34;
             case 5:
-                *max_tours = 15;
+                *max_tours = 45;
             case 6:
-                *max_tours = 20;
+                *max_tours = 50;
             default:
-                *max_tours = 20;
+                *max_tours = 60;
             }
         }
         else if (taille_plateau <= 10)

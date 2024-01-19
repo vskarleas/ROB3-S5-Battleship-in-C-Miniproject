@@ -29,6 +29,9 @@
 #define LEFT 1	// x--
 #define RIGHT 3 // x++
 
+#define HORIZONTAL 1
+#define VERTICAL 2
+
 #define OK 1 // navire added on the boats list (parallel to boats checklist)
 
 #define VIDE 0
@@ -1139,53 +1142,312 @@ bool random_point(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, in
 	}
 }
 
-void next_point(int **table, int taille_plateau, int x, int y, int *x_new, int *y_new)
+void next_point(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens, int *state)
 {
-	*x_new = -1;
-	*y_new = -1;
-
-	// Check neighbors in the same row
-	for (int i = y - 1; i <= y + 1; ++i)
+	int random_neighbor;
+	bool repeat_generator = true;
+	*state = 0;
+	switch (*sens_mode)
 	{
-		if (i >= 0 && i < taille_plateau && table[x][i] == NAVIRE_TROUVE)
+	case HORIZONTAL:
+		switch (*deep_sens)
 		{
-			*x_new = x;
-			*y_new = i;
-			return;
+		case LEFT:
+			if (y_prev == 0)
+			{
+				*x_now = nb_random(0, taille_plateau - 1);
+				*y_now = nb_random(0, taille_plateau - 1);
+				while (repeat_generator)
+				{
+					if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+					{
+						*x_now = nb_random(0, taille_plateau - 1);
+						*y_now = nb_random(0, taille_plateau - 1);
+					}
+					else
+					{
+						repeat_generator = false;
+					}
+				}
+				*sens_mode = HORIZONTAL;
+				*deep_sens = LEFT;
+			}
+			else
+			{
+				*x_now = x_prev;
+				*y_now = y_prev - 1;
+			}
+			break;
+		case RIGHT:
+			if (y_prev == taille_plateau - 1)
+			{
+				*x_now = nb_random(0, taille_plateau - 1);
+				*y_now = nb_random(0, taille_plateau - 1);
+				while (repeat_generator)
+				{
+					if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+					{
+						*x_now = nb_random(0, taille_plateau - 1);
+						*y_now = nb_random(0, taille_plateau - 1);
+					}
+					else
+					{
+						repeat_generator = false;
+					}
+				}
+				*sens_mode = HORIZONTAL;
+				*deep_sens = RIGHT;
+			}
+			else
+			{
+				*x_now = x_prev;
+				*y_now = y_prev + 1;
+			}
+			break;
+		default:
+			random_neighbor = rand() % 2;
+			if (random_neighbor == 1)
+			{ // LEFT
+				if (y_prev == 0)
+				{
+					*x_now = nb_random(0, taille_plateau - 1);
+					*y_now = nb_random(0, taille_plateau - 1);
+					while (repeat_generator)
+					{
+						if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+						{
+							*x_now = nb_random(0, taille_plateau - 1);
+							*y_now = nb_random(0, taille_plateau - 1);
+						}
+						else
+						{
+							repeat_generator = false;
+						}
+					}
+				}
+				else
+				{
+					*x_now = x_prev;
+					*y_now = y_prev - 1;
+				}
+				*sens_mode = -1;
+			}
+			else // RIGHT
+			{
+				if (y_prev == taille_plateau - 1)
+				{
+					*x_now = nb_random(0, taille_plateau - 1);
+					*y_now = nb_random(0, taille_plateau - 1);
+					while (repeat_generator)
+					{
+						if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+						{
+							*x_now = nb_random(0, taille_plateau - 1);
+							*y_now = nb_random(0, taille_plateau - 1);
+						}
+						else
+						{
+							repeat_generator = false;
+						}
+					}
+				}
+				else
+				{
+					*x_now = x_prev;
+					*y_now = y_prev + 1;
+				}
+				*sens_mode = -1;
+			}
+			break;
 		}
-	}
+		break;
 
-	// Check neighbors in the same column
-	for (int i = x - 1; i <= x + 1; ++i)
-	{
-		if (i >= 0 && i < taille_plateau && table[i][y] == NAVIRE_TROUVE)
+	case VERTICAL:
+		switch (*deep_sens)
 		{
-			*x_new = i;
-			*y_new = y;
-			return;
-		}
-	}
+		case UP:
+			if (x_prev == 0)
+			{
+				*x_now = nb_random(0, taille_plateau - 1);
+				*y_now = nb_random(0, taille_plateau - 1);
+				while (repeat_generator)
+				{
+					if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+					{
+						*x_now = nb_random(0, taille_plateau - 1);
+						*y_now = nb_random(0, taille_plateau - 1);
+					}
+					else
+					{
+						repeat_generator = false;
+					}
+				}
+				*sens_mode = VERTICAL;
+				*deep_sens = UP;
+			}
+			else
+			{
+				*x_now = x_prev - 1;
+				*y_now = y_prev;
+			}
+			break;
+		case DOWN:
+			if (x_prev == taille_plateau - 1)
+			{
+				*x_now = nb_random(0, taille_plateau - 1);
+				*y_now = nb_random(0, taille_plateau - 1);
+				while (repeat_generator)
+				{
+					if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+					{
+						*x_now = nb_random(0, taille_plateau - 1);
+						*y_now = nb_random(0, taille_plateau - 1);
+					}
+					else
+					{
+						repeat_generator = false;
+					}
+				}
+				*sens_mode = VERTICAL;
+				*deep_sens = DOWN;
+			}
+			else
+			{
+				*x_now = x_prev + 1;
+				*y_now = y_prev;
+			}
 
-	// Check extreme cases on the perimeter
-	if (y == 0 && table[x][taille_plateau - 1] == NAVIRE_TROUVE)
-	{
-		*x_new = x;
-		*y_new = taille_plateau - 1;
-	}
-	else if (y == taille_plateau - 1 && table[x][0] == NAVIRE_TROUVE)
-	{
-		*x_new = x;
-		*y_new = 0;
-	}
-	else if (x == 0 && table[taille_plateau - 1][y] == NAVIRE_TROUVE)
-	{
-		*x_new = taille_plateau - 1;
-		*y_new = y;
-	}
-	else if (x == taille_plateau - 1 && table[0][y] == NAVIRE_TROUVE)
-	{
-		*x_new = 0;
-		*y_new = y;
+			break;
+		default:
+			random_neighbor = rand() % 2;
+			if (random_neighbor == 1) // UP
+			{
+				if (x_prev == 0)
+				{
+					*x_now = nb_random(0, taille_plateau - 1);
+					*y_now = nb_random(0, taille_plateau - 1);
+					while (repeat_generator)
+					{
+						if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+						{
+							*x_now = nb_random(0, taille_plateau - 1);
+							*y_now = nb_random(0, taille_plateau - 1);
+						}
+						else
+						{
+							repeat_generator = false;
+						}
+					}
+				}
+				else
+				{
+					*x_now = x_prev - 1;
+					*y_now = y_prev;
+				}
+				*sens_mode = -1;
+			}
+			else // DOWN
+			{
+				if (x_prev == taille_plateau - 1)
+				{
+					*x_now = nb_random(0, taille_plateau - 1);
+					*y_now = nb_random(0, taille_plateau - 1);
+					while (repeat_generator)
+					{
+						if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+						{
+							*x_now = nb_random(0, taille_plateau - 1);
+							*y_now = nb_random(0, taille_plateau - 1);
+						}
+						else
+						{
+							repeat_generator = false;
+						}
+					}
+				}
+				else
+				{
+					*x_now = x_prev + 1;
+					*y_now = y_prev;
+				}
+				*sens_mode = -1;
+			}
+			break;
+		}
+		break;
+
+	default:
+		if (table[x_prev][y_prev + 1] == NAVIRE_TROUVE)
+		{
+			*sens_mode = HORIZONTAL;
+			*x_now = x_prev;
+			*y_now = y_prev - 1;
+			*deep_sens = LEFT;
+			break;
+		}
+		if (table[x_prev][y_prev - 1] == NAVIRE_TROUVE)
+		{
+			*sens_mode = HORIZONTAL;
+			*x_now = x_prev;
+			*y_now = y_prev + 1;
+			*deep_sens = RIGHT;
+			break;
+		}
+		if (table[x_prev + 1][y_prev] == NAVIRE_TROUVE)
+		{
+			*sens_mode = VERTICAL;
+			*x_now = x_prev - 1;
+			*y_now = y_prev;
+			*deep_sens = UP;
+			break;
+		}
+		if (table[x_prev - 1][y_prev] == NAVIRE_TROUVE)
+		{
+			*sens_mode = VERTICAL;
+			*x_now = x_prev + 1;
+			*y_now = y_prev;
+			*deep_sens = DOWN;
+			break;
+		}
+
+		random_neighbor = rand() % 4;
+		switch (random_neighbor - 1)
+		{
+		case UP:
+			*x_now = x_prev - 1;
+			*y_now = y_prev;
+			*previous_sens = VERTICAL;
+			*state = 1;
+			*deep_sens = -1;
+			break;
+
+		case DOWN:
+			*x_now = x_prev + 1;
+			*y_now = y_prev;
+			*previous_sens = VERTICAL;
+			*state = 1;
+			*deep_sens = -1;
+			break;
+
+		case LEFT:
+			*x_now = x_prev;
+			*y_now = y_prev - 1;
+			*previous_sens = HORIZONTAL;
+			*state = 1;
+			*deep_sens = -1;
+			break;
+
+		case RIGHT:
+			*x_now = x_prev;
+			*y_now = y_prev + 1;
+			*previous_sens = HORIZONTAL;
+			*state = 1;
+			*deep_sens = -1;
+			break;
+
+		default:
+			break;
+		}
 	}
 }
 

@@ -12,6 +12,9 @@
 #define LEFT 1  // x--
 #define RIGHT 3 // x++
 
+#define HORIZONTAL 1
+#define VERTICAL 2
+
 #define MULTIPLAYER 2
 #define COMPUTER 1
 #define AI 3
@@ -445,6 +448,10 @@ int main(int argc, char **argv)
         else if (mode_AI == 1) // mode Fireball
         {
             int x_now, y_now;
+            int previous_sens = -1;
+            int sens_mode = -1;
+            int deep_sens = -1;
+            int state = 0;
 
             x_now = nb_random(0, taille_plateau_jeu - 1);
             y_now = nb_random(0, taille_plateau_jeu - 1);
@@ -499,9 +506,26 @@ int main(int argc, char **argv)
                     x_prev = x_now;
                     y_prev = y_now;
 
-                    next_point(prop1, taille_plateau_jeu, x_prev, y_prev, &x_now, &y_now);
+                    next_point(prop1, taille_plateau_jeu, x_prev, y_prev, &x_now, &y_now, &previous_sens, &sens_mode, &deep_sens, &state);
 
                     not_skip_action = random_point(prop1, taille_plateau_jeu, liste1, NbNav2, NbJoue_global, x_now, y_now);
+
+                    if (not_skip_action == true && state == 1)
+                    {
+                        not_skip_action = false;
+                        if (previous_sens == VERTICAL)
+                        {
+                            sens_mode = HORIZONTAL;
+                        }
+                        else if (previous_sens == HORIZONTAL)
+                        {
+                            sens_mode = VERTICAL;
+                        }
+                        else
+                        {
+                            printf("\nThere was an error on the DrixAI logic\n");
+                        }
+                    }
                 }
 
                 // printing the evolutuon of AI

@@ -69,7 +69,7 @@ bool random_point(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, in
 
 void next_point_original(int **table, int taille_plateau, int x, int y, int *x_new, int *y_new);
 
-void next_point(int **table, int taille_plateau, int x, int y, int *x_new, int *y_new);
+void next_point(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens, int *state);
 
 /* cr�er une cellule de liste avec l'�l�ment v 
    renvoie le pointeur sur la cellule de liste cr��e
