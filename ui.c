@@ -13,7 +13,40 @@
 
 #include "api.h"
 
-int get_user_input(char message[1024], char error_message[1024], char error_message_2[1024], int min, int max)
+#define LANG_ENGLISH 1
+#define LANG_FRENCH 2
+
+// Fonction pour demander la langue
+int choose_language()
+{
+    char language_str[124];
+    printf("\nChoose your language English or French\n\e[0;36mChoisissez votre langue Anglais ou Francais: \e[0m");
+    while (true)
+    {
+        scanf("%s", language_str);
+        // Convert input to lowercase for case-insensitive comparison and returns
+        for (int i = 0; i < strlen(language_str); i++)
+        {
+            language_str[i] = tolower(language_str[i]);
+        }
+
+        if (strcmp(language_str, "english") == 0 || strcmp(language_str, "anglais") == 0)
+        {
+            return 0; // for english
+        }
+        else if (strcmp(language_str, "francais") == 0 || strcmp(language_str, "french") == 0)
+        {
+            return 2; // for french
+        }
+        else
+        {
+            clearScreen();
+            printf("\n\033[0;33mATTENTION!\033[1;0m: English, French, Francais, or/ou Anglais!\n");
+        }
+    }
+}
+
+int get_user_input(char message[1024], char error_message[1024], char error_message_2[1024], int min, int max, int language)
 {
     int var;
     bool repeater = true;
@@ -29,7 +62,8 @@ int get_user_input(char message[1024], char error_message[1024], char error_mess
             if (strlen(buffer) != 1 && strlen(buffer) != 2)
             {
                 clearScreen();
-                printf("\n\033[0;33mATTENTION!\033[1;0m Make sure you type a number between %d and %d\n", min, max);
+                char *message_str[4] = {"Make sure you type a number between", "and", "Assurez-vous de saisir un nombre entre", "et"};
+                printf("\n\033[0;33mATTENTION!\033[1;0m %s %d %s %d\n", message_str[language], min,message_str[language+1], max);
                 printf("\n%s", message);
                 scanf("%s", buffer);
             }
@@ -61,14 +95,28 @@ int get_user_input(char message[1024], char error_message[1024], char error_mess
         }
     }
 
-    printf("Merci beaucoup!\n\n");
+    char *message_str_2[4] = {"Thank you", "", "Merci beaucoup", ""};
+    printf("%s!\n\n", message_str_2[language]);
 
     return var;
 }
+// Some humour here :)
 
-char *get_user_name(char message[1024])
+bool checkSpecialName(const char *name)
+{
+    return (strcmp(name, "plumet") == 0 || strcmp(name, "carillet") == 0 || strcmp(name, "maurice") == 0 || strcmp(name, "nathan") == 0 || strcmp(name, "frederic") == 0 || strcmp(name, "lilian") == 0 || strcmp(name, "denis") == 0 || strcmp(name, "christophe") == 0);
+}
+
+void displaySpecialWinMessage(int language)
+{
+    char *message_str[4] = {"You won because you are the prof and you have all the power!", "", "Vous avez gagné car vous êtes le prof et vous avez tous les pouvoirs!", ""};
+    printf("%s\n", message_str[language]);
+}
+
+char *get_user_name(char message[1024], int language)
 {
     char *name = (char *)malloc(30 * sizeof(char));
+    char temp[100];
 
     if (name == NULL)
     {
@@ -78,6 +126,23 @@ char *get_user_name(char message[1024])
 
     printf("\n%s", message);
     scanf("%29s", name); // Use a width specifier to prevent buffer overflow
+
+    strcpy(temp, name);
+
+    // transforming the name to lowercase for comparing
+    for (int i = 0; name[i]; i++)
+    {
+        name[i] = tolower(name[i]);
+    }
+
+    if (checkSpecialName(name))
+    {
+        displaySpecialWinMessage(language);
+        free(name);
+        exit(7); // Game completed with the prof that wins :)
+    }
+
+    strcpy(name, temp); // going to the previous state of the name since no case of Humour was found :|
 
     printf("Merci beaucoup!\n\n");
 
@@ -542,19 +607,19 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
             switch (nb_navires)
             {
             case 1:
-                *max_tours = 20;
+                *max_tours = 40;
             case 2:
-                *max_tours = 22;
+                *max_tours = 52;
             case 3:
-                *max_tours = 23;
+                *max_tours = 63;
             case 4:
-                *max_tours = 34;
+                *max_tours = 74;
             case 5:
-                *max_tours = 45;
+                *max_tours = 85;
             case 6:
-                *max_tours = 50;
+                *max_tours = 90;
             default:
-                *max_tours = 60;
+                *max_tours = 100;
             }
         }
         else if (taille_plateau <= 10)
@@ -562,24 +627,24 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
             switch (nb_navires)
             {
             case 1:
-                *max_tours = 20;
+                *max_tours = 30;
             case 2:
-                *max_tours = 22;
+                *max_tours = 42;
             case 3:
-                *max_tours = 23;
+                *max_tours = 53;
             case 4:
-                *max_tours = 24;
+                *max_tours = 64;
             case 5:
-                *max_tours = 35;
+                *max_tours = 75;
             case 6:
-                *max_tours = 40;
+                *max_tours = 80;
             default:
-                *max_tours = 40;
+                *max_tours = 90;
             }
         }
         else
         {
-            *max_tours = 60;
+            *max_tours = 110;
         }
     }
     else if (mode == 2) // case multiplayer

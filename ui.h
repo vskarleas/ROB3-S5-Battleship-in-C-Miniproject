@@ -5,9 +5,15 @@
 #include <stdlib.h>
 #include <time.h>
 
-int get_user_input(char message[1024], char error_message[1024], char error_message_2[1024], int min, int max);
+int choose_language();
 
-char *get_user_name(char message[1024]);
+int get_user_input(char message[1024], char error_message[1024], char error_message_2[1024], int min, int max, int language);
+
+bool checkSpecialName(const char *name);
+
+void displaySpecialWinMessage(int language);
+
+char *get_user_name(char message[1024], int language);
 
 void rules_interface(int points, int taille_plateau);
 

@@ -45,7 +45,7 @@ void ajouter_element_liste_Navire(Liste_Navire *L, Navire e);
 
 bool navire_found(int **prop, Liste_Navire L);
 
-void update_prop(int **prop, int x, int y);
+void update_prop(int **prop, int x, int y, int mode);
 
 int point_decryption(char *input, int *number_returned, int *letter_returned);
 
@@ -65,11 +65,19 @@ void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNa
 
 void proposition_ai(int **prop, int taille_plateau, Liste_Navire L, int *NbNav);
 
-bool random_point(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y);
+bool play_point_and_decide(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y);
 
 void next_point_original(int **table, int taille_plateau, int x, int y, int *x_new, int *y_new);
 
 void next_point(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens, int *state);
+
+void next_point_v2(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens);
+
+int is_valid_point(int x, int y, int table_size);
+
+void update_direction(int *sens, int *deep_sens);
+
+void next_point_v3(int **table, int table_size, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens);
 
 /* cr�er une cellule de liste avec l'�l�ment v 
    renvoie le pointeur sur la cellule de liste cr��e

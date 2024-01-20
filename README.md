@@ -113,6 +113,7 @@
 * V8.1 Fixed some logique issues on the AI model called Spark and added some fixes.
 * V8.2 optimizzed the main program and added code to Fireball AI version
 * V8.3 Fireball ai has been updated and for now it works excpet from some extreme edge cases
+* V8.4 Code compeletd. Needs to add the translatiosn and fix the ctes[pndacnces to the single programs
 
 # Filing codec
 

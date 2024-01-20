@@ -7,6 +7,8 @@
 #include "ui.h"
 #include "api.h"
 
+#define DELAY 200000 // Delay in milliseconds (200000 us = 0.2 seconds)
+
 #define UP 0    // y--
 #define DOWN 2  // y++
 #define LEFT 1  // x--
@@ -31,11 +33,16 @@
 int main(int argc, char **argv)
 {
     init_nb_aleatoire();
-    printf("\n\e[0;103mBataille Navale V2.0\e[0m\n--------------------------------\nC'est le moment de parametriser le jeu avant choisir le mode souhaité\n");
-    int taille_plateau_jeu = get_user_input("Donner la taille du tableau: ", " La taille doit etre au minimum 4. Redonner la taille: ", "Tu est sur pour une telle taille. Pour un jeu optimisé on ne recommend pas d'avoir une taille du tableau plus grand que 25. Redonner la taille: ", 4, 25);
+    int language = choose_language();
+    clearScreen();
+    const char *welcome_message[4] = {"Battleship game", "", "Bataille Navale", ""};
+    const char *welcome_message_parameters[4] = {"Now is the time to configure the game before choosing the desired mode", "", "C'est le moment de parametriser le jeu avant choisir le mode souhaité", ""};
+
+    printf("\n\e[0;103m%s V2.1\e[0m\n--------------------------------\n%s\n", welcome_message[language], welcome_message_parameters[language]);
+    int taille_plateau_jeu = get_user_input("Donner la taille du tableau: ", " La taille doit etre au minimum 4. Redonner la taille: ", "Tu est sur pour une telle taille. Pour un jeu optimisé on ne recommend pas d'avoir une taille du tableau plus grand que 25. Redonner la taille: ", 4, 25, language);
     clearScreenWait(0.8);
     printf("\n\n\e[0;103mBataille Navale V2.0\e[0m\n--------------------------------\nC'est le moment de parametriser le jeu avant choisir le mode souhaité\n");
-    int number_of_navires_jeu = get_user_input("Combien de bateaux souhaitez-vous inclure dans le jeu ? ", "Il doit être au minimum 1 pour un jeu optimisé. Réessayez : ", "Pour un jeu qui respecte les règles, vous pouvez placer jusqu'à 6 navires. Essayez à nouveau : ", 1, 6);
+    int number_of_navires_jeu = get_user_input("Combien de bateaux souhaitez-vous inclure dans le jeu ? ", "Il doit être au minimum 1 pour un jeu optimisé. Réessayez : ", "Pour un jeu qui respecte les règles, vous pouvez placer jusqu'à 6 navires. Essayez à nouveau : ", 1, 6, language);
     clearScreenWait(0.8);
 
     // Allocation de la mémoire pour prop1
@@ -218,9 +225,9 @@ int main(int argc, char **argv)
 
         clearScreen();
         printf("\n\e[0;102mBienvenue au MULTIPLAYER mode\e[0m\n");
-        char *player1 = get_user_name("Comment s'appelle le joueur n°1 ? ");
+        char *player1 = get_user_name("Comment s'appelle le joueur n°1 ? ", language);
         clearScreenWait(0.8);
-        char *player2 = get_user_name("Comment s'appelle le joueur n°2 ? ");
+        char *player2 = get_user_name("Comment s'appelle le joueur n°2 ? ", language);
         clearScreenWait(0.8);
 
         bool repeat_multi = true; // be used when positioning ships in the begining and to repeat the game procedure
@@ -378,7 +385,7 @@ int main(int argc, char **argv)
 
         clearScreen();
         printf("\n\e[0;102mBienvenue au IA mode\e[0m\n");
-        char *player1 = get_user_name("Quel est ton nom ? ");
+        char *player1 = get_user_name("Quel est ton nom ? ", language);
         clearScreenWait(0.8);
         char player2[8] = "DrixAI";
 
@@ -451,7 +458,6 @@ int main(int argc, char **argv)
             int previous_sens = -1;
             int sens_mode = -1;
             int deep_sens = -1;
-            int state = 0;
 
             x_now = nb_random(0, taille_plateau_jeu - 1);
             y_now = nb_random(0, taille_plateau_jeu - 1);
@@ -461,7 +467,7 @@ int main(int argc, char **argv)
 
             bool repeat_generator = true;
             bool not_skip_action;
-            not_skip_action = random_point(prop1, taille_plateau_jeu, liste1, NbNav2, NbJoue_global, x_now, y_now);
+            not_skip_action = play_point_and_decide(prop1, taille_plateau_jeu, liste1, NbNav2, NbJoue_global, x_now, y_now);
 
             while (repeat_multi_custom)
             {
@@ -499,45 +505,22 @@ int main(int argc, char **argv)
 
                     repeat_generator = true; // re-initialize the variable to be used in another round
 
-                    not_skip_action = random_point(prop1, taille_plateau_jeu, liste1, NbNav2, NbJoue_global, x_now, y_now);
+                    not_skip_action = play_point_and_decide(prop1, taille_plateau_jeu, liste1, NbNav2, NbJoue_global, x_now, y_now);
                 }
                 else
                 {
                     x_prev = x_now;
                     y_prev = y_now;
 
-                    next_point(prop1, taille_plateau_jeu, x_prev, y_prev, &x_now, &y_now, &previous_sens, &sens_mode, &deep_sens, &state);
+                    next_point_v3(prop1, taille_plateau_jeu, x_prev, y_prev, &x_now, &y_now, &previous_sens, &sens_mode, &deep_sens);
 
-                    not_skip_action = random_point(prop1, taille_plateau_jeu, liste1, NbNav2, NbJoue_global, x_now, y_now);
-
-                    if (not_skip_action == true && state == 1)
-                    {
-                        not_skip_action = false;
-                        if (previous_sens == VERTICAL)
-                        {
-                            sens_mode = HORIZONTAL;
-                        }
-                        else if (previous_sens == HORIZONTAL)
-                        {
-                            sens_mode = VERTICAL;
-                        }
-                        else
-                        {
-                            printf("\nThere was an error on the DrixAI logic\n");
-                        }
-                    }
+                    not_skip_action = play_point_and_decide(prop1, taille_plateau_jeu, liste1, NbNav2, NbJoue_global, x_now, y_now);
                 }
 
                 // printing the evolutuon of AI
                 printing_the_grille_v2(prop1, taille_plateau_jeu);
 
                 // decision making if the user wins or loses the game
-                if (round_global == max_rounds_multi_custom && (*NbNav1 < number_of_navires_jeu || *NbNav2 < number_of_navires_jeu))
-                {
-                    repeat_multi_custom = false;
-                    lost_graphics(1);
-                    return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
-                }
                 if (*NbNav1 == number_of_navires_jeu || *NbNav2 == number_of_navires_jeu)
                 {
                     if (*NbNav1 > *NbNav2)

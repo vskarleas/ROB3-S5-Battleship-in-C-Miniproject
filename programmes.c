@@ -29,8 +29,8 @@
 #define LEFT 1	// x--
 #define RIGHT 3 // x++
 
-#define HORIZONTAL 1
-#define VERTICAL 2
+#define HORIZONTAL 0
+#define VERTICAL 1
 
 #define OK 1 // navire added on the boats list (parallel to boats checklist)
 
@@ -589,15 +589,23 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 	return false;
 }
 
-void update_prop(int **prop, int x, int y)
+void update_prop(int **prop, int x, int y, int mode)
 {
 	if (prop[x][y] == NAVIRE)
 	{
 		prop[x][y] = NAVIRE_TROUVE;
 	}
+	else if (prop[x][y] == COULE)
+	{
+		prop[x][y] = COULE;
+	}
 	else
 	{
-		if (prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1)
+		if ((prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1) && mode == 1)
+		{
+			prop[x][y] = NAVIRE_TROUVE;
+		}
+		else if ((prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1) && mode != 1)
 		{
 			prop[x][y] = NAVIRE_TROUVE_PLUS_1;
 		}
@@ -712,7 +720,7 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 	x--; // Adjustment for the indexes.
 	y--;
 
-	update_prop(prop, x, y);
+	update_prop(prop, x, y, 0);
 	(*NbJoue)++; // next round
 
 	navire_founded = navire_found(prop, L);
@@ -1104,7 +1112,7 @@ void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNa
 		}
 	}
 
-	update_prop(prop, x, y);
+	update_prop(prop, x, y, 0);
 	(*NbJoue)++; // next round added
 
 	if (navire_found(prop, L))
@@ -1127,9 +1135,9 @@ void proposition_ai(int **prop, int taille_plateau, Liste_Navire L, int *NbNav)
 	return;
 }
 
-bool random_point(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y)
+bool play_point_and_decide(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y)
 {
-	update_prop(prop, x, y);
+	update_prop(prop, x, y, 1);
 	(*NbJoue)++; // next round added
 
 	if (prop[x][y] == NAVIRE_TROUVE || prop[x][y] == NAVIRE_TROUVE_PLUS_1)
@@ -1142,6 +1150,7 @@ bool random_point(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, in
 	}
 }
 
+/*
 void next_point(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens, int *state)
 {
 	int random_neighbor;
@@ -1447,6 +1456,224 @@ void next_point(int **table, int taille_plateau, int x_prev, int y_prev, int *x_
 
 		default:
 			break;
+		}
+	}
+}
+
+void next_point_v2(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens)
+{
+	// Check for points around the previous point that are already known to be part of a ship
+	int found = 0;
+	if (*sens_mode == HORIZONTAL)
+	{
+		if (*deep_sens == LEFT)
+		{
+			if (x_prev > 0 && table[x_prev - 1][y_prev] == 2)
+			{
+				*x_now = x_prev - 1;
+				*y_now = y_prev;
+				found = 1;
+				*sens_mode = HORIZONTAL;
+				*deep_sens = RIGHT;
+			}
+			else if (y_prev > 0 && table[x_prev][y_prev - 1] == 2)
+			{
+				*x_now = x_prev;
+				*y_now = y_prev - 1;
+				found = 1;
+				*sens_mode = VERTICAL;
+			}
+		}
+		else
+		{
+			if (x_prev < taille_plateau - 1 && table[x_prev + 1][y_prev] == 2)
+			{
+				*x_now = x_prev + 1;
+				*y_now = y_prev;
+				found = 1;
+				*sens_mode = HORIZONTAL;
+				*deep_sens = LEFT;
+			}
+			else if (y_prev < taille_plateau - 1 && table[x_prev][y_prev + 1] == 2)
+			{
+				*x_now = x_prev;
+				*y_now = y_prev + 1;
+				found = 1;
+				*sens_mode = VERTICAL;
+			}
+		}
+	}
+	else
+	{
+		if (*deep_sens == UP)
+		{
+			if (y_prev > 0 && table[x_prev][y_prev - 1] == 2)
+			{
+				*x_now = x_prev;
+				*y_now = y_prev - 1;
+				found = 1;
+				*sens_mode = VERTICAL;
+				*deep_sens = DOWN;
+			}
+			else if (x_prev < taille_plateau - 1 && table[x_prev + 1][y_prev] == 2)
+			{
+				*x_now = x_prev + 1;
+				*y_now = y_prev;
+				found = 1;
+				*sens_mode = HORIZONTAL;
+			}
+		}
+		else
+		{
+			if (y_prev < taille_plateau - 1 && table[x_prev][y_prev + 1] == 2)
+			{
+				*x_now = x_prev;
+				*y_now = y_prev + 1;
+				found = 1;
+				*sens_mode = VERTICAL;
+				*deep_sens = UP;
+			}
+			else if (x_prev > 0 && table[x_prev - 1][y_prev] == 2)
+			{
+				*x_now = x_prev - 1;
+				*y_now = y_prev;
+				found = 1;
+				*sens_mode = HORIZONTAL;
+			}
+		}
+	}
+
+	// If no new ship segments were found, randomly select a point in a direction that has not been explored yet
+	if (!found)
+	{
+		int direction = rand() % 2;
+		if (direction == 0)
+		{
+			*sens_mode = HORIZONTAL;
+			*deep_sens = rand() % 2;
+		}
+		else
+		{
+			*sens_mode = VERTICAL;
+			*deep_sens = rand() % 2;
+		}
+
+		// Randomize the starting point within the selected direction]
+		bool repeat_generator = true;
+		*x_now = nb_random(0, taille_plateau - 1);
+		*y_now = nb_random(0, taille_plateau - 1);
+		while (repeat_generator)
+		{
+			if (table[*x_now][*y_now] == AUCUN_NAVIRE || table[*x_now][*y_now] == NAVIRE_TROUVE || table[*x_now][*y_now] == NAVIRE_TROUVE_PLUS_1 || table[*x_now][*y_now] == COULE)
+			{
+				*x_now = nb_random(0, taille_plateau - 1);
+				*y_now = nb_random(0, taille_plateau - 1);
+			}
+			else
+			{
+				repeat_generator = false;
+			}
+		}
+	}
+}
+*/
+
+// Function to check if a point is within the limits of game table
+int is_valid_point(int x, int y, int taille_plateau)
+{
+	return (x >= 0 && x < taille_plateau && y >= 0 && y < taille_plateau);
+}
+
+// Function to update the search direction based on the current direction (inverses them)
+void update_direction(int *sens, int *deep_sens)
+{
+	/* The idea here is that if we chose a point-au-voisinage in a direction and no point was found (HORIZONTAL),
+	then we need to go on the opposite inversed (VERTICAL) and search for points on that direction according to
+	the different propabilities */
+	if (*sens == HORIZONTAL)
+	{
+		/* Switching from horizontal to vertical + choosing sub-direction. For instance if direction chosen
+		is HORIZONTAL then sub-direction could be either left or ight and vice versa for VERTICAL */
+		*sens = VERTICAL;
+		*deep_sens = (*deep_sens == 0) ? 1 : -1;
+	}
+	else
+	{
+		*sens = HORIZONTAL;
+	}
+}
+
+void next_point_v3(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens)
+{
+	// Check for ship segments around the previous point
+	for (int i = -1; i <= 1; i++)
+	{
+		for (int j = -1; j <= 1; j++)
+		{
+			int new_x = x_prev + i;
+			int new_y = y_prev + j;
+
+			if (is_valid_point(new_x, new_y, taille_plateau) &&
+				table[new_x][new_y] == NAVIRE)
+			{
+				// Found points-au-voisinage that should we visit and give at least a point
+				*x_now = new_x;
+				*y_now = new_y;
+				table[new_x][new_y] = 2; // Mark as NAVIRE_TROUVE
+				return;
+			}
+		}
+	}
+
+	// If no new points of a ship has been found, switch direction or choose random point
+	if (*sens_mode == HORIZONTAL)
+	{
+		update_direction(previous_sens, deep_sens);
+		*sens_mode = VERTICAL; // Switching to direction-based mode
+	}
+	else
+	{
+		// Randomly choose a point in a direction that has not been explored
+		int direction = rand() % 2;
+		*sens_mode = HORIZONTAL;;
+
+		if (direction == 0)
+		{
+			*sens_mode = VERTICAL;
+			*previous_sens = HORIZONTAL;
+			*deep_sens = (rand() % 2 == 0) ? 1 : -1; // Following the same idea on update_direction function
+		}
+		else
+		{
+			*previous_sens = VERTICAL;
+		}
+
+		// Keep generating random points until an unexplored point is found. This is more optimise dversion of the following code
+		/*
+		x_now = nb_random(0, taille_plateau_jeu - 1);
+		y_now = nb_random(0, taille_plateau_jeu - 1);
+		while (repeat_generator)
+		{
+			if (prop1[x_now][y_now] == AUCUN_NAVIRE || prop1[x_now][y_now] == NAVIRE_TROUVE || prop1[x_now][y_now] == NAVIRE_TROUVE_PLUS_1 || prop1[x_now][y_now] == COULE)
+			{
+				x_now = nb_random(0, taille_plateau_jeu - 1);
+				y_now = nb_random(0, taille_plateau_jeu - 1);
+			}
+			else
+			{
+				repeat_generator = false;
+			}
+		}
+		*/
+
+		while (true)
+		{
+			*x_now = nb_random(0, taille_plateau - 1);
+			*y_now = nb_random(0, taille_plateau - 1);
+			if (table[*x_now][*y_now] == 0)
+			{
+				break;
+			}
 		}
 	}
 }

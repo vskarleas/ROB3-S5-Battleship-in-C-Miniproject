@@ -12,6 +12,7 @@
         "functions.h": "c",
         "user_input.h": "c",
         "structures.h": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "api.h": "c"
     }
 }
