@@ -114,6 +114,7 @@
 * V8.2 optimizzed the main program and added code to Fireball AI version
 * V8.3 Fireball ai has been updated and for now it works excpet from some extreme edge cases
 * V8.4 Code compeletd. Needs to add the translatiosn and fix the ctes[pndacnces to the single programs
+* V8.5 Many trans;ations were added. We need to add know the translations on the api.c and on the jeu_v2.c. Then we need to copy the main code for every mode of the game and add it to the several main programs.
 
 # Filing codec
 

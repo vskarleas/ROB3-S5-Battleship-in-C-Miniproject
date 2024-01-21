@@ -40,7 +40,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = jeu_v2 load
+EXECUTABLES = jeu_v2
 
 #############################################################################
 # definition des regles

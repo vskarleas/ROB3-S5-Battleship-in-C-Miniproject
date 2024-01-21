@@ -98,18 +98,18 @@ int main(int argc, char **argv)
     int coulle2 = 0;
     int *NbNav2 = &coulle2;
 
-    int mode = game_mode_menu();
+    int mode = game_mode_menu(language);
     if (mode == COMPUTER)
     {
-        int mode_solo = game_mode_solo();
+        int mode_solo = game_mode_solo(language);
 
         clearScreen();
-        printf("\n\e[0;102mBienvenue au SOLO mode\e[0m\n");
+        printf("\n\e[0;102mSOLO mode\e[0m\n");
 
         bool repeat = true; // be used when positioning ships in the begining and to repeat the game procedure
 
         clearScreen();
-        liste1 = initialisation_plateau(prop1, taille_plateau_jeu, number_of_navires_jeu);
+        liste1 = initialisation_plateau(prop1, taille_plateau_jeu, number_of_navires_jeu, language);
 
         if (mode_solo == 1)
         {
@@ -117,30 +117,30 @@ int main(int argc, char **argv)
             ajuster_tours(taille_plateau_jeu, &max_rounds, number_of_navires_jeu, 1);
 
             // game loop
-            rules_interface(max_rounds, taille_plateau_jeu);
+            rules_interface(max_rounds, taille_plateau_jeu, language);
             msleep(100);
             waitForKeypress();
             waitForKeypress();
             clearScreen();
-            rules_reminder(max_rounds, taille_plateau_jeu);
+            rules_reminder(max_rounds, taille_plateau_jeu, language);
 
             while (repeat)
             {
                 // loop's logic
-                new_round_graphics(*NbJoue, taille_plateau_jeu, prop1, 0, "", -1);
-                if (waitForMenuKeypress())
+                new_round_graphics(*NbJoue, taille_plateau_jeu, prop1, 0, "", -1, language);
+                if (waitForMenuKeypress(language))
                 {
-                    if (midle_game_menu(max_rounds, taille_plateau_jeu, 2, COMPUTER) == 1) // 1 is internal code for saving the progress and continuing another time
+                    if (midle_game_menu(max_rounds, taille_plateau_jeu, 2, COMPUTER, language) == 1) // 1 is internal code for saving the progress and continuing another time
                     {
                         api_save_game(number_of_navires_jeu, taille_plateau_jeu, coulle1, round, prop1, liste1);
-                        error_graphics(5);
+                        error_graphics(5, language);
                     }
                 }
                 else
                 {
-                    if (proposition_joueur(prop1, NbJoue, liste1, taille_plateau_jeu, NbNav1)) // NbNav and NbJoue are updated on the function's core via pointers
+                    if (proposition_joueur(prop1, NbJoue, liste1, taille_plateau_jeu, NbNav1, language)) // NbNav and NbJoue are updated on the function's core via pointers
                     {
-                        game_mode_graphics_congratulations(prop1, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 0, "");
+                        game_mode_graphics_congratulations(prop1, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 0, "", language);
                     }
                     clearScreen();
 
@@ -148,12 +148,12 @@ int main(int argc, char **argv)
                     if (round == max_rounds && *NbNav1 < number_of_navires_jeu)
                     {
                         repeat = false;
-                        lost_graphics(1);
+                        lost_graphics(1, language);
                         return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                     }
                     if (*NbNav1 == number_of_navires_jeu)
                     {
-                        win_graphics(taille_plateau_jeu, prop1, *NbJoue - 1, 1, "");
+                        win_graphics(taille_plateau_jeu, prop1, *NbJoue - 1, 1, "", language);
                         return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                     }
                 }
@@ -165,12 +165,12 @@ int main(int argc, char **argv)
             ajuster_temps(taille_plateau_jeu, &duree_limite);
 
             // game loop
-            rules_interface_temps(duree_limite, taille_plateau_jeu);
+            rules_interface_temps(duree_limite, taille_plateau_jeu, language);
             msleep(100);
             waitForKeypress();
             waitForKeypress();
             clearScreen();
-            rules_reminder_temps(duree_limite, taille_plateau_jeu);
+            rules_reminder_temps(duree_limite, taille_plateau_jeu, language);
             time_t start = time(NULL);
             time_t now;
             int diff_time = 0;
@@ -183,31 +183,31 @@ int main(int argc, char **argv)
                 diff_time = 0;
 
                 // loop's logic
-                new_round_graphics(*NbJoue, taille_plateau_jeu, prop1, 1, "", temps_restant);
+                new_round_graphics(*NbJoue, taille_plateau_jeu, prop1, 1, "", temps_restant, language);
                 // decision making if the user wins or loses the game
                 if (temps_restant <= 0)
                 {
                     clearScreen();
                     repeat = false;
-                    lost_graphics(2);
+                    lost_graphics(2, language);
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
 
-                if (waitForMenuKeypress())
+                if (waitForMenuKeypress(language))
                 {
-                    midle_game_menu_saving_unavailable_temps(duree_limite, taille_plateau_jeu, 2, &diff_time); // case solo option temps for mode = 2
+                    midle_game_menu_saving_unavailable_temps(duree_limite, taille_plateau_jeu, 2, &diff_time, language); // case solo option temps for mode = 2
                 }
                 else
                 {
-                    if (proposition_joueur(prop1, NbJoue, liste1, taille_plateau_jeu, NbNav1)) // NbNav and NbJoue are updated on the function's core via pointers
+                    if (proposition_joueur(prop1, NbJoue, liste1, taille_plateau_jeu, NbNav1, language)) // NbNav and NbJoue are updated on the function's core via pointers
                     {
-                        game_mode_graphics_congratulations(prop1, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 0, "");
+                        game_mode_graphics_congratulations(prop1, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 0, "", language);
                     }
                     clearScreen();
 
                     if (*NbNav1 == number_of_navires_jeu)
                     {
-                        win_graphics(taille_plateau_jeu, prop1, *NbJoue - 1, 1, "");
+                        win_graphics(taille_plateau_jeu, prop1, *NbJoue - 1, 1, "", language);
                         return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                     }
                 }
@@ -215,16 +215,16 @@ int main(int argc, char **argv)
         }
         else
         {
-            error_graphics(4);
+            error_graphics(4, language);
         }
     }
 
     if (mode == MULTIPLAYER)
     {
-        int mode_multi = game_mode_multi();
+        int mode_multi = game_mode_multi(language);
 
         clearScreen();
-        printf("\n\e[0;102mBienvenue au MULTIPLAYER mode\e[0m\n");
+        printf("\n\e[0;102mMULTI mode\e[0m\n");
         char *player1 = get_user_name("Comment s'appelle le joueur n°1 ? ", language);
         clearScreenWait(0.8);
         char *player2 = get_user_name("Comment s'appelle le joueur n°2 ? ", language);
@@ -239,47 +239,47 @@ int main(int argc, char **argv)
 
         if (mode_multi == 2) // autmatically create plates for every user
         {
-            rules_interface(max_rounds_multi, taille_plateau_jeu);
+            rules_interface(max_rounds_multi, taille_plateau_jeu, language);
             msleep(100);
             waitForKeypress();
             waitForKeypress();
             clearScreen();
-            rules_reminder(max_rounds_multi, taille_plateau_jeu);
+            rules_reminder(max_rounds_multi, taille_plateau_jeu, language);
 
             clearScreen();
-            liste1 = initialisation_plateau(prop1, taille_plateau_jeu, number_of_navires_jeu);
-            liste2 = initialisation_plateau(prop2, taille_plateau_jeu, number_of_navires_jeu);
+            liste1 = initialisation_plateau(prop1, taille_plateau_jeu, number_of_navires_jeu, language);
+            liste2 = initialisation_plateau(prop2, taille_plateau_jeu, number_of_navires_jeu, language);
 
             while (repeat_multi)
             {
                 // loop's logic
-                new_round_graphics(*NbJoue_global, taille_plateau_jeu, prop2, 2, player1, -1);
-                if (waitForMenuKeypress())
+                new_round_graphics(*NbJoue_global, taille_plateau_jeu, prop2, 2, player1, -1, language);
+                if (waitForMenuKeypress(language))
                 {
-                    midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_jeu, 1); // case mupliplayer for mode = 1
+                    midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_jeu, 1, language); // case mupliplayer for mode = 1
                 }
                 else
                 {
                     // prop2 is created by the player2 for the player1 and vice versa (the same for liste2)
-                    if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_jeu, NbNav1)) // NbNav_global and NbJoue are updated on the function's core via pointers
+                    if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_jeu, NbNav1, language)) // NbNav_global and NbJoue are updated on the function's core via pointers
                     {
-                        game_mode_graphics_congratulations(prop2, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 1, player1);
+                        game_mode_graphics_congratulations(prop2, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 1, player1, language);
                     }
                 }
 
                 clearScreen();
-                new_round_graphics(*NbJoue_global, taille_plateau_jeu, prop1, 3, player2, -1);
+                new_round_graphics(*NbJoue_global, taille_plateau_jeu, prop1, 3, player2, -1, language);
 
-                if (waitForMenuKeypress())
+                if (waitForMenuKeypress(language))
                 {
-                    midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_jeu, 1); // case mupliplayer for mode = 1
+                    midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_jeu, 1, language); // case mupliplayer for mode = 1
                 }
                 else
                 {
                     // prop2 is created by the player2 for the player1 and vice versa
-                    if (proposition_joueur(prop1, NbJoue_global, liste1, taille_plateau_jeu, NbNav2)) // NbNav_global and NbJoue are updated on the function's core via pointers
+                    if (proposition_joueur(prop1, NbJoue_global, liste1, taille_plateau_jeu, NbNav2, language)) // NbNav_global and NbJoue are updated on the function's core via pointers
                     {
-                        game_mode_graphics_congratulations(prop1, taille_plateau_jeu, number_of_navires_jeu, *NbNav2, 1, player2);
+                        game_mode_graphics_congratulations(prop1, taille_plateau_jeu, number_of_navires_jeu, *NbNav2, 1, player2, language);
                     }
                 }
 
@@ -287,18 +287,18 @@ int main(int argc, char **argv)
                 if (round_global == max_rounds_multi && (*NbNav1 < number_of_navires_jeu || *NbNav2 < number_of_navires_jeu))
                 {
                     repeat_multi = false;
-                    lost_graphics(1);
+                    lost_graphics(1, language);
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav1 == number_of_navires_jeu || *NbNav2 == number_of_navires_jeu)
                 {
                     if (*NbNav1 > *NbNav2)
                     {
-                        win_graphics(taille_plateau_jeu, prop2, (*NbJoue_global - 1) / 2, 2, player1);
+                        win_graphics(taille_plateau_jeu, prop2, (*NbJoue_global - 1) / 2, 2, player1, language);
                     }
                     else
                     {
-                        win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2);
+                        win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                     }
 
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
@@ -309,46 +309,46 @@ int main(int argc, char **argv)
         {
             clearScreen();
             waitTime(3, "creer maintenant le plateu pour", 34, 36, player1, player2);
-            liste1 = initialisation_plateau_custom(prop1, taille_plateau_jeu, number_of_navires_jeu);
+            liste1 = initialisation_plateau_custom(prop1, taille_plateau_jeu, number_of_navires_jeu, language);
             waitTime(3, "creer maintenant le plateu pour", 34, 36, player2, player1);
-            liste2 = initialisation_plateau_custom(prop2, taille_plateau_jeu, number_of_navires_jeu);
+            liste2 = initialisation_plateau_custom(prop2, taille_plateau_jeu, number_of_navires_jeu, language);
 
-            rules_interface(max_rounds_multi, taille_plateau_jeu);
+            rules_interface(max_rounds_multi, taille_plateau_jeu, language);
             msleep(100);
             waitForKeypress();
             waitForKeypress();
             clearScreen();
-            rules_reminder(max_rounds_multi, taille_plateau_jeu);
+            rules_reminder(max_rounds_multi, taille_plateau_jeu, language);
             while (repeat_multi)
             {
                 // loop's logic
-                new_round_graphics(*NbJoue_global, taille_plateau_jeu, prop2, 2, player1, -1);
-                if (waitForMenuKeypress())
+                new_round_graphics(*NbJoue_global, taille_plateau_jeu, prop2, 2, player1, -1, language);
+                if (waitForMenuKeypress(language))
                 {
-                    midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_jeu, 1); // case mupliplayer for mode = 1
+                    midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_jeu, 1, language); // case mupliplayer for mode = 1
                 }
                 else
                 {
                     // prop2 is created by the player2 for the player1 and vice versa (the same for liste2)
-                    if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_jeu, NbNav1)) // NbNav_global and NbJoue are updated on the function's core via pointers
+                    if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_jeu, NbNav1, language)) // NbNav_global and NbJoue are updated on the function's core via pointers
                     {
-                        game_mode_graphics_congratulations(prop2, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 1, player1);
+                        game_mode_graphics_congratulations(prop2, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 1, player1, language);
                     }
                 }
 
                 clearScreen();
-                new_round_graphics(*NbJoue_global, taille_plateau_jeu, prop1, 3, player2, -1);
+                new_round_graphics(*NbJoue_global, taille_plateau_jeu, prop1, 3, player2, -1, language);
 
-                if (waitForMenuKeypress())
+                if (waitForMenuKeypress(language))
                 {
-                    midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_jeu, 1); // case mupliplayer for mode = 1
+                    midle_game_menu_saving_unavailable(max_rounds_multi, taille_plateau_jeu, 1, language); // case mupliplayer for mode = 1
                 }
                 else
                 {
                     // prop2 is created by the player2 for the player1 and vice versa
-                    if (proposition_joueur(prop1, NbJoue_global, liste1, taille_plateau_jeu, NbNav2)) // NbNav_global and NbJoue are updated on the function's core via pointers
+                    if (proposition_joueur(prop1, NbJoue_global, liste1, taille_plateau_jeu, NbNav2, language)) // NbNav_global and NbJoue are updated on the function's core via pointers
                     {
-                        game_mode_graphics_congratulations(prop1, taille_plateau_jeu, number_of_navires_jeu, *NbNav2, 1, player2);
+                        game_mode_graphics_congratulations(prop1, taille_plateau_jeu, number_of_navires_jeu, *NbNav2, 1, player2, language);
                     }
                 }
 
@@ -356,18 +356,18 @@ int main(int argc, char **argv)
                 if (round_global == max_rounds_multi && (*NbNav1 < number_of_navires_jeu || *NbNav2 < number_of_navires_jeu))
                 {
                     repeat_multi = false;
-                    lost_graphics(1);
+                    lost_graphics(1, language);
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav1 == number_of_navires_jeu || *NbNav2 == number_of_navires_jeu)
                 {
                     if (*NbNav1 > *NbNav2)
                     {
-                        win_graphics(taille_plateau_jeu, prop2, (*NbJoue_global - 1) / 2, 2, player1);
+                        win_graphics(taille_plateau_jeu, prop2, (*NbJoue_global - 1) / 2, 2, player1, language);
                     }
                     else
                     {
-                        win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2);
+                        win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                     }
 
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
@@ -376,15 +376,15 @@ int main(int argc, char **argv)
         }
         else
         {
-            error_graphics(3);
+            error_graphics(3, language);
         }
     }
     if (mode == AI)
     {
-        int mode_AI = game_mode_ai();
+        int mode_AI = game_mode_ai(language);
 
         clearScreen();
-        printf("\n\e[0;102mBienvenue au IA mode\e[0m\n");
+        printf("\n\e[0;102mAI mode\e[0m\n");
         char *player1 = get_user_name("Quel est ton nom ? ", language);
         clearScreenWait(0.8);
         char player2[8] = "DrixAI";
@@ -392,20 +392,20 @@ int main(int argc, char **argv)
         bool repeat_multi_custom = true; // be used when positioning ships in the begining and to repeat the game procedure
 
         waitTime(3, "creer maintenant le plateu pour", 34, 36, player1, player2);
-        liste1 = initialisation_plateau_custom(prop1, taille_plateau_jeu, number_of_navires_jeu);
+        liste1 = initialisation_plateau_custom(prop1, taille_plateau_jeu, number_of_navires_jeu, language);
         clearScreen();
-        liste2 = initialisation_plateau(prop2, taille_plateau_jeu, number_of_navires_jeu);
+        liste2 = initialisation_plateau(prop2, taille_plateau_jeu, number_of_navires_jeu, language);
         printf("\n%s has created the game plate for you as well %s\n", player2, player1);
         clearScreenWait(2);
 
         int max_rounds_multi_custom;
         ajuster_tours(taille_plateau_jeu, &max_rounds_multi_custom, number_of_navires_jeu, 2);
-        rules_interface(max_rounds_multi_custom, taille_plateau_jeu);
+        rules_interface(max_rounds_multi_custom, taille_plateau_jeu, language);
         msleep(100);
         waitForKeypress();
         waitForKeypress();
         clearScreen();
-        rules_reminder(max_rounds_multi_custom, taille_plateau_jeu);
+        rules_reminder(max_rounds_multi_custom, taille_plateau_jeu, language);
 
         if (mode_AI == 2) // mode Spark
         {
@@ -416,9 +416,9 @@ int main(int argc, char **argv)
                 printing_the_grille_v2(prop2, taille_plateau_jeu);
 
                 // prop2 is created by the player2 for the player1 and vice versa (the same for liste2)
-                if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_jeu, NbNav1)) // NbNav_global and NbJoue are updated on the function's core via pointers
+                if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_jeu, NbNav1, language)) // NbNav_global and NbJoue are updated on the function's core via pointers
                 {
-                    game_mode_graphics_congratulations(prop2, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 1, player1);
+                    game_mode_graphics_congratulations(prop2, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 1, player1, language);
                 }
 
                 clearScreen();
@@ -434,18 +434,18 @@ int main(int argc, char **argv)
                 if (round_global == max_rounds_multi_custom && (*NbNav1 < number_of_navires_jeu || *NbNav2 < number_of_navires_jeu))
                 {
                     repeat_multi_custom = false;
-                    lost_graphics(1);
+                    lost_graphics(1, language);
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav1 == number_of_navires_jeu || *NbNav2 == number_of_navires_jeu)
                 {
                     if (*NbNav1 > *NbNav2)
                     {
-                        win_graphics(taille_plateau_jeu, prop2, (*NbJoue_global - 1) / 2, 2, player1);
+                        win_graphics(taille_plateau_jeu, prop2, (*NbJoue_global - 1) / 2, 2, player1, language);
                     }
                     else
                     {
-                        win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2);
+                        win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                     }
 
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
@@ -476,9 +476,9 @@ int main(int argc, char **argv)
                 printing_the_grille_v2(prop2, taille_plateau_jeu);
 
                 // prop2 is created by the player2 for the player1 and vice versa (the same for liste2)
-                if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_jeu, NbNav1)) // NbNav_global and NbJoue are updated on the function's core via pointers
+                if (proposition_joueur(prop2, NbJoue_global, liste2, taille_plateau_jeu, NbNav1, language)) // NbNav_global and NbJoue are updated on the function's core via pointers
                 {
-                    game_mode_graphics_congratulations(prop2, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 1, player1);
+                    game_mode_graphics_congratulations(prop2, taille_plateau_jeu, number_of_navires_jeu, *NbNav1, 1, player1, language);
                 }
 
                 clearScreen();
@@ -525,11 +525,11 @@ int main(int argc, char **argv)
                 {
                     if (*NbNav1 > *NbNav2)
                     {
-                        win_graphics(taille_plateau_jeu, prop2, (*NbJoue_global - 1) / 2, 2, player1);
+                        win_graphics(taille_plateau_jeu, prop2, (*NbJoue_global - 1) / 2, 2, player1, language);
                     }
                     else
                     {
-                        win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2);
+                        win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                     }
 
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
@@ -538,13 +538,13 @@ int main(int argc, char **argv)
         }
         else
         {
-            error_graphics(6);
+            error_graphics(6, language);
         }
     }
     if (mode == LOAD)
     {
         clearScreen();
-        printf("\n\e[0;102mBienvenue au LOAD mode\e[0m\n");
+        printf("\n\e[0;102mLOAD mode\e[0m\n");
         int round_load;
         int coulle_load;
         int number_of_navires_load;
@@ -584,30 +584,30 @@ int main(int argc, char **argv)
         clearScreen();
 
         // game loop
-        game_loaded_graphics(max_rounds_load, taille_plateau_load);
+        game_loaded_graphics(max_rounds_load, taille_plateau_load, language);
         waitForKeypress();
         waitForKeypress();
         clearScreen();
-        rules_reminder(max_rounds_load, taille_plateau_load);
+        rules_reminder(max_rounds_load, taille_plateau_load, language);
 
         while (repeat_load)
         {
             // loop's logic
             printf("\n\e[4;32mRound No %d\e[0m\n\n", *NbJoue_load);
             printing_the_grille_v2(prop_load, taille_plateau_load);
-            if (waitForMenuKeypress())
+            if (waitForMenuKeypress(language))
             {
-                if (midle_game_menu(max_rounds_load, taille_plateau_load, 2, COMPUTER) == 1) // 1 is internal code foe saving the progress and continuing another time
+                if (midle_game_menu(max_rounds_load, taille_plateau_load, 2, COMPUTER, language) == 1) // 1 is internal code foe saving the progress and continuing another time
                 {
                     api_save_game(number_of_navires_load, taille_plateau_load, coulle_load, round_load, prop_load, liste_load);
-                    error_graphics(5);
+                    error_graphics(5, language);
                 }
             }
             else
             {
-                if (proposition_joueur(prop_load, NbJoue_load, liste_load, taille_plateau_load, NbNav_load))
+                if (proposition_joueur(prop_load, NbJoue_load, liste_load, taille_plateau_load, NbNav_load, language))
                 {
-                    game_mode_graphics_congratulations(prop_load, taille_plateau_load, number_of_navires_load, *NbNav_load, 0, "");
+                    game_mode_graphics_congratulations(prop_load, taille_plateau_load, number_of_navires_load, *NbNav_load, 0, "", language);
                 }
                 clearScreen();
 
@@ -615,13 +615,13 @@ int main(int argc, char **argv)
                 if (round_load == max_rounds_load && *NbNav_load < number_of_navires_load)
                 {
                     repeat_load = false;
-                    lost_graphics(1);
+                    lost_graphics(1, language);
                     api_delete_game_file();
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav_load == number_of_navires_load)
                 {
-                    win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "");
+                    win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "", language);
                     api_delete_game_file();
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }

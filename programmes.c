@@ -44,17 +44,20 @@
 
 #define COULE 10 // congratsulations you find the whole navire
 
+/* Waiting for keypress before moving to the rest of the program */
 void waitForKeypress()
 {
 	getchar(); // Waits for a key press
 }
 
+/* Clearing the terminal screen for more optimised visualisations */
 void clearScreen()
 {
 	const char *CLEAR_SCREEN_ANSI = "\e[1;1H\e[2J";
 	write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
 }
 
+/* Introducing a controled delay whenever we call this function */
 int msleep(long tms)
 {
 	struct timespec ts;
@@ -192,6 +195,7 @@ void printing_the_grille(int **table, int taille_plateau)
 	}
 }
 
+/* Printing the game's table in a more UI friendly way */
 void printing_the_grille_v2(int **table, int taille_plateau)
 {
 	int state;
@@ -421,6 +425,8 @@ bool est_valide_pro(int **table_navire, Navire nav, int taille_plateau)
 	}
 }
 
+/* Deletes a specific navire from a liste chainee of navires */
+//THE FUNCTION IS NOT USED ON THE CURRENT VERSION OF THE PROGRAM
 void suprimer_navire(Cellule_Liste_Navire *principal, Liste_Navire *liste)
 {
 	// Si on est sur le premier maillon (cas particulier à la con)
@@ -447,6 +453,9 @@ void suprimer_navire(Cellule_Liste_Navire *principal, Liste_Navire *liste)
 		 à chaque type => c'est le premier pas vers la programmation objet                                               */
 }
 
+/* create a list cell with a navire v
+    returns the pointer to the created list cell
+    the function stops if the creation could not be done */
 Cellule_Liste_Navire *creer_element_liste_Navire(Navire v)
 {
 	Cellule_Liste_Navire *el;
@@ -460,12 +469,14 @@ Cellule_Liste_Navire *creer_element_liste_Navire(Navire v)
 	return el;
 }
 
+/* Creates an empty lise chainee of navires (allocation) */
 Liste_Navire creer_liste_Navire_vide()
 {
 	Liste_Navire L = {0, NULL, NULL};
 	return L;
 }
 
+/* add the navire e at the end of the list L, returns the modified list L */
 void ajouter_element_liste_Navire(Liste_Navire *L, Navire e)
 {
 	Cellule_Liste_Navire *el;
@@ -485,6 +496,8 @@ void ajouter_element_liste_Navire(Liste_Navire *L, Navire e)
 	return;
 }
 
+/* Checks if a navire was found by scanning the game's plate with an advanced logic and an optimised algorithm
+The idea was to remove any navire that was found from this liste chainne L in order to have more optimised checking times */
 bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to sscan the gaeme according to the list of navires created and not the plateau and the prop tables
 {
 	Cellule_Liste_Navire *el = L.first;
@@ -589,6 +602,7 @@ bool navire_found(int **prop, Liste_Navire L) // this functionw as optimized to 
 	return false;
 }
 
+/* Updating the specific coordinates that the user chose (x,y) according to their state  */
 void update_prop(int **prop, int x, int y, int mode)
 {
 	if (prop[x][y] == NAVIRE)
@@ -618,6 +632,7 @@ void update_prop(int **prop, int x, int y, int mode)
 	return;
 }
 
+/* Decrypting the informations of a point of the type numer+letter (returns for instance for a point 2A the following (1,0))*/
 int point_decryption(char *input, int *number_returned, int *letter_returned)
 {
 	int number;
@@ -660,7 +675,7 @@ int point_decryption(char *input, int *number_returned, int *letter_returned)
 }
 
 /* cette fonction demande `a l’utilisateur de saisir une case (x,y) `a jouer et selon la valeur contenue plateau[x][y] enregistre dans prop[x][y] la valeur */
-bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plateau, int *NbNav)
+bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plateau, int *NbNav, int language)
 {
 	int x, y;
 	bool coordinates = true; // used to ask the user new coordinates for a vessel if the previous ones are not inside the specified limits mentioned on the instructions
@@ -671,7 +686,7 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 
 	while (coordinates)
 	{
-		custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 0, -1);
+		custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 0, -1, language);
 		scanf("%s", input);
 
 		while (repeater)
@@ -683,22 +698,22 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 			}
 			else if (status_code == 8)
 			{
-				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 1, -1);
+				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 1, -1, language);
 				scanf("%s", input);
 			}
 			else if (status_code == 9)
 			{
-				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 2, -1);
+				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 2, -1, language);
 				scanf("%s", input);
 			}
 			else if (status_code == 7)
 			{
-				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 3, -1);
+				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 3, -1, language);
 				scanf("%s", input);
 			}
 			else
 			{
-				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 4, 1);
+				custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 4, 1, language);
 			}
 		}
 
@@ -711,7 +726,7 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 		}
 		else
 		{
-			custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 5, -1);
+			custom_graphics_on_proposition(-1, prop, taille_plateau, -1, 5, -1, language);
 		}
 	}
 
@@ -734,6 +749,7 @@ bool proposition_joueur(int **prop, int *NbJoue, Liste_Navire L, int taille_plat
 	return false;
 }
 
+/* Printing a loading indicator */
 void printProgress(double percentage)
 {
 	int val = (int)(percentage * 100);
@@ -744,7 +760,7 @@ void printProgress(double percentage)
 }
 
 // Allocation et initialisation des navires
-Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int number_of_navires)
+Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int number_of_navires, int language)
 {
 	Liste_Navire liste;
 	liste = creer_liste_Navire_vide();
@@ -756,7 +772,7 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 	// creating the six boats and putting them on the plateau (invisible to the user)
 	for (int i = 0; i < number_of_navires; i++)
 	{
-		custom_graphics_on_proposition(i, plateau, taille_plateau, -2, percentage, -1);
+		custom_graphics_on_proposition(i, plateau, taille_plateau, -2, percentage, -1, language);
 
 		/* Initialising navire randomly on the game's plate */
 		msleep(300); // delay process for 1 second in order to provide real aleartory results
@@ -830,6 +846,7 @@ Liste_Navire initialisation_plateau(int **plateau, int taille_plateau, int numbe
 	return liste;
 }
 
+/* Any navire that was placed customly CUSTOMNAVIRE is now updated to NAVIRE */
 void update_game_table_before_launch(int **prop, int taille_plateau)
 {
 	for (int i = 0; i < taille_plateau; i++)
@@ -844,7 +861,8 @@ void update_game_table_before_launch(int **prop, int taille_plateau)
 	}
 }
 
-Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, int number_of_navires)
+/* Allocating and initialising the navires customly */
+Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, int number_of_navires, int language)
 {
 	Liste_Navire liste;
 	liste = creer_liste_Navire_vide();
@@ -862,7 +880,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 	{
 		colour = random_color();
 		/* Initialising navire customly */
-		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 0, -1);
+		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 0, -1, language);
 		scanf("%s", input);
 		clearScreen();
 
@@ -870,7 +888,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 		{
 			if (strlen(input) != 1 || (input[0] != '1' && input[0] != '2' && input[0] != '3' && input[0] != '4' && input[0] != '5' && input[0] != '6'))
 			{
-				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 1, -1);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 1, -1, language);
 				scanf("%s", input);
 				clearScreen();
 			}
@@ -883,7 +901,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 		nav.taille = input_int;
 		repeater = true;
 
-		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 4, -1);
+		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 4, -1, language);
 		scanf("%s", input);
 		clearScreen();
 
@@ -891,7 +909,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 		{
 			if (strlen(input) != 1 || (input[0] != '0' && input[0] != '1' && input[0] != '2' && input[0] != '3'))
 			{
-				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 3, -1);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 3, -1, language);
 				scanf("%s", input);
 				clearScreen();
 			}
@@ -904,7 +922,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 		nav.sens = input_int;
 		repeater = true;
 
-		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 5, -1);
+		custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 5, -1, language);
 		scanf("%s", input);
 		clearScreen();
 
@@ -917,25 +935,25 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 			}
 			else if (status_code == 8)
 			{
-				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 6, -1);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 6, -1, language);
 				scanf("%s", input);
 				clearScreen();
 			}
 			else if (status_code == 9)
 			{
-				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 7, -1);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 7, -1, language);
 				scanf("%s", input);
 				clearScreen();
 			}
 			else if (status_code == 7)
 			{
-				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 2, -1);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 2, -1, language);
 				scanf("%s", input);
 				clearScreen();
 			}
 			else
 			{
-				custom_graphics_on_proposition(-1, plateau, taille_plateau, -1, 4, -1);
+				custom_graphics_on_proposition(-1, plateau, taille_plateau, -1, 4, -1, language);
 			}
 		}
 
@@ -956,7 +974,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 			}
 			else
 			{
-				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 0, 0);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 0, 0, language);
 				scanf("%s", input);
 				clearScreen();
 
@@ -964,7 +982,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 				{
 					if (strlen(input) != 1 || (input[0] != '1' && input[0] != '2' && input[0] != '3' && input[0] != '4' && input[0] != '5' && input[0] != '6'))
 					{
-						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 1, -1);
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 1, -1, language);
 						scanf("%s", input);
 						clearScreen();
 					}
@@ -977,7 +995,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 				nav.taille = input_int;
 				repeater = true;
 
-				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 4, -1);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 4, -1, language);
 				scanf("%s", input);
 				clearScreen();
 
@@ -985,7 +1003,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 				{
 					if (strlen(input) != 1 || (input[0] != '0' && input[0] != '1' && input[0] != '2' && input[0] != '3'))
 					{
-						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 3, -1);
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 3, -1, language);
 						scanf("%s", input);
 						clearScreen();
 					}
@@ -998,7 +1016,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 				nav.sens = input_int;
 				repeater = true;
 
-				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 5, -1);
+				custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 5, -1, language);
 				scanf("%s", input);
 				clearScreen();
 
@@ -1011,25 +1029,25 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 					}
 					else if (status_code == 8)
 					{
-						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 6, -1);
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 6, -1, language);
 						scanf("%s", input);
 						clearScreen();
 					}
 					else if (status_code == 9)
 					{
-						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 7, -1);
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 7, -1, language);
 						scanf("%s", input);
 						clearScreen();
 					}
 					else if (status_code == 7)
 					{
-						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 2, -1);
+						custom_graphics_on_proposition(i, plateau, taille_plateau, colour, 2, -1, language);
 						scanf("%s", input);
 						clearScreen();
 					}
 					else
 					{
-						custom_graphics_on_proposition(-1, plateau, taille_plateau, -1, 4, -1);
+						custom_graphics_on_proposition(-1, plateau, taille_plateau, -1, 4, -1, language);
 					}
 				}
 
@@ -1093,6 +1111,7 @@ Liste_Navire initialisation_plateau_custom(int **plateau, int taille_plateau, in
 	return liste;
 }
 
+/* AI logic for spark mode that simly chooses points aleartory that it hasn't visited before */
 void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue)
 {
 	int x, y;
@@ -1126,6 +1145,7 @@ void tour_ia_random_v1(int **prop, int taille_plateau, Liste_Navire L, int *NbNa
 	}
 }
 
+/* Calls the function taht verfies if a navire was found from the AI. If this is the case then it adds a point to the AI's score */
 void proposition_ai(int **prop, int taille_plateau, Liste_Navire L, int *NbNav)
 {
 	if (navire_found(prop, L))
@@ -1135,6 +1155,7 @@ void proposition_ai(int **prop, int taille_plateau, Liste_Navire L, int *NbNav)
 	return;
 }
 
+/* Decides if we need to find a new point or not for the next round */
 bool play_point_and_decide(int **prop, int taille_plateau, Liste_Navire L, int *NbNav, int *NbJoue, int x, int y)
 {
 	update_prop(prop, x, y, 1);
@@ -1151,6 +1172,7 @@ bool play_point_and_decide(int **prop, int taille_plateau, Liste_Navire L, int *
 }
 
 /*
+//Advanced AI logic V1
 void next_point(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens, int *state)
 {
 	int random_neighbor;
@@ -1460,6 +1482,7 @@ void next_point(int **table, int taille_plateau, int x_prev, int y_prev, int *x_
 	}
 }
 
+// Advanced AI logic V2
 void next_point_v2(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens)
 {
 	// Check for points around the previous point that are already known to be part of a ship
@@ -1578,7 +1601,7 @@ void next_point_v2(int **table, int taille_plateau, int x_prev, int y_prev, int 
 }
 */
 
-// Function to check if a point is within the limits of game table
+/* Checks if the chosen point can be accesed - Function to check if a point is within the limits of game table */
 int is_valid_point(int x, int y, int taille_plateau)
 {
 	return (x >= 0 && x < taille_plateau && y >= 0 && y < taille_plateau);
@@ -1603,6 +1626,7 @@ void update_direction(int *sens, int *deep_sens)
 	}
 }
 
+/* Advanced AI logic V3 */
 void next_point_v3(int **table, int taille_plateau, int x_prev, int y_prev, int *x_now, int *y_now, int *previous_sens, int *sens_mode, int *deep_sens)
 {
 	// Check for ship segments around the previous point
@@ -1723,8 +1747,6 @@ void ajouter_element_liste_Point(Liste_Point *L, int x, int y)
 	return;
 }
 
-// Liste_Point supprimer_liste_Navire(Liste_Navire L)
-
 /* suppression de tous les �l�ments de la liste, renvoie la liste L vide */
 Liste_Point supprimer_liste_Point(Liste_Point L)
 {
@@ -1773,6 +1795,7 @@ Tableau_Point sequence_points_liste_vers_tableau(Liste_Point L)
 	return T;
 }
 
+/* Provides some waiting time with a message for the user */
 void waitTime(int seconds, char *message, int colour1, int colour2, char *name1, char *name2)
 {
 	for (int i = seconds; i > 0; i--)
@@ -1784,6 +1807,7 @@ void waitTime(int seconds, char *message, int colour1, int colour2, char *name1,
 	clearScreen();
 }
 
+/* Waiting some time and clearing the screen */
 void clearScreenWait(double seconds)
 {
 	msleep(1000 * seconds);
