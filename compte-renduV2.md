@@ -599,7 +599,7 @@ Voici l'algorithme de la fonction next_point de notre programme, fonction qui jo
 
 **Algorithme :**
 
-```Example AI algorithm
+```
 
   // Exemple d'algorithme IA
 
