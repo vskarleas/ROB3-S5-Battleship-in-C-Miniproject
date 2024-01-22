@@ -633,20 +633,18 @@ Par ailleurs, nous avons intégré d'autres fonctionnalités à notre jeu , parf
 
 Durant le développement de notre jeu de bataille navale, nous avons fait face à divers défis techniques, nécessitant réflexion et créativité pour trouver des solutions adéquates. Voici un résumé des principaux obstacles rencontrés et des stratégies adoptées pour les résoudre :
 
-1.**Problème de Création de Navires :** Sur un petit plateau, la création de six navires posait problème. Le souci provenait de la non-réinitialisation d'une variable booléenne, qui entravait l'incrémentation correcte du compteur de navires. Nous avons résolu ce problème en réinitialisant cette variable à chaque tentative de placement de navire.
-
+1. **Problème de Création de Navires :** Sur un petit plateau, la création de six navires posait problème. Le souci provenait de la non-réinitialisation d'une variable booléenne, qui entravait l'incrémentation correcte du compteur de navires. Nous avons résolu ce problème en réinitialisant cette variable à chaque tentative de placement de navire.
 2. **Détection de Navires en Modes Multijoueur et IA :** Nous avions des difficultés à détecter les navires placés manuellement. Le problème venait de l'utilisation d'un code d'identification différent pour ces navires. La solution a consisté à inclure le "ou" logique dans la fonction `est_valide_pro` afin de détecter également ces points.
-
- **Optimisation avec Liste Chaînée :** Pour minimiser le temps de traitement, nous souhaitions supprimer les navires d'une liste chaînée (`Liste_Navire`). La fonction `supprimer_liste_Navire` a été ajustée pour cette opération, améliorant l'efficacité du processus.   Il est à noter que cette procédure nous permet de n'avoir qu'un seul plateau où tout est analysé de manière dynamique. La liste ressemble à ce qui suit :
-
-| ID | Data                      |
-| -- | ------------------------- |
-| 0  | Data of navire 0 -> 1     |
-| 1  | Data of navire 1 -> 2    |
-| 2  | Data of navire 2 -> 3    |
-| 3  | Data of navire 3 -> 4    |
-| 4  | Data of navire 4 -> 5    |
-| 5  | Data of navire 5 -> NULL |
+3. **Utilisation de Liste Chaînée:** Cette procédure nous permet de n'avoir qu'un seul plateau où tout est analysé de manière dynamique. Cette liste ressemble au tableau suivant:
+   | ID | Data                      |
+   | -- | ------------------------- |
+   | 0  | Data of navire 0 -> 1     |
+   | 1  | Data of navire 1 -> 2    |
+   | 2  | Data of navire 2 -> 3    |
+   | 3  | Data of navire 3 -> 4    |
+   | 4  | Data of navire 4 -> 5    |
+   | 5  | Data of navire 5 -> NULL |
+4. **Optimisation de la méthode Liste Chaînée :** Pour minimiser le temps de traitement, nous souhaitions supprimer les navires d'une liste chaînée (`Liste_Navire`). La fonction `supprimer_liste_Navire` a été ajustée pour cette opération, améliorant l'efficacité du processus.
 
 Nota bene: Nous avons développé une version améliorée de notre fonction d'affichage, nommée printing_the_grille_v2. Cette nouvelle version est plus adaptée et a été intégrée dans la dernière mise à jour de notre code. Elle remplace l'ancienne fonction d'impression pour offrir une meilleure expérience utilisateur.
 
@@ -712,4 +710,4 @@ Bien que ces améliorations soient ambitieuses, elles promettent d'ouvrir des vo
 
 ## Copyright
 
-###### Yanis SADOUN, Vasileios Filippos SKARLEAS | All rights reserved
+###### Yanis SADOUN, Vasileios Filippos SKARLEAS | 2023 - 2024 All rights reserved
