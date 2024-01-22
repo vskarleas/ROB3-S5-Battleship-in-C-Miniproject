@@ -597,12 +597,6 @@ Voici les differents versions pendant l'evolution du code:
 * **V8.5** Many translations were added on the ui.c.
 * **V8.6** Translations were added on the api.c and on the jeu_v2.c
 
-## Ameliorations
-
-1. Modifier le programme pour que chaque navire trouvé, le suprimer par la liste chainee des navires pour optimizer l'agorithme de recherche.
-2. Mettre le code principal des differents modes de jeu sur des fichiers differents et faire une appel direct à ceux fichiers via le progarmme prinipal -  tout en modifian tle Makefile
-3. Faire le jeu comme une loupe infinie et redemadner à l'utilisateur si il veut continuer joueur avec le choix des differents modes de jeu.
-
 ## Copyright
 
 ###### Yanis SADOUN, Vasileios Filippos SKARLEAS | All rights reserved
