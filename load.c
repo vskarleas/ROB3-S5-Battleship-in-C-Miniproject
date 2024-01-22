@@ -1,3 +1,9 @@
+// #############################################################################
+// # File load.c
+// # UE Infomatics for Robotics - Polytech Sorbonne - 2023/2024 - S5
+// # Authors: Yannis Sadoun, Vasileios Filippos Skarleas - All rights reserved.
+// #############################################################################
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,8 +27,13 @@
 
 int main(int argc, char **argv)
 {
+    char *round_txt[4] = {"Round", "is playing", "Tour", "est en train de jouer"};
+    init_nb_aleatoire();
     clearScreen();
-    printf("\n\e[0;102mBienvenue au LOAD mode\e[0m\n");
+    int language = choose_language();
+
+    clearScreen();
+    printf("\n\e[0;102mLOAD mode\e[0m\n");
     int round_load;
     int coulle_load;
     int number_of_navires_load;
@@ -33,7 +44,7 @@ int main(int argc, char **argv)
     int *NbNav_load = &coulle_load;
     int *NbJoue_load = &round_load;
 
-    int api_response = api_table_size("filecodec239012V1.txt");
+    int api_response = api_table_size("filecodec239012V1.txt", language);
 
     int **prop_load;
     prop_load = malloc(api_response * sizeof(int *));
@@ -62,30 +73,30 @@ int main(int argc, char **argv)
     clearScreen();
 
     // game loop
-    game_loaded_graphics(max_rounds_load, taille_plateau_load);
+    game_loaded_graphics(max_rounds_load, taille_plateau_load, language);
     waitForKeypress();
     waitForKeypress();
     clearScreen();
-    rules_reminder(max_rounds_load, taille_plateau_load);
+    rules_reminder(max_rounds_load, taille_plateau_load, language);
 
     while (repeat_load)
     {
         // loop's logic
-        printf("\n\e[4;32mRound No %d\e[0m\n\n", *NbJoue_load);
+        printf("\n\e[4;32m%s No %d\e[0m\n\n", round_txt[language], *NbJoue_load);
         printing_the_grille_v2(prop_load, taille_plateau_load);
-        if (waitForMenuKeypress())
+        if (waitForMenuKeypress(language))
         {
-            if (midle_game_menu(max_rounds_load, taille_plateau_load, 2, COMPUTER) == 1) // 1 is internal code foe saving the progress and continuing another time
+            if (midle_game_menu(max_rounds_load, taille_plateau_load, 2, COMPUTER, language) == 1) // 1 is internal code foe saving the progress and continuing another time
             {
-                api_save_game(number_of_navires_load, taille_plateau_load, coulle_load, round_load, prop_load, liste_load);
-                error_graphics(5);
+                api_save_game(number_of_navires_load, taille_plateau_load, coulle_load, round_load, prop_load, liste_load, language);
+                error_graphics(5, language);
             }
         }
         else
         {
-            if (proposition_joueur(prop_load, NbJoue_load, liste_load, taille_plateau_load, NbNav_load))
+            if (proposition_joueur(prop_load, NbJoue_load, liste_load, taille_plateau_load, NbNav_load, language))
             {
-                game_mode_graphics_congratulations(prop_load, taille_plateau_load, number_of_navires_load, *NbNav_load, 0, "");
+                game_mode_graphics_congratulations(prop_load, taille_plateau_load, number_of_navires_load, *NbNav_load, 0, "", language);
             }
             clearScreen();
 
@@ -93,14 +104,14 @@ int main(int argc, char **argv)
             if (round_load == max_rounds_load && *NbNav_load < number_of_navires_load)
             {
                 repeat_load = false;
-                lost_graphics(1);
-                api_delete_game_file();
+                lost_graphics(1, language);
+                api_delete_game_file(language);
                 return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
             }
             if (*NbNav_load == number_of_navires_load)
             {
-                win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "");
-                api_delete_game_file();
+                win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "", language);
+                api_delete_game_file(language);
                 return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
             }
         }

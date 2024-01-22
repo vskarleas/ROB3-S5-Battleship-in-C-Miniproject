@@ -159,9 +159,6 @@ void printing_the_grille(int **table, int taille_plateau)
 					printf(" \033[1;36mx\033[1;0m ");
 					break;
 
-				case NAVIRE: // TO BE REMOVED!!!! from the official and final game code
-					printf(" ^ ");
-					break;
 				}
 			}
 			else
@@ -185,9 +182,6 @@ void printing_the_grille(int **table, int taille_plateau)
 					printf(" \033[1;36mx\033[1;0m ");
 					break;
 
-				case NAVIRE: // TO BE REMOVED. IT WAS PLACED TO VISUALIZE THE DIFFERENT BOATS
-					printf(" ^ ");
-					break;
 				}
 			}
 		}
@@ -268,8 +262,8 @@ void printing_the_grille_v2(int **table, int taille_plateau)
 					printf(" \033[0;31mx\033[1;0m |");
 					break;
 
-				case NAVIRE: // TO BE REMOVED. IT WAS PLACED TO VISUALIZE THE DIFFERENT BOATS. IT HAS TO BE REPLACED WITH A .
-					printf(" \033[1;34m&\033[1;0m |");
+				case NAVIRE:
+					printf(" \033[1;34m.\033[1;0m |");
 					break;
 				case CUSTOM_NAVIRE:
 					printf(" \e[0;101m \033[1;0m |");
@@ -301,11 +295,8 @@ void printing_the_grille_v2(int **table, int taille_plateau)
 					printf(" \033[0;31mx\033[1;0m |"); // all the points of a navire were found
 					break;
 
-				case NAVIRE: // TO BE REMOVED. IT WAS PLACED TO VISUALIZE THE DIFFERENT BOATS. IT HAS TO BE REPLACED WITH A .
-					printf(" \033[1;34m&\033[1;0m |");
-					break;
-				case CUSTOM_NAVIRE: // TO BE REMOVED. IT WAS PLACED TO VISUALIZE THE DIFFERENT BOATS. IT HAS TO BE REPLACED WITH A .
-					printf(" \e[0;101m \033[1;0m |");
+				case NAVIRE:
+					printf(" \033[1;34m.\033[1;0m |");
 					break;
 				}
 			}
@@ -426,7 +417,7 @@ bool est_valide_pro(int **table_navire, Navire nav, int taille_plateau)
 }
 
 /* Deletes a specific navire from a liste chainee of navires */
-//THE FUNCTION IS NOT USED ON THE CURRENT VERSION OF THE PROGRAM
+// THE FUNCTION IS NOT USED ON THE CURRENT VERSION OF THE PROGRAM
 void suprimer_navire(Cellule_Liste_Navire *principal, Liste_Navire *liste)
 {
 	// Si on est sur le premier maillon (cas particulier à la con)
@@ -454,8 +445,8 @@ void suprimer_navire(Cellule_Liste_Navire *principal, Liste_Navire *liste)
 }
 
 /* create a list cell with a navire v
-    returns the pointer to the created list cell
-    the function stops if the creation could not be done */
+	returns the pointer to the created list cell
+	the function stops if the creation could not be done */
 Cellule_Liste_Navire *creer_element_liste_Navire(Navire v)
 {
 	Cellule_Liste_Navire *el;
@@ -756,7 +747,7 @@ void printProgress(double percentage)
 	int lpad = (int)(percentage * PBWIDTH);
 	int rpad = PBWIDTH - lpad;
 	printf("\r%3d%% [%.*s%*s]", val, lpad, PBSTR, rpad, "");
-	fflush(stdout); // TO BE COMMENTED
+	fflush(stdout); //is used to flush the output buffer of a stream, here the terminal
 }
 
 // Allocation et initialisation des navires
@@ -1659,7 +1650,8 @@ void next_point_v3(int **table, int taille_plateau, int x_prev, int y_prev, int 
 	{
 		// Randomly choose a point in a direction that has not been explored
 		int direction = rand() % 2;
-		*sens_mode = HORIZONTAL;;
+		*sens_mode = HORIZONTAL;
+		;
 
 		if (direction == 0)
 		{

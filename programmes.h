@@ -118,7 +118,7 @@ void ajouter_element_liste_Point(Liste_Point *L, int x, int y);
 /* suppression de tous les �l�ments de la liste, renvoie la liste L vide */
 Liste_Point supprimer_liste_Point(Liste_Point L);
 
-/* cr�er une s�quence de points sous forme d'un tableau de points 
+/* cr�er une s�quence de points sous forme d'un tableau de points
    � partir de la liste de points L */
 Tableau_Point sequence_points_liste_vers_tableau(Liste_Point L);
 

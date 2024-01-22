@@ -158,7 +158,7 @@ int main()
 
     bool status = false;
 
-    status = processFile("test.txt", num1_point, num2_point, num3_point, num4_point, prop_load);
+    status = processFile("codec_2.txt", num1_point, num2_point, num3_point, num4_point, prop_load);
 
     if (status)
     {
@@ -178,7 +178,7 @@ int main()
         printf("\nFunction failed!!!\n");
     }
 
-    clearFile("test2.txt");
+    //clearFile("codec_2.txt"); /*The function works. It's been commented in order to retain data on the codec_2.txt file */
 
     return 0;
 }

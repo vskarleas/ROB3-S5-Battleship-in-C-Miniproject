@@ -40,7 +40,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = jeu_v2
+EXECUTABLES = jeu_v2 multiplayer ai solo test load jeu
 
 #############################################################################
 # definition des regles

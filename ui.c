@@ -115,7 +115,7 @@ void displaySpecialWinMessage(int language)
     printf("%s\n", message_str[language]);
 }
 
-//Assking user's name
+// Assking user's name
 char *get_user_name(char message[1024], int language)
 {
     char *name = (char *)malloc(30 * sizeof(char));
@@ -153,14 +153,14 @@ char *get_user_name(char message[1024], int language)
     return name;
 }
 
-//Printing the rules of the game
+// Printing the rules of the game
 void rules_interface(int rounds, int taille_plateau, int language)
 {
     char *rules[4] = {"RULES", "", "REGLES", ""};
     printf("\n%s\n", rules[language]);
     char *message[4] = {"We are playing in a field of", "On every round you will be asked to provide the coordinates x & y for a vessel.", "Nous jouons sur un terrain de", ""};
     char *message_explanation[4] = {"The goal is to find the hiden vessels coordinates. There are", "rounds.", "Le but est de trouver les coordonnées des vaisseaux cachés. Il y a", "tours."};
-    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation[language], rounds, message_explanation[language+1]);
+    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation[language], rounds, message_explanation[language + 1]);
     char *message_str[4] = {"The coordinates x & y can take any value between 1 and", "(ex: A, B, C, ...)", "Les coordonnées x et y peuvent prendre n'importe quelle valeur comprise entre 1 et", ""};
     printf("%s %d %s\n", message_str[language], taille_plateau, message_str[1]);
     char *message_str_play[4] = {"When you are ready to start, press ENTER on the keyboard", "", "Lorsque vous êtes prêt à commencer, appuyez sur ENTER sur le clavier", ""};
@@ -168,14 +168,14 @@ void rules_interface(int rounds, int taille_plateau, int language)
     printf("================================================================\n");
 }
 
-//Printing the rules of the game in SOlo mode with option Time
+// Printing the rules of the game in SOlo mode with option Time
 void rules_interface_temps(int seconds, int taille_plateau, int language)
 {
     char *rules[4] = {"RULES", "", "REGLES", ""};
     printf("\n%s\n", rules[language]);
     char *message[4] = {"We are playing in a field of", "On every round you will be asked to provide the coordinates x & y for a vessel.", "Nous jouons sur un terrain de", ""};
     char *message_explanation[4] = {"The goal is to find the hiden vessels coordinates. You have", "seconds to find the navires.", "Le but est de trouver les coordonnées des navires cachés. Vous avez", "secondes pour trouver les navires."};
-    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language+1], message_explanation[language], seconds, message_explanation[language+1]);
+    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation[language], seconds, message_explanation[language + 1]);
     char *message_str[4] = {"The coordinates x & y can take any value between 1 and", "(ex: A, B, C, ...)", "Les coordonnées x et y peuvent prendre n'importe quelle valeur comprise entre 1 et", ""};
     printf("%s %d %s\n", message_str[language], taille_plateau, message_str[1]);
     char *message_str_play[4] = {"When you are ready to start, press ENTER on the keyboard", "", "Lorsque vous êtes prêt à commencer, appuyez sur ENTER sur le clavier", ""};
@@ -183,40 +183,40 @@ void rules_interface_temps(int seconds, int taille_plateau, int language)
     printf("================================================================\n");
 }
 
-//Printing the rule sof the game once it's asked from the user during a pause
+// Printing the rule sof the game once it's asked from the user during a pause
 void rules_reminder(int rounds, int taille_plateau, int language)
 {
     char *rules[4] = {"RULES", "", "REGLES", ""};
     printf("\n%s\n", rules[language]);
     char *message[4] = {"We are playing in a field of", "On every round you will be asked to provide the coordinates x & y for a vessel.", "Nous jouons sur un terrain de", ""};
     char *message_explanation[4] = {"The goal is to find the hiden vessels coordinates. There are", "rounds.", "Le but est de trouver les coordonnées des vaisseaux cachés. Il y a", "tours."};
-    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation[language], rounds, message_explanation[language+1]);
+    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation[language], rounds, message_explanation[language + 1]);
     char *message_str[4] = {"The coordinates x & y can take any value between 1 and", "(ex: A, B, C, ...)", "Les coordonnées x et y peuvent prendre n'importe quelle valeur comprise entre 1 et", ""};
     printf("%s %d %s\n", message_str[language], taille_plateau, message_str[1]);
     printf("================================================================\n");
 }
 
-//Printing the rule sof the game once it's asked from the user during a pause on a Solo game with option Time selected
+// Printing the rule sof the game once it's asked from the user during a pause on a Solo game with option Time selected
 void rules_reminder_temps(int seconds, int taille_plateau, int language)
 {
     char *rules[4] = {"RULES", "", "REGLES", ""};
     printf("\n%s\n", rules[language]);
     char *message[4] = {"We are playing in a field of", "On every round you will be asked to provide the coordinates x & y for a vessel.", "Nous jouons sur un terrain de", ""};
     char *message_explanation[4] = {"The goal is to find the hiden vessels coordinates. You have", "seconds to find the navires.", "Le but est de trouver les coordonnées des navires cachés. Vous avez", "secondes pour trouver les navires."};
-    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language+1], message_explanation[language], seconds, message_explanation[language+1]);
+    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation[language], seconds, message_explanation[language + 1]);
     char *message_str[4] = {"The coordinates x & y can take any value between 1 and", "(ex: A, B, C, ...)", "Les coordonnées x et y peuvent prendre n'importe quelle valeur comprise entre 1 et", ""};
     printf("%s %d %s\n", message_str[language], taille_plateau, message_str[1]);
     printf("================================================================\n");
 }
 
-//Lost graphics appear on screen
+// Lost graphics appear on screen
 void lost_graphics(int mode, int language)
 {
     char *lines[4] = {"=================================", "", "=================================", ""};
     char *extra[4] = {"===========", "", "==========", ""};
     printf("\n%s\n", lines[language]);
     char *over[4] = {"Game over", "", "Jeu terminé", ""};
-    printf("%s %s %s\n",extra[language], over[language], extra[language]);
+    printf("%s %s %s\n", extra[language], over[language], extra[language]);
     printf("%s\n", lines[language]);
     char *out_of[4] = {"YOU RAN OUT OF ROUNDS", "YOU RAN OUT OF TIME", "PLUS DE TOURS", "PLUS DE TEMPS"};
     if (mode == 1)
@@ -225,16 +225,16 @@ void lost_graphics(int mode, int language)
     }
     else if (mode == 2) // case solo option temps
     {
-        printf("      %s        \n", out_of[language+1]);
+        printf("      %s        \n", out_of[language + 1]);
     }
 }
 
-//Win graphics appear on screen
+// Win graphics appear on screen
 void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char name[30], int language)
 {
     clearScreen();
     char *total_number[4] = {"Total numbers of rounds that were played:", "", "Nombre total de tours joués :", ""};
-    printf("\n%s %d\n\n",total_number[language], round_nb);
+    printf("\n%s %d\n\n", total_number[language], round_nb);
 
     char *finished[4] = {"Game finished", "  YOU WIN  ", " Jeu terminé ", "VOUS GAGNEZ"};
     char *won[4] = {"wins since he/she found more navires on time (before running out of rounds)", "", "gagne puisqu'il a trouvé plus de navires à temps (avant de manquer de tours)", ""};
@@ -244,29 +244,29 @@ void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char n
     printf("=====================================\n");
     if (mode == 1)
     {
-        printf("            %s              \n", finished[language]);
+        printf("            %s              \n", finished[language + 1]);
     }
     else if (mode == 2)
     {
-        printf("\033[0;33m%s\033[1;0m %s\n",won[language], name);
+        printf("\033[0;33m%s\033[1;0m %s\n", name, won[language]);
     }
 }
 
-//Printing error message for allocating memory with corresponding ID
+// Printing error message for allocating memory with corresponding ID
 void allocation_error_print_with_id(char reference[512], int i)
 {
     fprintf(stderr, "Failed to allocate memory for %s %d.\n", reference, i);
     exit(-1);
 }
 
-//Printing error message for allocating memory with corresponding general
+// Printing error message for allocating memory with corresponding general
 void allocation_error_print_general(char reference[512])
 {
     fprintf(stderr, "Failed to allocate memory for %s.\n", reference);
     exit(-1);
 }
 
-//Menu to choose the game mode 
+// Menu to choose the game mode
 int game_mode_menu(int language)
 {
     char userInput[20];
@@ -275,7 +275,7 @@ int game_mode_menu(int language)
 
     while (true)
     {
-        printf("\n%s \n%s", msg[language], msg[language+1]);
+        printf("\n%s \n%s", msg[language], msg[language + 1]);
         scanf("%s", userInput);
 
         // Convert input to lowercase for case-insensitive comparison and returns
@@ -313,7 +313,7 @@ int game_mode_menu(int language)
     return 0;
 }
 
-//Choose the game mode once Solo game is selected
+// Choose the game mode once Solo game is selected
 int game_mode_solo(int language)
 {
     char userInput[20];
@@ -348,7 +348,7 @@ int game_mode_solo(int language)
     return 0;
 }
 
-//Choose the game mode once Multiplayer game is selected
+// Choose the game mode once Multiplayer game is selected
 int game_mode_multi(int language)
 {
     char userInput[20];
@@ -357,7 +357,7 @@ int game_mode_multi(int language)
 
     while (true)
     {
-        printf("\n%s\n%s", msg[language], msg[language+1]);
+        printf("\n%s\n%s", msg[language], msg[language + 1]);
         scanf("%s", userInput);
 
         // Convert input to lowercase for case-insensitive comparison and returns
@@ -383,7 +383,7 @@ int game_mode_multi(int language)
     return 0;
 }
 
-//Choose the game mode once AI game is selected
+// Choose the game mode once AI game is selected
 int game_mode_ai(int language)
 {
     char userInput[20];
@@ -392,7 +392,7 @@ int game_mode_ai(int language)
 
     while (true)
     {
-        printf("\n%s\n%s", msg[language], msg[language+1]);
+        printf("\n%s\n%s", msg[language], msg[language + 1]);
         scanf("%s", userInput);
 
         // Convert input to lowercase for case-insensitive comparison and returns
@@ -418,7 +418,7 @@ int game_mode_ai(int language)
     return 0;
 }
 
-//Menu that is printed when the game is paused (it provides different options)
+// Menu that is printed when the game is paused (it provides different options)
 int midle_game_menu(int rounds, int taille_plateau, int version, int mode, int language)
 {
     char userInput[20];
@@ -465,7 +465,7 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode, int l
         else if (strcmp(userInput, "close") == 0 || strcmp(userInput, "fermer") == 0)
         {
             clearScreen();
-            printf("\n%s\n", str[language+1]);
+            printf("\n%s\n", str[language + 1]);
             return 2;
         }
         else if (strcmp(userInput, "rules") == 0 || strcmp(userInput, "regles") == 0)
@@ -477,8 +477,9 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode, int l
         else if (strcmp(userInput, "exit") == 0 || strcmp(userInput, "quitter") == 0)
         {
             clearScreen();
-            printf("\n\033[1;36m%s\033[0m\n", msg_attention[language+1]);
-            api_delete_game_file();
+            printf("\n\033[1;36m%s\033[0m\n", msg_attention[language + 1]);
+            api_delete_game_file(language);
+
             exit(4); // code on the log that determines that the game was exited without any saving action taking place
         }
         else
@@ -489,7 +490,7 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode, int l
     }
 }
 
-//Menu that is printed when the game is paused (it provides different options) on a Solo game with option Time selected
+// Menu that is printed when the game is paused (it provides different options) on a Solo game with option Time selected
 int midle_game_menu_saving_unavailable_temps(int rounds, int taille_plateau, int mode, int *time_paused, int language)
 {
     time_t pause_start = time(NULL);
@@ -523,14 +524,14 @@ int midle_game_menu_saving_unavailable_temps(int rounds, int taille_plateau, int
             printf("\n%s\n", str[language]);
             msleep(1000);
             clearScreen();
-            printf("\n%s\n", str[language+1]);
+            printf("\n%s\n", str[language + 1]);
             *time_paused = (int)difftime(pause, pause_start);
             return 1;
         }
         else if (strcmp(userInput, "close") == 0 || strcmp(userInput, "fermer") == 0)
         {
             clearScreen();
-            printf("\n%s\n", str[language+1]);
+            printf("\n%s\n", str[language + 1]);
             *time_paused = (int)difftime(pause, pause_start);
             return 2;
         }
@@ -552,7 +553,7 @@ int midle_game_menu_saving_unavailable_temps(int rounds, int taille_plateau, int
         {
             clearScreen();
             printf("\n\033[1;36m%s\033[0m\n", msg_attention[language + 1]);
-            api_delete_game_file();
+            api_delete_game_file(language);
             exit(4); // code on the log that determines that the game was exited without any saving action taking place
         }
         else
@@ -563,7 +564,7 @@ int midle_game_menu_saving_unavailable_temps(int rounds, int taille_plateau, int
     }
 }
 
-//Menu that is printed when the game is paused (it provides different options) where saving the game isn't available
+// Menu that is printed when the game is paused (it provides different options) where saving the game isn't available
 int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode, int language)
 {
     char userInput[20];
@@ -594,13 +595,13 @@ int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode,
             printf("\n%s\n", str[language]);
             msleep(1000);
             clearScreen();
-            printf("\n%s\n", str[language+1]);
+            printf("\n%s\n", str[language + 1]);
             return 1;
         }
         else if (strcmp(userInput, "close") == 0 || strcmp(userInput, "fermer") == 0)
         {
             clearScreen();
-            printf("\n%s\n", str[language+1]);
+            printf("\n%s\n", str[language + 1]);
             return 2;
         }
         else if (strcmp(userInput, "rules") == 0 || strcmp(userInput, "regles") == 0)
@@ -619,8 +620,8 @@ int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode,
         else if (strcmp(userInput, "exit") == 0 || strcmp(userInput, "quitter") == 0)
         {
             clearScreen();
-            printf("\n\033[1;36m%s\033[0m\n", msg_attention[language+1]);
-            api_delete_game_file();
+            printf("\n\033[1;36m%s\033[0m\n", msg_attention[language + 1]);
+            api_delete_game_file(language);
             exit(4); // code on the log that determines that the game was exited without any saving action taking place
         }
         else
@@ -631,7 +632,7 @@ int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode,
     }
 }
 
-//Accesing either the Menu (paused mode) or playing this round
+// Accesing either the Menu (paused mode) or playing this round
 bool waitForMenuKeypress(int language)
 {
     char userInput[20];
@@ -648,7 +649,7 @@ bool waitForMenuKeypress(int language)
     return (strcmp(userInput, "menu") == 0);
 }
 
-//Logic to choose total time for a Solo game with option Time selected
+// Logic to choose total time for a Solo game with option Time selected
 void ajuster_temps(int taille_plateau, int *temps_limite)
 {
     if (taille_plateau <= 4)
@@ -665,7 +666,7 @@ void ajuster_temps(int taille_plateau, int *temps_limite)
     }
 }
 
-//Logic to choose total number of rounds (limiting the number of rounds when playing against teh computer [Solo mode option Rounds])
+// Logic to choose total number of rounds (limiting the number of rounds when playing against teh computer [Solo mode option Rounds])
 void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
 {
     if (mode == 1)
@@ -675,17 +676,17 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
             switch (nb_navires)
             {
             case 1:
-                *max_tours = 40;
+                *max_tours = 20;
             case 2:
-                *max_tours = 52;
+                *max_tours = 32;
             case 3:
-                *max_tours = 63;
+                *max_tours = 43;
             case 4:
-                *max_tours = 74;
+                *max_tours = 54;
             case 5:
-                *max_tours = 85;
+                *max_tours = 65;
             case 6:
-                *max_tours = 90;
+                *max_tours = 70;
             default:
                 *max_tours = 100;
             }
@@ -695,19 +696,19 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
             switch (nb_navires)
             {
             case 1:
-                *max_tours = 30;
+                *max_tours = 20;
             case 2:
-                *max_tours = 42;
+                *max_tours = 22;
             case 3:
-                *max_tours = 53;
+                *max_tours = 33;
             case 4:
-                *max_tours = 64;
+                *max_tours = 44;
             case 5:
-                *max_tours = 75;
+                *max_tours = 55;
             case 6:
-                *max_tours = 80;
+                *max_tours = 60;
             default:
-                *max_tours = 90;
+                *max_tours = 70;
             }
         }
         else
@@ -721,7 +722,7 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
     }
 }
 
-//Printing different messages on different parts of the game via identification 
+// Printing different messages on different parts of the game via identification
 void custom_graphics_on_proposition(int i, int **plateau, int taille_plateau, int colour, int mode, int id, int language)
 {
     char *msg[4] = {"Initializing the game...", "Enter the coordinates of the chosen point. The accepted format is number+letter (ex: 2B).", "Initialisation du jeu...", "Entrez les coordonnées du point choisi. Le format accepté est number+letter (ex: 2B)."};
@@ -745,13 +746,13 @@ void custom_graphics_on_proposition(int i, int **plateau, int taille_plateau, in
                 printf("%s\nVotre choix: ", msg[language + 1]);
                 break;
             case 1:
-                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s",err_msg[language], msg_ext[language]);
+                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s", err_msg[language], msg_ext[language]);
                 break;
             case 2:
-                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s",err_msg[language+1], msg_ext[language]);
+                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s", err_msg[language + 1], msg_ext[language]);
                 break;
             case 3:
-                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s",err_msg[language], msg_ext[language]);
+                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s", err_msg[language], msg_ext[language]);
                 break;
             case 4:
                 if (id == -1)
@@ -773,7 +774,7 @@ void custom_graphics_on_proposition(int i, int **plateau, int taille_plateau, in
             switch (id)
             {
             case 0:
-                printf("\n%s %d\e[0m\n\n",err_cor[language+1], i + 1);
+                printf("\n%s %d\e[0m\n\n", err_cor[language + 1], i + 1);
                 break;
             default:
                 printf("\n\e[4;%dmNavire No %d\e[0m\n\n", colour, i + 1);
@@ -783,28 +784,28 @@ void custom_graphics_on_proposition(int i, int **plateau, int taille_plateau, in
             switch (mode)
             {
             case 0:
-                printf("\n%s", msg_ext[language+1]);
+                printf("\n%s", msg_ext[language + 1]);
                 break;
             case 1:
-                printf("\n%s %s",dir_tai[language], msg_ext[language+1]);
+                printf("\n%s %s", dir_tai[language], msg_ext[language + 1]);
                 break;
             case 2:
-                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s",err_msg[language], msg_ext[language]);
+                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s", err_msg[language], msg_ext[language]);
                 break;
             case 3:
-                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s\nDirection: ",dir[language+1], dir[language]);
+                printf("\n\033[0;33mATTENTION!\033[1;0m %s\n%s\nDirection: ", dir[language + 1], dir[language]);
                 break;
             case 4:
                 printf("\n%s\nDirection: ", dir[language]);
                 break;
             case 5:
-                printf("\n%s\n%s",msg[language+1], msg_ext[language]);
+                printf("\n%s\n%s", msg[language + 1], msg_ext[language]);
                 break;
             case 6:
-                printf("\n\n\033[0;33mATTENTION!\033[1;0m %s\n%s",err_msg[language], msg_ext[language]);
+                printf("\n\n\033[0;33mATTENTION!\033[1;0m %s\n%s", err_msg[language], msg_ext[language]);
                 break;
             case 7:
-                printf("\n\n\033[0;33mATTENTION!\033[1;0m %s\n%s",err_msg[language+1], msg_ext[language]);
+                printf("\n\n\033[0;33mATTENTION!\033[1;0m %s\n%s", err_msg[language + 1], msg_ext[language]);
                 break;
             default:
                 break;
@@ -813,7 +814,7 @@ void custom_graphics_on_proposition(int i, int **plateau, int taille_plateau, in
     }
 }
 
-//Congratulations message printing function
+// Congratulations message printing function
 void game_mode_graphics_congratulations(int **prop, int taille_plateau, int nb_navires, int nb_navires_found, int id, char *buffer, int language)
 {
     char *msg[4] = {"Congratsulations, you found a navire", "so far out of", "Félicitations, vous avez trouvé jusqu'à présent un navire", "sur"};
@@ -821,17 +822,17 @@ void game_mode_graphics_congratulations(int **prop, int taille_plateau, int nb_n
     switch (id)
     {
     case 1:
-        printf("\033[0;36m\n=====================  %s %s. %d %s %d!!!  =====================\033[0m\n\n",msg[language], buffer, nb_navires_found,msg[language+1], nb_navires);
+        printf("\033[0;36m\n=====================  %s %s. %d %s %d!!!  =====================\033[0m\n\n", msg[language], buffer, nb_navires_found, msg[language + 1], nb_navires);
         break;
     default:
-        printf("\033[0;36m\n=====================  %s. %d %s %d!!!  =====================\033[0m\n\n",msg[language], nb_navires_found,msg[language+1], nb_navires);
+        printf("\033[0;36m\n=====================  %s. %d %s %d!!!  =====================\033[0m\n\n", msg[language], nb_navires_found, msg[language + 1], nb_navires);
         break;
     }
     printing_the_grille_v2(prop, taille_plateau);
     msleep(3000);
 }
 
-//Printing any errors function
+// Printing any errors function
 void error_graphics(int error_code, int language)
 {
     clearScreen();
@@ -859,7 +860,7 @@ void error_graphics(int error_code, int language)
     }
 }
 
-//Printing a message indicating that the game has been loaded from the server
+// Printing a message indicating that the game has been loaded from the server
 void game_loaded_graphics(int max_rounds_load, int taille_plateau_load, int language)
 {
     char *msg[4] = {"The previous game has been loaded from the server succesfully! For your reference, here are the rules:", "Round", "Le jeu précédent a été chargé depuis le serveur avec succès ! Pour information, voici les règles :", "Tour"};
@@ -868,7 +869,7 @@ void game_loaded_graphics(int max_rounds_load, int taille_plateau_load, int lang
     msleep(100);
 }
 
-//Indicating on which round we are for different game modes
+// Indicating on which round we are for different game modes
 void new_round_graphics(int round, int taille_plateau, int **prop, int id, char *buffer, int temps, int language)
 {
     char *msg[4] = {"Remaining time", "Round", "Temps restant", "Tour"};
@@ -876,16 +877,16 @@ void new_round_graphics(int round, int taille_plateau, int **prop, int id, char 
     switch (id)
     {
     case 0:
-        printf("\n\e[4;32m%s No %d\e[0m\n\n",msg[language+1], round);
+        printf("\n\e[4;32m%s No %d\e[0m\n\n", msg[language + 1], round);
         break;
     case 1:
-        printf("\n\e[4;32m%s No %d | %s: %d sec.\e[0m\n\n",msg[language+1], round, msg[language], temps);
+        printf("\n\e[4;32m%s No %d | %s: %d sec.\e[0m\n\n", msg[language + 1], round, msg[language], temps);
         break;
     case 2:
-        printf("\n\e[4;32m%s No %d\e[0m\n\n\e[1;32m%s\e[0m %s\n\n",msg[language+1], (round) / 2, buffer, msg_ext[language]); // the function proposition_jouer changes the NbJoue_global on every call and there are two calls (two players) before we change the number of round, that's why we divide by 2
+        printf("\n\e[4;32m%s No %d\e[0m\n\n\e[1;32m%s\e[0m %s\n\n", msg[language + 1], (round) / 2, buffer, msg_ext[language]); // the function proposition_jouer changes the NbJoue_global on every call and there are two calls (two players) before we change the number of round, that's why we divide by 2
         break;
     case 3:
-        printf("\n\e[4;32m%s No %d\e[0m\n\n\e[1;32m%s\e[0m %s\n\n",msg[language+1], ((round) / 2) - 1, buffer, msg_ext[language]); // the function proposition_jouer changes the Nb
+        printf("\n\e[4;32m%s No %d\e[0m\n\n\e[1;32m%s\e[0m %s\n\n", msg[language + 1], ((round) / 2) - 1, buffer, msg_ext[language]); // the function proposition_jouer changes the Nb
         break;
     default:
         break;
