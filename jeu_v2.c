@@ -35,7 +35,15 @@ int main(int argc, char **argv)
 {
 // Create a child process to play the music file
 #ifdef __APPLE__
-    system("open music.mp3");
+    // Create a child process to play the music file
+    pid_t pid = fork();
+
+    if (pid == 0)
+    {
+        // In the child process, play the music file
+        system("afplay music.mp3");
+        exit(0);
+    }
 #elif _WIN32
     system("cmd.exe /c \"powershell -c (New-Object Media.SoundPlayer 'music.mp3').PlaySync();\"");
 #endif
@@ -166,11 +174,21 @@ int main(int argc, char **argv)
                         repeat = false;
                         lost_graphics(1, language);
 
+#ifdef __APPLE__
+                        // Wait for the child process to terminate
+                        kill(pid, SIGTERM); 
+#endif
+
                         return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                     }
                     if (*NbNav1 == number_of_navires_jeu)
                     {
                         win_graphics(taille_plateau_jeu, prop1, *NbJoue - 1, 1, "", language);
+
+#ifdef __APPLE__
+                        // Wait for the child process to terminate
+                        kill(pid, SIGTERM); 
+#endif
 
                         return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                     }
@@ -209,6 +227,11 @@ int main(int argc, char **argv)
                     repeat = false;
                     lost_graphics(2, language);
 
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
+
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
 
@@ -227,6 +250,11 @@ int main(int argc, char **argv)
                     if (*NbNav1 == number_of_navires_jeu)
                     {
                         win_graphics(taille_plateau_jeu, prop1, *NbJoue - 1, 1, "", language);
+
+#ifdef __APPLE__
+                        // Wait for the child process to terminate
+                        kill(pid, SIGTERM); 
+#endif
 
                         return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                     }
@@ -309,6 +337,10 @@ int main(int argc, char **argv)
                     repeat_multi = false;
                     lost_graphics(1, language);
 
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav1 == number_of_navires_jeu || *NbNav2 == number_of_navires_jeu)
@@ -321,6 +353,11 @@ int main(int argc, char **argv)
                     {
                         win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                     }
+
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
 
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
@@ -379,6 +416,11 @@ int main(int argc, char **argv)
                     repeat_multi = false;
                     lost_graphics(1, language);
 
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
+
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav1 == number_of_navires_jeu || *NbNav2 == number_of_navires_jeu)
@@ -391,6 +433,11 @@ int main(int argc, char **argv)
                     {
                         win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                     }
+
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
 
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
@@ -459,6 +506,11 @@ int main(int argc, char **argv)
                     repeat_multi_custom = false;
                     lost_graphics(1, language);
 
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
+
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav1 == number_of_navires_jeu || *NbNav2 == number_of_navires_jeu)
@@ -471,6 +523,11 @@ int main(int argc, char **argv)
                     {
                         win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                     }
+
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
 
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
@@ -555,6 +612,11 @@ int main(int argc, char **argv)
                     {
                         win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                     }
+
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
 
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
@@ -642,6 +704,11 @@ int main(int argc, char **argv)
                     lost_graphics(1, language);
                     api_delete_game_file(language);
 
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
+
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav_load == number_of_navires_load)
@@ -649,11 +716,21 @@ int main(int argc, char **argv)
                     win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "", language);
                     api_delete_game_file(language);
 
+#ifdef __APPLE__
+                    // Wait for the child process to terminate
+                    kill(pid, SIGTERM); 
+#endif
+
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
             }
         }
     }
+
+#ifdef __APPLE__
+    // Wait for the child process to terminate
+    kill(pid, SIGTERM); 
+#endif
 
     return 1;
 }

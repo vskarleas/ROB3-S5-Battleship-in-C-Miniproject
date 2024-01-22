@@ -71,7 +71,7 @@ programmes.o : programmes.c
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-jeu.o : jeu.c programmes.h ui.h structures.h
+jeu_v1.o : jeu_v1.c programmes.h ui.h structures.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
@@ -120,7 +120,7 @@ ui.o : ui.c api.h
 ########################################################
 # regles explicites de creation des executables
 
-jeu : jeu.o programmes.o ui.o api.o
+jeu_v1 : jeu.o programmes.o ui.o api.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
