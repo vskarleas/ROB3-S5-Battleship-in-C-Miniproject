@@ -116,6 +116,7 @@
 * V8.4 Code compeletd. Needs to add the translatiosn and fix the ctes[pndacnces to the single programs
 * V8.5 Many translations were added on the ui.c.
 * V8.6 Translations were added on the api.c and on the jeu_v2.c
+* V9.0 Music for Mac computers has been tested
 
 # Filing codec
 

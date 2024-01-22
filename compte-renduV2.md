@@ -667,6 +667,7 @@ Vous trouverez ci-dessous la définition et l'explication des codes de sortie de
 | 9         | STATE  | Point choosen first carcater is not a number          |                                                                                                                             |
 | exit(-3)  | ERROR  | Multiplayer sub mode failed                           | Check the output of the function and try again                                                                              |
 | exit(-4)  | ERROR  | Solo sub mode failed                                  | Check the output of the function and try again                                                                              |
+| exit(7)   | OUTPUT | The game ended with the professor winning             |                                                                                                                             |
 
 #### Versioning
 
@@ -693,6 +694,13 @@ Voici les differentes versions dévelopées lors de l'evolution du projet :
 * **v7.3** Added a functionality to accept the format 2B for points coordinates
 * **V7.4** AI added and the module to create navires customly
 * **V8.0** Fixed issue with initialisatio_plateau_custom which couldn't detect the already existed navires, updated the UI files and transfered the majority of texts to the UI file as well. In addition to that, the code was optimised and there were several small bug fixes. The different game modes were seperated in order to be able to test them without the whole's game menu.
+* **V8.1** Fixed some logique issues on the AI model called Spark and added some fixes.
+* **V8.2** optimizzed the main program and added code to Fireball AI version
+* **V8.3** Fireball ai has been updated and for now it works excpet from some extreme edge cases
+* **V8.4** Code compeletd. Needs to add the translatiosn and fix the ctes[pndacnces to the single programs
+* **V8.5** Many translations were added on the ui.c.
+* **V8.6** Translations were added on the api.c and on the jeu_v2.c
+* **V9.0** Music for Mac computers has been tested
 
 ### Conclusion - pistes d'améliorations
 
