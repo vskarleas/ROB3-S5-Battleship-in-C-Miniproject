@@ -667,7 +667,7 @@ Vous trouverez ci-dessous la définition et l'explication des codes de sortie de
 | 9         | STATE  | Point choosen first carcater is not a number          |                                                                                                                             |
 | exit(-3)  | ERROR  | Multiplayer sub mode failed                           | Check the output of the function and try again                                                                              |
 | exit(-4)  | ERROR  | Solo sub mode failed                                  | Check the output of the function and try again                                                                              |
-| exit(7)   | OUTPUT | The game ended with the professor winning             |                                                                                                                             |
+| exit(7)   | OUTPUT | The game ended with the professor winning             | This is only a touch of humour in our project :)                                                                            |
 
 #### Versioning
 
