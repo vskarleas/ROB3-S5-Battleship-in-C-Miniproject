@@ -1,24 +1,18 @@
 # Bataille Navale S5 2023-2024
 
-
-
 ## Introduction
 
-Dans le cadre de  notre cours d'informatique en troisième année de Robotique à Polytech Sorbonne, notre défi a été de développer un projet collaboratif : une version informatisée du célèbre jeu de bataille navale.Ce dernier a non seulement mis à l'épreuve nos compétences en programmation, mais a aussi exigé une coordination d'équipe efficace, avec une gestion complexe des fichiers et de leurs interrelations. Notre objectif principal étant de creer un espace où le joueur arrangeait six navires de différentes tailles sur un plateau dont les dimensions étaient déterminées par lui-même, ajoutant ainsi une touche personnelle et stratégique au jeu.
-
-Ce projet nous a également permis d'explorer et d'intégrer des fonctionnalités avancées , telles que :
+Dans le cadre du cours d'informatique du premier semestre de la troisième année de spécialité Robotique à Polytech Sorbonne , nous avons été chargés de développer un mini-projet collaboratif, challengeant notre habileté à programmer et à travailler en équipe dans un environnement complexe, avec une gestion rigoureuse des fichiers et de leurs interdépendances. Le projet choisi fut la création d'une version informatisée du jeu classique de bataille navale. Notre tâche consistait à concevoir un jeu où six navires, de tailles variant de 2 à 6 cases, sont placés aléatoirement sur un plateau dont la taille est déterminée par le joueur.
 
 . Un mode multijoueur,
 . La possibilité de sauvegarder et de continuer des parties en cours,
 . Et l'introduction d'une intelligence artificielle pour enrichir l'expérience de jeu.
 
-
-Pour structurer ce rapport, nous commencerons par expliquer les règles du jeu et les differentes fonctions de bases imposées par le sujet . Nous décrirons ensuite les principales fonctions que nous avons programmées et les contributions personnelles apportées ; pour poursuivre avec les problèmes rencontrés et les solutions trouvées. Ce plan permettra de présenter de manière claire et détaillée notre processus de travail et les résultats obtenus.
-
+Pour structurer ce rapport, nous commencerons par expliquer les règles du jeu et les differentes  fonctions de bases imposées par le sujet . Nous décrirons ensuite les principales fonctions que nous avons programmées et les contributions personnelles apportées , suivies par les problèmes rencontrés et les solutions que nous avons trouvées. Ce plan permettra de présenter de manière claire et détaillée notre processus de travail et les résultats obtenus.
 
 ## Règles du jeu
 
-Avant de commencer la programmation de notre version du jeu de bataille navale, il était essentiel de définir clairement les règles, notamment les critères de victoire, que ce soit en solo ou contre un autre joueur. Inspirés par la version simplifiée que nous avions réalisée lors du TP2, nous avons décidé que le critère de victoire serait basé sur le nombre total de tentatives du joueur, en tenant compte de la taille variable du plateau de jeu. L'alogithme ci-desosus rend compte des cette regle du jeu :
+Avant de commencer la programmation de notre version du jeu de bataille navale, il était essentiel de définir clairement les règles, notamment les critères de victoire, que ce soit en solo ou contre un autre joueur. Inspirés par la version simplifiée que nous avions réalisée lors d'un travail pratique précédent (TP2), nous avons décidé que le critère de victoire serait basé sur le nombre total de tentatives du joueur, en tenant compte de la taille variable du plateau de jeu.Ainsi, l'algorithme proposé ci-dessous décide du temps impartis accordé à l'utilisateur en fonction de la taille du plateau choisis.
 
 ```c
 // Vérifie si le nombre maximum de tours a été atteint et si l'utilisateur n'a pas trouvé tous les navires
@@ -48,9 +42,8 @@ if (temps_restant <= 0) {
     afficher_message_defaite();  // Affiche le message de défaite
 }
 ```
+
 Ce système ajoute une couche de complexité et d'engagement, rendant le jeu plus captivant et compétitif.
-
-
 
 ## Indications
 
@@ -159,11 +152,9 @@ La fonction vérifie le statut du point sur le plateau pour les coordonées en q
 * Si `prop[x][y] = NAVIRE`: Alors `prop[x][y] = NAVIRE_TROUVE_PLUS_1` pour indiquer un navire précédemment touché.
 * Sinon (pas de navire): Alors `prop[x][y] = AUCUN_NAVIRE` pour indiquer une cellule vide.
 
-
 **Pourquoi est_valide_pro et pas est_valide ?**
 
 `est_valide_pro` est une fonction qui répond au cahier des charges de la fonction demandée `est_valide`, sauf que celle-ci traite chaque cas séparément tout en effectuant la vérification du placement d'un navire à une position dès le moment où les coordonnées x, y aléatoires sont créées.
-
 
 ### Fonction `navire_trouve`
 
@@ -198,8 +189,17 @@ bool navire_trouve(int x, int y)
 1. La fonction initialise une variable `navire_coulé` à `faux`. Cette variable servira à stocker si le navire a coulé.
 2. La fonction vérifie si la case aux coordonnées `x, y` est vide (`prop[x][y] = AUCUN_NAVIRE`). Si c'est le cas, le navire a coulé et `navire_coulé` est mis à `vrai`.
 3. La fonction vérifie également si la case aux coordonnées `x, y` a déjà été touchée (`prop[x][y] = NAVIRE_TROUVE`). Si c'est le cas, le navire n'a pas coulé, mais le nombre de coups sur le navire est incrémenté (`nombre_touches = nombre_touches + 1`).
-4. Si aucune des conditions précédentes est verifiée, aucun point des navires à été trouvé et `navire_trouve` est mis à `faux`.
+4. Si aucune des conditions précédentes est verifié, aucun point des navires à été trouvé et `navire_trouve` est mis à `faux`.
+   <<<<<<< HEAD
+   ============
 
+>>>>>>> parent of 9e4fb81 (Update compte-renduV2.md)
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
 
 ### Fonction `ajuster_tours`
 
@@ -221,21 +221,15 @@ L'algorithme de ajuster_tours calcule le nombre maximum de tours en tenant compt
      * Fixer `max_tours` à 60.
 3. Affecter la valeur calculée de `max_tours` à la variable globale.
 
-   
-
 ## Colaboration et gestion de projet en Binôme
 
 Comment garantir que les contributions de chaque membre s'alignent parfaitement dans un projet informatique complexe ? Pour notre projet, les communications directes étaient primordiales, mais pour documenter et suivre les discussions, nous avons utilisé Git. Cette approche nous a permis de contribuer indépendamment, tout en conservant un historique complet des changements. Git a également facilité l'analyse pré-compilation du code et sa sauvegarde sur un service en ligne, accessible depuis n'importe quel appareil. Enfin, notre projet était hébergé sur un répertoire GitHub, intégrant GitHub Copilot pour l'analyse de code.
 
-Pour mener à bien notre projet, nous avons adopté une stratégie d'organisation et de progression graduelle. Nous avons commencé par des étapes simples, améliorant et développant notre jeu au fur et à mesure. Cette approche méthodique nous a permis de rester concentrés et efficaces. De plus, pour une répartition claire des tâches, nous avons utilisé un tableau de Gantt. Celui-ci a été important pour suivre notre progression, affecter des responsabilités et respecter les délais, assurant ainsi une gestion de projet structurée et cohérente tout le long.
+Pour mener à bien notre projet, nous avons adopté une stratégie d'organisation et de progression graduelle. Nous avons commencé par des étapes simples, améliorant et développant notre jeu au fur et à mesure. Cette approche méthodique nous a permis de rester concentrés et efficaces. De plus, pour une répartition claire des tâches, nous avons utilisé un tableau de Gantt. Ce tableau a été crucial pour suivre notre progression, assigner des responsabilités, et respecter les délais, assurant ainsi une gestion de projet structurée et cohérente tout au long du développement.
 
 [AJOUTER LE TABLEAU GANTT]
 
-
-
 ## Programmation
-
-
 
 ### UI
 
@@ -254,9 +248,7 @@ Cette fonction permet d'afficher différents messages et invites à l'utilisateu
 * `mode`: Le mode de jeu (solo ou multijoueur)
 * `id`: Un identifiant pour des messages d'erreur spécifiques
 
-Elle permet ainsi de déterminer le message qu'il faut afficher selon les combinaisons des paramètres.
-
-
+Détermine le message qu'il faut afficher selon les combinaisons des paramètres.
 
 #### **game_mode_graphics_congratulations:**
 
@@ -269,15 +261,11 @@ Cette fonction permet d'afficher un message de félicitations au moment ou l'uti
 * `id`: Un identifiant pour le type de navire trouvé (navire du joueur ou navire de l'adversaire)
 * `buffer`: Une chaîne contenant le type de navire trouvé
 
-
-
 #### **error_graphics:**
 
 Cette fonction permet d'afficher des messages d'erreur à l'utilisateur. Elle prend le paramètre suivant :
 
 * `error_code`: Un entier représentant le message qu'il faut afficher par la librairie de base des erreurs.
-
-  
 
 #### **new_round_graphics:**
 
@@ -292,11 +280,10 @@ Cette fonction permet d'afficher un message indiquant le début d'une nouvelle m
 
 La fonction affiche un message indiquant le numéro de la manche et, si applicable, le temps restant. Elle affiche également le plateau de jeu.
 
-
-
 ### Structures
 
 Dans le cadre de notre projet, les consignes exigeaient la déclaration de structures spécifiques pour représenter les éléments clés du jeu:
+
 ```c
 typedef struct une_case {
   int x; /* position de la case en x*/
@@ -313,8 +300,17 @@ typedef struct navire
 } Navire;
 ```
 
-Pour une gestion optimale des divers modes de jeu et scénarios dynamiques dans notre projet, nous avons mis en place des structures supplémentaires. Chacunes d'entres elles a été conçue pour remplir un rôle spécifique, contribuant à la flexibilité et à l'efficacité du jeu:
+Pour une gestion optimale des divers modes de jeu et scénarios dynamiques dans notre projet, nous avons mis en place des structures supplémentaires. Chacune de ces structures a été conçue pour remplir un rôle spécifique, contribuant à la flexibilité et à l'efficacité du jeu:
+<<<<<<< HEAD
+============
 
+>>>>>>> parent of 9e4fb81 (Update compte-renduV2.md)
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
 
 * Les structures `Cellule_Liste_Navire` et `Cellule_Liste_Point` sont utilisées pour créer des listes chaînées de navires .
 * La structure `Liste_Navire` est utilisée pour gérer une liste de navires. Elle permet d'ajouter des navires dans la liste chainée des navires.
@@ -361,16 +357,12 @@ typedef struct Tableau_Point_
 } Tableau_Point;
 ```
 
-
-
 #### **La structure Cellule_Liste_Navire**
 
 Représente un élément d'une liste de navires. Elle contient deux champs :
 
 * `data`: Une structure `Navire` qui représente les données du navire.
 * `suiv`: Un pointeur vers l'élément suivant de la liste.
-
-  
 
 #### **La structure Liste_Navire**
 
@@ -380,16 +372,12 @@ Représente une liste de navires. Elle contient trois champs :
 * `first`: Un pointeur vers le premier élément de la liste.
 * `last`: Un pointeur vers le dernier élément de la liste.
 
-  
-
 #### **La structure Cellule_Liste_Point**
 
 Représente un élément d'une liste de points. Elle contient deux champs :
 
 * `data`: Une structure `Case` qui représente les données du point.
 * `suiv`: Un pointeur vers l'élément suivant de la liste.
-
-  
 
 #### **La structure Liste_Point**
 
@@ -399,8 +387,6 @@ Représente une liste de points. Elle contient trois champs :
 * `first`: Un pointeur vers le premier élément de la liste.
 * `last`: Un pointeur vers le dernier élément de la liste.
 
-
-
 #### **La structure Tableau_Point**
 
 Représente un tableau de points. Elle contient deux champs :
@@ -408,15 +394,11 @@ Représente un tableau de points. Elle contient deux champs :
 * `taille`: Le nombre d'éléments dans le tableau.
 * `tab`: Un pointeur vers le tableau des éléments.
 
-
-
 ### Saving API
 
 L'implémentation de la fonction de sauvegarde était un aspect primordial de notre jeu. Nous avons conçu un système de codage de fichiers, ou "filing codec", pour cette fonctionnalité. La sauvegarde d'une partie se fait simplement : l'utilisateur ouvre le menu et sélectionne "Sauvegarder". La fonction `api_save_game` se charge alors d'encoder l'état actuel du jeu en utilisant notre codec spécifique.
 
 Pour reprendre une partie sauvegardé, les joueurs sélectionnent "Continuer" ou "Load" dans le menu principal. Cette action active `api_load_game`, qui réinitialise le jeu avec les données sauvegardées. Nous avons également anticipé des situations complexes, telles qu'une tentative de reprise à partir d'une sauvegarde inexistante. Qu'advient-il dans ce cas ? Ou si un joueur sauvegarde, continue de jouer, puis ferme le jeu sans terminer ? Nous avons inclus des fonctions pour traiter ces scénarios, y compris la suppression automatique du fichier de sauvegarde une fois les données chargées, assurant ainsi une gestion de jeu fluide et cohérente.
-
-
 
 #### **api_load_game**
 
@@ -430,8 +412,6 @@ Pour reprendre une partie sauvegardé, les joueurs sélectionnent "Continuer" ou
 6. Fermer le fichier.
 7. Retourner la liste `liste` des navires.
 
-   
-
 #### **api_table_size**
 
 **Algorithme :**
@@ -441,16 +421,12 @@ Pour reprendre une partie sauvegardé, les joueurs sélectionnent "Continuer" ou
 3. Fermer le fichier.
 4. Retourner le nombre de navires.
 
-   
-
 #### **api_clearFile**
 
 **Algorithme :**
 
 1. Ouvrir le fichier `filecodec239012V1` en écriture, ce qui supprime le contenu du fichier s'il existe déjà, sinon afficher un message d'erreur et quitter le programme.
 2. Fermer le fichier.
-
-   
 
 #### **api_save_game**
 
@@ -463,8 +439,6 @@ Pour reprendre une partie sauvegardé, les joueurs sélectionnent "Continuer" ou
 5. Écrire le tableau du plateau de jeu dans le fichier.
 6. Fermer le fichier.
 
-
-
 #### **api_delete_game_file**
 
 **Algorithme :**
@@ -473,15 +447,13 @@ Pour reprendre une partie sauvegardé, les joueurs sélectionnent "Continuer" ou
 2. Afficher un message de réussite.
 3. Retourner.
 
-   
-
 ### Filing codec
 
 `number_of_navires taille_plateau coulle round sens_nav_1 x_nav_1 y_nav_1 taille_nav_1 id_nav_1 sens_nav_2 ...  $ prop_table_codec`
 
 Notre "filing codec" est une méthode structurée pour encoder et décoder les données du jeu de bataille navale. Il suit une séquence spécifique d'éléments pour garantir l'intégrité et la lisibilité des fichiers de jeu enregistrés.
 
-**Qu'est ce qui est inclus dans le codec ?**
+**Qu'est ce qui  est inclus dans le codec ?**
 
 1. **Nombre de navires :** Cet entier indique le nombre total de navires présents dans le jeu.
 2. **Taille du tableau :** Cet entier représente la dimension du plateau de jeu, généralement représenté comme `x` par `y`.
@@ -501,33 +473,57 @@ Notre "filing codec" est une méthode structurée pour encoder et décoder les d
 6. **Marqueur de fin des données de navire (\$) :** Ce caractère marque la fin de la section des informations sur le navire.
 7. **Données du tableau de jeu :** Cette section encode l'état réel du plateau de jeu, représenté comme une matrice d'entiers. Chaque élément de la matrice correspond à une cellule sur le plateau, avec des valeurs indiquant si la cellule est vide, touchée ou coulée.
 
+Remarque: L'ajout de l'identification du temps dans notre 'filing codec' pourrait constituer une amélioration significative pour la sauvegarde. Cette information offrirait un contexte temporel précieux sur l'état du jeu enregistré, permettant aux joueurs de mieux comprendre quand la partie a été sauvegardée.
 
+### Les differents modes de jeu
 
-### Les differents modes de jeu 
+<<<<<<< HEAD
+Dans notre projet de jeu de bataille navale, nous avons introduit plusieurs modes de jeu pour enrichir l'expérience utilisateur. Ces modes variés offrent aux joueurs des approches diversifiées pour profiter pleinement du jeu. Voici un aperçu de ces différents modes et de leurs caractéristiques distinctives :
+===========================================================================================================================================================================================================================================================================================================================
 
-Dans notre projet de jeu de bataille navale, nous avons introduit plusieurs modes de jeu pour enrichir l'expérience utilisateur. Ces modes variés offrent aux joueurs des approches diversifiées pour profiter pleinement du jeu. Voici un aperçu de ces différents modes et de leurs caractéristiques respectives :
+### Les differents modes de jeu
 
+Dans notre projet de jeu de bataille navale, nous avons introduit plusieurs modes de jeu pour enrichir l'expérience utilisateur. Ces modes variés offrent aux joueurs des approches diversifiées pour profiter pleinement du jeu. Voici un aperçu de ces différents modes et de leurs caractéristiques distinctives :
+
+>>>>>>> parent of 9e4fb81 (Update compte-renduV2.md)
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
 
 ### **Mode Solo**
 
 Dans notre jeu, le mode solo se décline en deux sous-modes distincts pour varier l'expérience de jeu :
 
 * **Mode classique :** Ici, le joueur a un nombre illimité de tours pour essayer de couler les navires contrôlés par l'ordinateur. Ce mode permet au joueur de prendre son temps et de stratégiser chaque coup sans pression temporelle.
-
 * **Mode chronométré :** Dans ce sous-mode, le joueur est confronté à une contrainte de temps, ajoutant un élément de rapidité et d'urgence au jeu. Le joueur doit couler tous les navires de l'ordinateur avant la fin du temps imparti, ce qui demande des décisions rapides et stratégiques.
 
  Les deux variantes du mode solo sont organisées comme suit :
 
-1. **Initialisation :**  : L'ordinateur place aléatoirement ses navires sur le plateau de jeu. Le joueur ne voit pas la disposition des navires ennemis.
-2. **Jeu du joueur :**  Le joueur choisit une case pour tenter de trouver et couler les navires ennemis.
+<<<<<<< HEAD
+
+1. **Initialisation :** L'oridnateur positionne les navires aléatoirement sur le plateau de jeu en fonction de la taille du plateau de jeu et du nombre de navires choisis par l'utilisateur.
+2. **Jeu du joueur :** Le joueur choisit une case pour tenter de trouver et couler les navires ennemis.
+   ================================================================================================
+3. **Initialisation :** Initialisation : L'ordinateur place aléatoirement ses navires sur le plateau de jeu. Le joueur ne voit pas la disposition des navires ennemis.
+4. **Jeu du joueur :**  Le joueur choisit une case pour tenter de trouver et couler les navires ennemis.
+
+>>>>>>> parent of 9e4fb81 (Update compte-renduV2.md)
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
+
 3. **Vérification du résultat :** Après chaque coup, le jeu vérifie si le joueur a touché, manqué, ou coulé un navire ennemi.
 4. **Fin de la partie :** La partie se termine soit lorsque tous les navires ennemis sont coulés, soit lorsque le joueur atteint la limite de tours ou de temps imparti.
-   
-   
 
 ### **Mode Load**
 
-Dans notre jeu, le mode "Load" permet aux joueurs de continuer une partie sauvegardée précédemment. Le fichier de sauvegarde contient des informations essentielles  (plus de détails sur la partie Filing codec)) telles que  :
+Dans notre jeu, le mode "Load" permet aux joueurs de continuer une partie sauvegardée précédemment. Le fichier de sauvegarde contient des informations essentielles  (plus de détails sur la partie Filing codec)) tel que  :
 
 * La taille du plateau de jeu
 * Le nombre de navires
@@ -535,27 +531,49 @@ Dans notre jeu, le mode "Load" permet aux joueurs de continuer une partie sauveg
 * Le nombre de navires coulés
 * Le nombre de tours joués
 
-Nota bene : Pour améliorer ce mode, nous pourrions envisager:
+Pour améliorer ce mode, nous pourrions envisager:
 
 * des sauvegardes automatiques à intervalles réguliers (par exemple toutes les 10 secondes)
 * de créer un second fichier archivant chaque mouvement. Ce fichier permettrait de revoir les actions du joueur sur le terminal, offrant ainsi une rétrospective détaillée de la partie.
 
-
-
 ### **Mode Multiplayer**
 
-Le mode multijoueur permet à deux joueurs de s'affronter directement. Chaque joueur crée son propre plateau de jeu, en y positionnant ses navires de manière stratégique. Les joueurs se relaient ensuite pour attaquer les navires adverses sur le plateau de l'autre joueur. L'algorithme de determination du gagant prend en compte le nombre de navires coulés, ainsi que le nombre de tours joués .
+<<<<<<< HEAD
+Le mode multiplayer dde notre jeu permet à deux utilisateur de joueur l'un contre l'autre. L'utilisateur 1 crée le tableau pour l'utilisateur 2 et vice-versa. L'algorithme qui decide qui gagne prend en compte le nombre de navires coulés, ainsi que le nombre des tours passés.
+=======================================================================================================================================================================================================================================================================================
+
+Le mode multijoueur permet à deux joueurs de s'affronter directement. Chaque joueur crée son propre plateau de jeu, en y positionnant ses navires de manière stratégique. Les joueurs se relaient ensuite pour attaquer les navires adverses sur le plateau de l'autre joueur. L'algorithme de determination du gagant  prend en compte le nombre de navires coulés, ainsi que le nombre de tours joués .
+
+>>>>>>> parent of 9e4fb81 (Update compte-renduV2.md)
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
 
 **Algorithme :**
 
-1. Installation des Compteurs :Initialiser un compteur de navires coulés pour chaque joueur.
-2. Progression du Jeu :Pour chaque joueur, itérer sur les navires de son plateau de jeu et vérifier si le navire est coulé.
+1. Initialiser un compteur de navires coulés pour chaque joueur.
+2. Pour chaque joueur, itérer sur les navires de son plateau de jeu et vérifier si le navire est coulé.
    * Si un navire est coulé, incrémenter le compteur de navires coulés correspondant.
-3. Critères de Victoire:
-   * La partie prend fin de deux manières :Si un joueur parvient à couler tous les navires de son adversaire, il remporte immédiatement la partie. Si la limite de tours est atteinte sans qu'un joueur ait coulé tous les navires adverses, le joueur avec le plus grand nombre de navires ennemis détruits est déclaré vainqueur.
-  
-     
-**Pseudo-code :**
+     <<<<<<< HEAD
+3. Comparer les compteurs de navires coulés des deux joueurs.
+   * Le joueur qui a coulé le nombre le plus grandes des navires gagne au cas ou il ne reste plus des tours. Sinon gagne celui qui trouve tous les navires au premier.
+
+=======
+3. Critères de Victoire .
+
+* La partie prend fin de deux manières :Si un joueur parvient à couler tous les navires de son adversaire, il remporte immédiatement la partie. Si la limite de tours est atteinte sans qu'un joueur ait coulé tous les navires adverses, le joueur avec le plus grand nombre de navires ennemis détruits est déclaré vainqueur.
+
+>>>>>>> parent of 9e4fb81 (Update compte-renduV2.md)
+>>>>>>> **Pseudo-code :**
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
 
 ```python
 compteurCoulesJoueur1 = 0
@@ -577,15 +595,35 @@ sinon :
     le match continue
 ```
 
-### **Mode IA**
+### Mode IA
 
-Le mode Intelligence Artificielle (AI) dans notre jeu de bataille navale propose une expérience solo captivante, où le joueur se mesure à un ordinateur simulant des stratégies humaines. Développer une IA crédible et réactive a été un enjeu majeur de ce projet, apportant une dimension supplémentaire et enrichissante au mode solo du jeu.
+<<<<<<< HEAD
 
-*Déroulement du Jeu :
+## Problèmes - Solutions + Notes
 
-Sélection du Mode AI : Le joueur a le choix entre deux sous-modes AI, "Spark" et "Fireball", chacun avec une stratégie d'attaque distincte.
+=======
+Le mode AI (Intelligence Artificielle) de notre jeu de bataille navale offre une expérience solo enrichissante, où le joueur affronte un adversaire géré par ordinateur capable d'imiter dans une scertaine mesure des stratégies humaines. Pour nous, réussir à développer une IA qui réagit et joue de manière crédible était un aspect crucial du projet, enrichissant l'expérience solo pour les joueurs.
 
-Initialisation du Plateau : Le joueur crée son propre plateau en plaçant ses navires de manière personnalisée.Parallèlement, l'AI place ses navires de manière automatique sur son plateau.
+>>>>>>> parent of 9e4fb81 (Update compte-renduV2.md)
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
+
+1. La création de six navires sur un plateau de taille inférieure à 6 n'était pas garantie. Nous avons découvert que le problème provenait de la variable booléenne responsable de l'incrémentation du compteur de navires créés. Cette variable n'était pas réinitialisée, ce qui provoquait un problème logique lorsque le programme devait prendre une nouvelle taille, direction ou coordonnées pour un navire.
+
+   * La variable booléenne responsable de l'incrémentation du compteur de navires créés n'était pas réinitialisée, ce qui provoquait un problème logique lors de la création de six navires sur un plateau de petit taille.
+2. Another issue that we had was with the detection of existign navires that were placed from the user manually (on multiplayer or AI mode). It was like the function est_valide_pro wasn't returning a response.
+
+   * Eventually, we discovered that we used another identification code for the navires placed manually from the user - allowing us simply to distinhue the different operations - that were retransformed to real navire points once the lacement was completed.
+   * The solution was to include the logical 'or' on the `est_valide_pro` function to detect those points as well.
+3. A liste chainne with type Liste_Navire is used in order to make all the required verifications. Ideally we would like to use the method that deletes a navire from that liste in irder to minimise the processing time. However we need to fix the function responsible for doing that `Liste_Point supprimer_liste_Navire(Liste_Navire L)`.
+4. To be noted that this procedure allows us to have only one plateau where everything is parsed dynamicly. The liste looks like the following:
+
+<<<<<<< HEAD
+============
 
 En mode "Spark", l'AI choisit aléatoirement ses cibles sur le plateau du joueur. Elle attaque sans suivre de stratégie particulière, ce qui rend ce mode plus adapté aux débutants ou pour une expérience de jeu moins complexe.
 En mode "Fireball", l'AI adopte une approche plus stratégique. Après avoir touché un navire, elle suit un algorithme pour déterminer la meilleure façon de couler ce navire en attaquant les cases adjacentes de manière systématique.
@@ -595,7 +633,7 @@ Le jeu fournit des retours après chaque attaque, indiquant si un tir a touché,
 
 Fin de la Partie : La partie se termine lorsque l'un des joueurs (le joueur humain ou l'AI) a réussi à couler tous les navires de l'adversaire.Le gagnant est celui qui parvient le premier à éliminer tous les navires de son adversaire.
 
-Voici l'algorithme de la fonction next_point de notre programme, fonction qui joue un role important dans le mode AI,particulierement dans la stratégie plus avancée du mode "Fireball":
+Voici l'algorithme de la fonction next_point de notre programme, fonction qui joue un role crucial dans le mode AI,particulierement dans la stratégie plus avancée du mode "Fireball":
 
 **Algorithme :**
 
@@ -677,38 +715,47 @@ Voici l'algorithme de la fonction next_point de notre programme, fonction qui jo
 //    1. Définir x_now et y_now selon leur deep_sens et l'état Vertical
 
 ```
-Ici, La fonction next_point utilise une combinaison d'heuristique et d'aléatoire pour déterminer le prochain point à vérifier dans le jeu de bataille navale. La fonction essaie d'abord de trouver de nouveaux segments de navire en vérifiant les points autour du point précédent qui sont déjà connus pour faire partie d'un navire. Si un nouveau segment de navire est trouvé, la fonction passe à l'autre direction de recherche pour continuer à chercher le navire. Si aucun nouveau segment de navire n'est trouvé, la fonction sélectionne au hasard un point dans une direction qui n'a pas encore été explorée. La fonctin intègre également une logique pour gérer les cas où elle trouve un segment de navire mais ne peut pas continuer dans la même direction (à cause des bords du plateau ou parce qu'elle atteint un point déjà exploré sans succès). Dans ces situations, elle inverse son orientation (de verticale à horizontale ou vice versa) pour continuer à chercher le reste du navire.
 
+Ici, La fonction next_point utilise une combinaison d'heuristique et d'aléatoire pour déterminer le prochain point à vérifier dans le jeu de bataille navale. La fonction essaie d'abord de trouver de nouveaux segments de navire en vérifiant les points autour du point précédent qui sont déjà connus pour faire partie d'un navire. Si un nouveau segment de navire est trouvé, la fonction passe à l'autre direction de recherche pour continuer à chercher le navire. Si aucun nouveau segment de navire n'est trouvé, la fonction sélectionne au hasard un point dans une direction qui n'a pas encore été explorée. La fonctin intègre également une logique pour gérer les cas où elle trouve un segment de navire mais ne peut pas continuer dans la même direction (à cause des bords du plateau ou parce qu'elle atteint un point déjà exploré sans succès). Dans ces situations, elel inverse sa direction ou change d'orientation (de vertical à horizontal ou vice versa) pour continuer à chercher le reste du navire.
 
-
-Nota bene:
-Par ailleurs, nous avons intégré d'autres fonctionnalités à notre jeu , parfois avec une touche d'humour, pour rendre l'expérience encore plus agréable et surprenante. Ces éléments sont à découvrir par les utilisateurs lorsqu'ils explorent le jeu...
-
+Nota bene:  Nous avons intégré d'autres  fonctionnalités, parfois avec une touche d'humour, pour rendre l'expérience utilisateur encore plus agréable et surprenante. Ces éléments sont à découvrir par les utilisateurs lorsqu'ils explorent le jeu...
 
 ## Problèmes - Solutions
 
-Durant le développement de notre jeu de bataille navale, nous avons fait face à divers défis techniques, nécessitant réflexion et créativité pour trouver des solutions adéquates. Voici un résumé des principaux obstacles rencontrés et des stratégies adoptées pour les résoudre :
+Au cours du développement de notre jeu de bataille navale, nous avons rencontré plusieurs défis techniques. Ces problèmes ont nécessité des solutions créatives et une réflexion approfondie. Voici un récapitulatif de certains des principaux obstacles que nous avons dû surmonter, ainsi que les stratégies que nous avons utilisées pour les résoudre :
 
 1.**Problème de Création de Navires :** Sur un petit plateau, la création de six navires posait problème. Le souci provenait de la non-réinitialisation d'une variable booléenne, qui entravait l'incrémentation correcte du compteur de navires. Nous avons résolu ce problème en réinitialisant cette variable à chaque tentative de placement de navire.
 
-     
 2. **Détection de Navires en Modes Multijoueur et IA :** Nous avions des difficultés à détecter les navires placés manuellement. Le problème venait de l'utilisation d'un code d'identification différent pour ces navires. La solution a consisté à inclure le "ou" logique dans la fonction `est_valide_pro` afin de détecter également ces points.
-     
+
  **Optimisation avec Liste Chaînée :** Pour minimiser le temps de traitement, nous souhaitions supprimer les navires d'une liste chaînée (`Liste_Navire`). La fonction `supprimer_liste_Navire` a été ajustée pour cette opération, améliorant l'efficacité du processus.   Il est à noter que cette procédure nous permet de n'avoir qu'un seul plateau où tout est analysé de manière dynamique. La liste ressemble à ce qui suit :
-   | ID | Data                      |
-   | -- | ------------------------- |
-   | 0  | Data of navire 0 -> 1     |
-   | 1  | Data of navire 1 -> 2    |
-   | 2  | Data of navire 2 -> 3    |
-   | 3  | Data of navire 3 -> 4    |
-   | 4  | Data of navire 4 -> 5    |
-   | 5  | Data of navire 5 -> NULL |
 
+>>>>>>> parent of 9e4fb81 (Update compte-renduV2.md)
+>>>>>>>
+>>>>>>> | ID | Data                      |
+>>>>>>> | -- | ------------------------- |
+>>>>>>> | 0  | Data of navire 0 -> 1     |
+>>>>>>> | 1  | Data of navire 1 -> 2    |
+>>>>>>> | 2  | Data of navire 2 -> 3    |
+>>>>>>> | 3  | Data of navire 3 -> 4    |
+>>>>>>> | 4  | Data of navire 4 -> 5    |
+>>>>>>> | 5  | Data of navire 5 -> NULL |
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
 
-Nota bene: Nous avons développé une version améliorée de notre fonction d'affichage, nommée printing_the_grille_v2. Cette nouvelle version est plus adaptée et a été intégrée dans la dernière mise à jour de notre code. Elle remplace l'ancienne fonction d'impression pour offrir une meilleure expérience utilisateur.
+5. A new verison of the printing function is available called printing_the_grille_v2 that is more UI friendly and it's the one that is used on the latest version of the code
 
+<<<<<<< HEAD
 
-### Notes Supplémentaires 
+## Game's exit codes
+
+remarque: Nous avons développé une version améliorée de notre fonction d'affichage, nommée printing_the_grille_v2. Cette nouvelle version est plus conviviale et a été intégrée dans la dernière mise à jour de notre code. Elle remplace l'ancienne fonction d'impression pour offrir une meilleure expérience utilisateur.
+
+### Notes Supplémentaires
 
 ## Exit codes
 
@@ -725,12 +772,13 @@ Vous trouverez ci-dessous la définition et l'explication des codes de sortie de
 | 9         | STATE  | Point choosen first carcater is not a number          |                                                                                                                             |
 | exit(-3)  | ERROR  | Multiplayer sub mode failed                           | Check the output of the function and try again                                                                              |
 | exit(-4)  | ERROR  | Solo sub mode failed                                  | Check the output of the function and try again                                                                              |
+| exit(7)   | OUTPUT | The game ended with the professor winning             | This is only a touch of humour in our project :)                                                                            |
 
 ## Versioning
 
-Le versioning est un élément clé en programmation, assurant la cohérence des modifications et facilitant la collaboration. Il est aussi primordial pour la récupération de données en cas de perte ou corruption. Au fil du projet, nous avons créé différentes versions de notre code, chacune marquant une étape importante de son évolution. Cela nous a permis de suivre les progrès, d'intégrer de nouvelles fonctionnalités et d'effectuer des corrections de manière structurée. 
+Le versioning est un élément clé en programmation, assurant la cohérence des modifications et facilitant la collaboration. Il est aussi crucial pour la récupération de données en cas de perte ou corruption. Au fil du projet, nous avons créé différentes versions de notre code, chacune marquant une étape importante de son évolution. Cela nous a permis de suivre les progrès, d'intégrer de nouvelles fonctionnalités et d'effectuer des corrections de manière structurée.
 
-Voici les differentes versions dévelopées lors de l'evolution du projet :
+Voici les differents versions pendant l'evolution du code:
 
 * **V1.1** Code de base
 * **V1.2** Code corrigé selon indications de Manu
@@ -751,20 +799,22 @@ Voici les differentes versions dévelopées lors de l'evolution du projet :
 * **v7.3** Added a functionality to accept the format 2B for points coordinates
 * **V7.4** AI added and the module to create navires customly
 * **V8.0** Fixed issue with initialisatio_plateau_custom which couldn't detect the already existed navires, updated the UI files and transfered the majority of texts to the UI file as well. In addition to that, the code was optimised and there were several small bug fixes. The different game modes were seperated in order to be able to test them without the whole's game menu.
-
-
+* **V8.1** Fixed some logique issues on the AI model called Spark and added some fixes.
+* **V8.2** optimizzed the main program and added code to Fireball AI version
+* **V8.3** Fireball ai has been updated and for now it works excpet from some extreme edge cases
+* **V8.4** Code compeletd. Needs to add the translatiosn and fix the ctes[pndacnces to the single programs
+* **V8.5** Many translations were added on the ui.c.
+* **V8.6** Translations were added on the api.c and on the jeu_v2.c
 
 ### Conclusion - pistes d'améliorations
 
-Le développement de notre jeu de bataille navale en C a été une expérience formatrice et enrichissante, nous offrant des compétences précieuses en programmation et en résolution de problèmes. Toutefois, il reste des possibilités d'amélioration pour augmenter l'attrait et la performance du jeu.
+Le développement de notre jeu de bataille navale en langage C a été un parcours à la fois enrichissant et éducatif, nous permettant d'acquérir une expérience précieuse en matière de programmation et de résolution de problèmes. Cependant, il existe des opportunités d'amélioration pour rendre le jeu plus attractif et performant.
 
-Actuellement, notre jeu fonctionne avec une interface en ligne de commande, mais pour le rendre plus interactif et esthétique, l'ajout d'une interface graphique, via des bibliothèques externes comme GTK+, Qt ou SDL, est envisageable. Cette amélioration nécessiterait toutefois des compétences et installations supplémentaires. Par ailleurs, pour l'IA, l'implémentation d'algorithmes plus avancés rendrait l'adversaire virtuel plus stratégique et prédictif, augmentant le défi pour les joueurs. L'intégration de l'apprentissage automatique, bien que complexe, permettrait à l'IA d'évoluer en s'adaptant aux parties précédentes, nécessitant une base de données de jeux et des algorithmes spécifiques. De plus, optimiser l'algorithme d'exploration augmenterait l'efficacité du jeu.
+Interface Graphique : Actuellement, notre jeu fonctionne avec une interface en ligne de commande. Une interface graphique rendrait le jeu plus interactif et visuellement attrayant. Cependant, le C est un langage de bas niveau sans bibliothèques intégrées pour les interfaces graphiques. L'intégration de bibliothèques externes comme GTK+, Qt, ou SDL pourrait être envisagée, bien qu'elles requièrent des connaissances supplémentaires et une installation séparée.
 
-Bien que ces améliorations soient ambitieuses, elles promettent d'ouvrir des voies passionnantes pour le développement futur de notre jeu.
+Pour l'amélioration de l'IA de notre jeu, l'intégration d'algorithmes plus sophistiqués permettrait de créer une IA plus stratégique et prédictive, ce qui représenterait un défi accru pour les joueurs avancés. L'utilisation de techniques d'apprentissage automatique, bien que complexe à mettre en œuvre, pourrait permettre à l'IA de s'adapter et d'apprendre de ses erreurs, nécessitant pour cela une base de données de parties jouées et des algorithmes spécifiques. Par ailleurs, l'optimisation de l'algorithme d'exploration viserait à améliorer l'efficacité du jeu en minimisant les redondances et en maximisant l'efficacité de chaque tir.
 
-
-
-
+Ces améliorations, bien qu'ambitieuses, offrent des perspectives excitantes pour l'évolution de notre jeu.
 
 ## Copyright
 
