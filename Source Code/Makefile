@@ -37,10 +37,10 @@ LDOPTS = -L$(LIBDIR) -lm
 INCLUDEOPTS = -I$(INCDIR)
 
 # options de compilation
-COMPILOPTS = -g -Wall $(INCLUDEOPTS)
+COMPILOPTS = -g $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = jeu_v2 multiplayer ai solo test load jeu
+EXECUTABLES = jeu_v2 jeu_v1
 
 #############################################################################
 # definition des regles
@@ -66,52 +66,47 @@ all : $(EXECUTABLES)
 # regles explicites de compilation separee de modules
 # n'ayant pas de fichier .h ET/OU dependant d'autres modules
 	
-programmes.o : programmes.c
+programmes.o : programmes.c structures.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-jeu_v1.o : jeu_v1.c programmes.h ui.h structures.h
+jeu_v1.o : jeu_v1.c api.h ui.h structures.h programmes.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-jeu_v2.o : jeu_v2.c programmes.h ui.h structures.h api.h
+jeu_v2.o : jeu_v2.c solo.h ai.h structures.h load.h multiplayer.h programmes.h ui.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-ai.o : ai.c programmes.h ui.h structures.h api.h
+ai.o : ai.c ai.h programmes.h structures.h ui.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-load.o : load.c programmes.h ui.h structures.h api.h
+load.o : load.c load.h api.h structures.h ui.h programmes.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-multiplayer.o : multiplayer.c programmes.h ui.h structures.h api.h
+multiplayer.o : multiplayer.c multiplayer.h programmes.h structures.h ui.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-solo.o : solo.c programmes.h ui.h structures.h api.h
+solo.o : solo.c solo.h programmes.h structures.h ui.h api.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-test.o : test.c
+api.o : api.c api.h programmes.h structures.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-api.o : api.c 
-	@echo ""
-	@echo "---------------------------------------------"
-	$(CC) -c $(COMPILOPTS) $<
-
-ui.o : ui.c api.h
+ui.o : ui.c ui.h api.h programmes.h structures.h
 	@echo ""
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
@@ -120,49 +115,14 @@ ui.o : ui.c api.h
 ########################################################
 # regles explicites de creation des executables
 
-jeu_v1 : jeu.o programmes.o ui.o api.o
+jeu_v1 : jeu_v1.o programmes.o ui.o api.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-jeu_v2 : jeu_v2.o programmes.o ui.o api.o
-	@echo ""
-	@echo "---------------------------------------------"
-	@echo "Creation de l'executable "$@
-	@echo "---------------------------------------------"
-	$(CC) $^ $(LDOPTS) -o $@
-
-ai : ai.o programmes.o ui.o api.o
-	@echo ""
-	@echo "---------------------------------------------"
-	@echo "Creation de l'executable "$@
-	@echo "---------------------------------------------"
-	$(CC) $^ $(LDOPTS) -o $@
-
-load : load.o programmes.o ui.o api.o
-	@echo ""
-	@echo "---------------------------------------------"
-	@echo "Creation de l'executable "$@
-	@echo "---------------------------------------------"
-	$(CC) $^ $(LDOPTS) -o $@
-
-solo : solo.o programmes.o ui.o api.o
-	@echo ""
-	@echo "---------------------------------------------"
-	@echo "Creation de l'executable "$@
-	@echo "---------------------------------------------"
-	$(CC) $^ $(LDOPTS) -o $@
-
-multiplayer : multiplayer.o programmes.o ui.o api.o
-	@echo ""
-	@echo "---------------------------------------------"
-	@echo "Creation de l'executable "$@
-	@echo "---------------------------------------------"
-	$(CC) $^ $(LDOPTS) -o $@
-
-test : test.o
+jeu_v2 : jeu_v2.o programmes.o ui.o api.o solo.o multiplayer.o load.o ai.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@

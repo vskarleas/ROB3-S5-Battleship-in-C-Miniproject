@@ -4,7 +4,7 @@
 // # Authors: Yannis Sadoun, Vasileios Filippos Skarleas - All rights reserved.
 // #############################################################################
 
-#ifndef _USER_INPUT_
+#ifndef _UI_H_
 
 #include <stdbool.h>
 #include <stdio.h>

@@ -13,6 +13,9 @@
         "user_input.h": "c",
         "structures.h": "c",
         "ctype.h": "c",
-        "api.h": "c"
+        "api.h": "c",
+        "time.h": "c",
+        "ai.h": "c",
+        "load.h": "c"
     }
 }

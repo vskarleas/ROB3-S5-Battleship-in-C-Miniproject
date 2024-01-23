@@ -10,8 +10,11 @@
 #include <time.h>
 #include <stdbool.h>
 
-#include "ui.h"
+#include "load.h"
+#include "structures.h"
 #include "api.h"
+#include "ui.h"
+#include "programmes.h"
 
 #define UP 0    // y--
 #define DOWN 2  // y++
@@ -25,12 +28,10 @@
 
 #define VIDE 0
 
-int main(int argc, char **argv)
+int load(int language)
 {
     char *round_txt[4] = {"Round", "is playing", "Tour", "est en train de jouer"};
-    init_nb_aleatoire();
     clearScreen();
-    int language = choose_language();
 
     clearScreen();
     printf("\n\e[0;102mLOAD mode\e[0m\n");
@@ -89,6 +90,10 @@ int main(int argc, char **argv)
             if (midle_game_menu(max_rounds_load, taille_plateau_load, 2, COMPUTER, language) == 1) // 1 is internal code foe saving the progress and continuing another time
             {
                 api_save_game(number_of_navires_load, taille_plateau_load, coulle_load, round_load, prop_load, liste_load, language);
+
+#ifdef __APPLE__
+                system("killall afplay");
+#endif
                 error_graphics(5, language);
             }
         }
@@ -106,16 +111,27 @@ int main(int argc, char **argv)
                 repeat_load = false;
                 lost_graphics(1, language);
                 api_delete_game_file(language);
+
+#ifdef __APPLE__
+                system("killall afplay");
+#endif
                 return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
             }
             if (*NbNav_load == number_of_navires_load)
             {
                 win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "", language);
                 api_delete_game_file(language);
+
+#ifdef __APPLE__
+                system("killall afplay");
+#endif
                 return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
             }
         }
     }
 
+#ifdef __APPLE__
+    system("killall afplay");
+#endif
     return 1;
 }

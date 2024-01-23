@@ -12,6 +12,7 @@
 
 #include "api.h"
 #include "ui.h"
+#include "programmes.h"
 
 #define UP 0    // y--
 #define DOWN 2  // y++
@@ -24,7 +25,7 @@ int main(int argc, char **argv)
 {
     const char *welcome_message[4] = {"Battleship game", "It's time to configure the game before choosing the desired mode.", "Bataille Navale", "C'est le moment de parametriser le jeu avant choisir le mode souhaité"};
     char *welcome_message_parameters[4] = {"Now is the time to configure the game before choosing the desired mode", "", "C'est le moment de parametriser le jeu avant choisir le mode souhaité", ""};
-    char *round_txt[4] = {"Round","is playing","Tour","est en train de jouer"};
+    char *round_txt[4] = {"Round", "is playing", "Tour", "est en train de jouer"};
     char *txt_1[4] = {"Give the size of the game table: ", " The size must be at least 4. Resize: ", "Donner la taille du tableau: ", " La taille doit etre au minimum 4. Redonner la taille: "};
     char *txt_2[4] = {" You are sure for such a size. For an optimized game we do not recommend having a table size larger than 25. Try again: ", "How many boats do you want to include in the game ? ", "Tu est sur pour une telle taille. Pour un jeu optimisé on ne recommend pas d'avoir une taille du tableau plus grand que 25. Redonner la taille: ", "Combien de bateaux souhaitez-vous inclure dans le jeu ? "};
     char *txt_3[4] = {"It must be at least 1 for an optimized game. Try again : ", "For a game that respects the rules, you can place up to 6 ships. Try again : ", "Il doit être au minimum 1 pour un jeu optimisé. Réessayez : ", "Pour un jeu qui respecte les règles, vous pouvez placer jusqu'à 6 navires. Essayez à nouveau : "};
@@ -33,11 +34,11 @@ int main(int argc, char **argv)
     clearScreen();
     int language = choose_language();
     clearScreen();
-     printf("\n\e[0;103m%s V2.1\e[0m\n--------------------------------\n%s\n", welcome_message[language], welcome_message_parameters[language]);
-    int taille_plateau = get_user_input(txt_1[language], txt_1[language+1], txt_2[language], 4, 25, language);
+    printf("\n\e[0;103m%s V2.1\e[0m\n--------------------------------\n%s\n", welcome_message[language], welcome_message_parameters[language]);
+    int taille_plateau = get_user_input(txt_1[language], txt_1[language + 1], txt_2[language], 4, 25, language);
     clearScreenWait(0.8);
     printf("\n\e[0;103m%s V2.0\e[0m\n--------------------------------\n%s\n", welcome_message[language], welcome_message[language + 1]);
-    int number_of_navires = get_user_input(txt_2[language+1], txt_3[language], txt_3[language+1], 1, 6, language);
+    int number_of_navires = get_user_input(txt_2[language + 1], txt_3[language], txt_3[language + 1], 1, 6, language);
     clearScreenWait(0.8);
 
     // Allocation de la mémoire pour prop
@@ -80,7 +81,7 @@ int main(int argc, char **argv)
     while (repeat)
     {
         // loop's logic
-        printf("\n%s No %d\n\n",round_txt[language], *NbJoue);
+        printf("\n%s No %d\n\n", round_txt[language], *NbJoue);
         printing_the_grille_v2(prop, taille_plateau);
         if (waitForMenuKeypress(language))
         {
@@ -106,15 +107,26 @@ int main(int argc, char **argv)
             {
                 repeat = false;
                 lost_graphics(2, language);
+
+#ifdef __APPLE__
+                system("killall afplay");
+#endif
                 return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
             }
             if (*NbNav == number_of_navires)
             {
                 win_graphics(taille_plateau, prop, *NbJoue - 1, 1, "", language);
+
+#ifdef __APPLE__
+                system("killall afplay");
+#endif
                 return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
             }
         }
     }
 
+#ifdef __APPLE__
+    system("killall afplay");
+#endif
     return 10;
 }

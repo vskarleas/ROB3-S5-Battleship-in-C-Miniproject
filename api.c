@@ -10,6 +10,7 @@
 #include <stdbool.h>
 
 #include "api.h"
+#include "programmes.h"
 
 Liste_Navire api_load_game(const char *filename, int *ptr1, int *ptr2, int *ptr3, int *ptr4, int **matrix)
 {
@@ -22,7 +23,6 @@ Liste_Navire api_load_game(const char *filename, int *ptr1, int *ptr2, int *ptr3
 	{
 		perror("Error opening file");
 
-		
 		exit(EXIT_FAILURE);
 	}
 
@@ -142,7 +142,7 @@ void api_clearFile(const char *filename, int language)
 	fclose(file);
 
 	char *msg[4] = {"Content removed from", "", "Contenu supprimé de", ""};
-	printf("%s %s.\n",msg[language], filename);
+	printf("%s %s.\n", msg[language], filename);
 }
 
 void api_save_game(int number_of_navires, int taille_plateau, int coulle, int round, int **matrix, Liste_Navire liste, int language)

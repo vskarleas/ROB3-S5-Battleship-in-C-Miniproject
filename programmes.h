@@ -5,10 +5,7 @@
 // #############################################################################
 
 #ifndef _FUNCTIONS_
-
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#define _FUNCTIONS_
 
 #include "structures.h"
 

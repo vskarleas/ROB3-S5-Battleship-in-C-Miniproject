@@ -15,6 +15,7 @@
 
 #include "programmes.h"
 #include "ui.h"
+// #include "ui.h"
 
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 #define PBWIDTH 60
@@ -158,7 +159,6 @@ void printing_the_grille(int **table, int taille_plateau)
 				case COULE:
 					printf(" \033[1;36mx\033[1;0m ");
 					break;
-
 				}
 			}
 			else
@@ -181,7 +181,6 @@ void printing_the_grille(int **table, int taille_plateau)
 				case COULE:
 					printf(" \033[1;36mx\033[1;0m ");
 					break;
-
 				}
 			}
 		}
@@ -747,7 +746,7 @@ void printProgress(double percentage)
 	int lpad = (int)(percentage * PBWIDTH);
 	int rpad = PBWIDTH - lpad;
 	printf("\r%3d%% [%.*s%*s]", val, lpad, PBSTR, rpad, "");
-	fflush(stdout); //is used to flush the output buffer of a stream, here the terminal
+	fflush(stdout); // is used to flush the output buffer of a stream, here the terminal
 }
 
 // Allocation et initialisation des navires

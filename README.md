@@ -75,7 +75,7 @@
 * [X] OPTIONAL Improve the code by fixing the function suprimer_navire and using an advanced logic of L.taille on the jeu and jeu_v2 game loops
 * [X] Multiple rounds with points and a maximum number of tentatives for the user trying to find the boats that were placed randomly (it would be great if the number of tentatives for a round is based on the size of the plate [more cells => smaller chances to find directly even one boat => more tentatives should be provided]) IF WE WANT
 * [X] fix issues with Spark AI model that looks like it doesn't choose any point of the created navires on the table
-* [ ] Improve Fireball AI + finish the logic of the function tour_ia_random_v2 model and .
+* [X] Improve Fireball AI + finish the logic of the function tour_ia_random_v2 model and .
 
 ![1702659377345](image/README/1702659377345.png)
 
@@ -117,10 +117,11 @@
 * V8.5 Many translations were added on the ui.c.
 * V8.6 Translations were added on the api.c and on the jeu_v2.c
 * V9.0 Music for Mac computers has been tested
+* V10.0 Project finalised
 
 # Filing codec
 
-`number_of_navires taille_plateau coulle round sens_nav_1 x_nav_1 y_nav_1 taille_nav_1 id_nav_1 sens_nav_2 ...  $ prop_table_codec`
+`number_of_navires taille_plateau coulle round sens_nav_1 x_nav_1 y_nav_1 taille_nav_1 id_nav_1 sens_nav_2 ...  $ prop_table_codec |||| 2 4 1 5`
 
 We can modify the codec in order to include a timestamp that will indicate to the user when it was the last time it was saved the game, as well as from which user if we want to use this functionality for the multiplayer.
 
@@ -138,3 +139,7 @@ We can modify the codec in order to include a timestamp that will indicate to th
 | exit(-3)  | ERROR  | Multiplayer sub mode failed                           | Check the output of the function and try again                                                                              |
 | exit(-4)  | ERROR  | Solo sub mode failed                                  | Check the output of the function and try again                                                                              |
 | exit(7)   | OUTPUT | The game ended with the professor winning             | This is only a touch of humour in our project :)                                                                            |
+
+# Copyright
+
+###### Yanis SADOUN, Vasileios Filippos SKARLEAS | 2023 - 2024 All rights reserved

@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -44,66 +41,67 @@ bool processFile(const char *filename, int *ptr1, int *ptr2, int *ptr3, int *ptr
 
         currentIndex++;
     }
-        // for all the other navires
-        for (int i = 0; i < *ptr1; i++)
+    // for all the other navires
+    for (int i = 0; i < *ptr1; i++)
+    {
+        for (int i = 0; i < 5; i++)
         {
-            for (int i = 0; i < 5; i++)
+            fscanf(file, "%s", buffer);
+            value = atoi(buffer);
+            switch (i)
+            {
+            case 0:
+                printf("Sens: %d\n", value);
+                break;
+            case 1:
+                printf("X: %d\n", value);
+                break;
+            case 2:
+                printf("Y: %d\n", value);
+                break;
+            case 3:
+                printf("Taille: %d\n", value);
+                break;
+            case 4:
+                printf("ID: %d\n", value);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    fscanf(file, "%s", buffer);
+
+    if (buffer[0] == '$')
+    {
+        for (int i = 0; i < *ptr2; i++)
+        {
+            for (int j = 0; j < *ptr2; j++)
             {
                 fscanf(file, "%s", buffer);
                 value = atoi(buffer);
-                switch (i)
-                {
-                case 0:
-                    printf("Sens: %d\n", value);
-                    break;
-                case 1:
-                    printf("X: %d\n", value);
-                    break;
-                case 2:
-                    printf("Y: %d\n", value);
-                    break;
-                case 3:
-                    printf("Taille: %d\n", value);
-                    break;
-                case 4:
-                    printf("ID: %d\n", value);
-                    break;
-                default:
-                    break;
-                }
+                matrix[i][j] = value;
             }
         }
-
-        fscanf(file, "%s", buffer);
-
-        if (buffer[0] == '$')
-        {
-            for (int i = 0; i < *ptr2; i++)
-            {
-                for (int j = 0; j < *ptr2; j++)
-                {
-                    fscanf(file, "%s", buffer);
-                    value = atoi(buffer);
-                    matrix[i][j] = value;
-                }
-                
-            }
-        }
-        else
-        {
-            printf("\nERROR ON THE FUNCTION OR THE FILE\n");
-            return false;
-        }
+    }
+    else
+    {
+        printf("\nERROR ON THE FUNCTION OR THE FILE\n");
+        return false;
+    }
 
     fclose(file);
     return true;
 }
 
-void clearFile(const char *filename) {
+void clearFile(const char *filename)
+{
     // Open the file in write mode, which truncates the file if it exists
     FILE *file = fopen(filename, "w");
 
-    if (file == NULL) {
+    if (file == NULL)
+    {
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
@@ -178,7 +176,7 @@ int main()
         printf("\nFunction failed!!!\n");
     }
 
-    //clearFile("codec_2.txt"); /*The function works. It's been commented in order to retain data on the codec_2.txt file */
+    // clearFile("codec_2.txt"); /*The function works. It's been commented in order to retain data on the codec_2.txt file */
 
     return 0;
 }

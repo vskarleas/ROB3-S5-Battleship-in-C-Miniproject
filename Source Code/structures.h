@@ -4,6 +4,9 @@
 // # Authors: Yannis Sadoun, Vasileios Filippos Skarleas - All rights reserved.
 // #############################################################################
 
+#ifndef _STRUCTURES_H_
+#define _STRUCTURES_H_
+
 typedef struct une_case
 {
 	int x; /* position de la case en x*/
@@ -55,3 +58,5 @@ typedef struct Tableau_Point_
 	unsigned int taille; /* nombre d'�l�ments dans le tableau */
 	Case *tab;			 /* (pointeur vers) le tableau des �l�ments */
 } Tableau_Point;
+
+#endif

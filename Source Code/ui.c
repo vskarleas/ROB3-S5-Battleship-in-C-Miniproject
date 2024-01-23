@@ -11,7 +11,9 @@
 #include <time.h>
 #include <stdbool.h>
 
+#include "ui.h"
 #include "api.h"
+#include "programmes.h"
 
 #define LANG_ENGLISH 0
 #define LANG_FRENCH 2
@@ -41,7 +43,7 @@ int choose_language()
         else
         {
             clearScreen();
-            printf("\n\033[0;33mATTENTION!\033[1;0m: English, French, Francais, or/ou Anglais!\n");
+            printf("\n\033[0;33mATTENTION!\033[1;0m: English, French, Francais, or/ou Anglais: ");
         }
     }
 }
