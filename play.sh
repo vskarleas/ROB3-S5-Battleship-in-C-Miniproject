@@ -19,5 +19,6 @@ else
   make
   clear
   ./jeu_v2
+  wait 4000
   make clean
 fi
