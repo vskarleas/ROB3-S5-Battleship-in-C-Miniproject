@@ -118,6 +118,7 @@
 * V8.6 Translations were added on the api.c and on the jeu_v2.c
 * V9.0 Music for Mac computers has been tested
 * V10.0 Project finalised
+* V10.1 Bug fixes and improvments
 
 # Filing codec
 

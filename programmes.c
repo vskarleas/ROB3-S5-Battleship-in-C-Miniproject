@@ -452,6 +452,9 @@ Cellule_Liste_Navire *creer_element_liste_Navire(Navire v)
 	el = (Cellule_Liste_Navire *)malloc(sizeof(Cellule_Liste_Navire));
 	if (el == NULL)
 	{
+#ifdef __APPLE__
+		system("killall afplay");
+#endif
 		allocation_error_print_general("creer_element_liste_Navire");
 	}
 	el->data = v;
@@ -1703,6 +1706,9 @@ Cellule_Liste_Point *creer_element_liste_Point(int x, int y)
 	if (el == NULL)
 	{
 		fprintf(stderr, "creer_element_liste_Point : allocation impossible\n");
+#ifdef __APPLE__
+		system("killall afplay");
+#endif
 		exit(-1);
 	}
 	el->data.x = x;
@@ -1770,6 +1776,9 @@ Tableau_Point sequence_points_liste_vers_tableau(Liste_Point L)
 		/* allocation impossible : arret du programme avec un message */
 		fprintf(stderr, "sequence_points_liste_vers_tableau : ");
 		fprintf(stderr, " allocation impossible\n");
+#ifdef __APPLE__
+		system("killall afplay");
+#endif
 		exit(-1);
 	}
 

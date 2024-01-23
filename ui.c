@@ -126,6 +126,9 @@ char *get_user_name(char message[1024], int language)
     if (name == NULL)
     {
         fprintf(stderr, "Memory allocation failed for name\n");
+#ifdef __APPLE__
+        system("killall afplay");
+#endif
         exit(EXIT_FAILURE);
     }
 

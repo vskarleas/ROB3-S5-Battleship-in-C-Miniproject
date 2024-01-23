@@ -46,6 +46,9 @@ int main(int argc, char **argv)
     prop = malloc(taille_plateau * sizeof(int *));
     if (prop == NULL)
     {
+#ifdef __APPLE__
+        system("killall afplay");
+#endif
         allocation_error_print_general("prop");
     }
 
@@ -54,6 +57,9 @@ int main(int argc, char **argv)
         prop[i] = malloc(taille_plateau * sizeof(int));
         if (prop[i] == NULL)
         {
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
             allocation_error_print_with_id("prop row", i);
         }
     }

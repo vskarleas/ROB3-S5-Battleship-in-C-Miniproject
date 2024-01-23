@@ -23,6 +23,9 @@ Liste_Navire api_load_game(const char *filename, int *ptr1, int *ptr2, int *ptr3
 	{
 		perror("Error opening file");
 
+#ifdef __APPLE__
+		system("killall afplay");
+#endif
 		exit(EXIT_FAILURE);
 	}
 
@@ -118,6 +121,10 @@ int api_table_size(const char *filename, int language)
 	{
 		clearScreen();
 		printf("\n\n%s", msg[language]);
+
+#ifdef __APPLE__
+		system("killall afplay");
+#endif
 		exit(-2);
 	}
 
@@ -135,6 +142,10 @@ void api_clearFile(const char *filename, int language)
 	if (file == NULL)
 	{
 		perror("Error opening file");
+
+#ifdef __APPLE__
+		system("killall afplay");
+#endif
 		exit(EXIT_FAILURE);
 	}
 

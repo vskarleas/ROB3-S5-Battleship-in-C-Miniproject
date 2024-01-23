@@ -51,6 +51,9 @@ int load(int language)
     prop_load = malloc(api_response * sizeof(int *));
     if (prop_load == NULL)
     {
+#ifdef __APPLE__
+        system("killall afplay");
+#endif
         allocation_error_print_general("prop_load");
     }
 
@@ -59,6 +62,9 @@ int load(int language)
         prop_load[i] = malloc(api_response * sizeof(int));
         if (prop_load[i] == NULL)
         {
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
             allocation_error_print_with_id("prop_load row", i);
         }
     }

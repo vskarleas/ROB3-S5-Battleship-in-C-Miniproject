@@ -76,6 +76,9 @@ int main(int argc, char **argv)
     prop1 = malloc(taille_plateau_jeu * sizeof(int *));
     if (prop1 == NULL)
     {
+#ifdef __APPLE__
+        system("killall afplay");
+#endif
         allocation_error_print_general("prop_muti");
     }
     for (int i = 0; i < taille_plateau_jeu; i++)
@@ -83,6 +86,9 @@ int main(int argc, char **argv)
         prop1[i] = malloc(taille_plateau_jeu * sizeof(int));
         if (prop1[i] == NULL)
         {
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
             allocation_error_print_with_id("prop row", i);
         }
     }
@@ -93,6 +99,9 @@ int main(int argc, char **argv)
     prop2 = malloc(taille_plateau_jeu * sizeof(int *));
     if (prop2 == NULL)
     {
+#ifdef __APPLE__
+        system("killall afplay");
+#endif
         allocation_error_print_general("prop2");
     }
 
@@ -101,6 +110,9 @@ int main(int argc, char **argv)
         prop2[i] = malloc(taille_plateau_jeu * sizeof(int));
         if (prop2[i] == NULL)
         {
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
             allocation_error_print_with_id("prop2 row", i);
         }
     }
