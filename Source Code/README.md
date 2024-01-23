@@ -1,6 +1,4 @@
-# Bataille Navale S5 2023-2024
-
-## Instructions
+# Instructions
 
 Pour lancer le jeu de la version 2 (version la plus avancée et développée ci-dessous), il suffit de donner accès au programme d'installation automatique. Voici les instructions :
 
@@ -8,7 +6,7 @@ Pour lancer le jeu de la version 2 (version la plus avancée et développée ci-
 2. Tappez `chmod 777 play.sh` et exécutez ensuite en faisant `bash play.sh`. Maintenant, il suffit de suivre les instructions sur le terminal et vous pouvez jouer.
 3. Si vous êtes sur un Mac, le jeu est développé de telle manière qu'il permet d'avoir de la musique lorsque vous jouez.
 
-## Compte rendu
+# Compte rendu - Bataille Navale S5 2023-2024
 
 ## Introduction
 
