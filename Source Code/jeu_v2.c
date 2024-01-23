@@ -1,9 +1,3 @@
-// #############################################################################
-// # File jeu_v2.c
-// # UE Infomatics for Robotics - Polytech Sorbonne - 2023/2024 - S5
-// # Authors: Yannis Sadoun, Vasileios Filippos Skarleas - All rights reserved.
-// #############################################################################
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,95 +57,103 @@ int main(int argc, char **argv)
     init_nb_aleatoire();
     clearScreen();
     int language = choose_language();
-    clearScreen();
-    printf("\n\e[0;103m%s V2.1\e[0m\n--------------------------------\n%s\n", welcome_message[language], welcome_message_parameters[language]);
-    int taille_plateau_jeu = get_user_input(txt_1[language], txt_1[language + 1], txt_2[language], 4, 25, language);
-    clearScreenWait(0.8);
-    printf("\n\e[0;103m%s V2.0\e[0m\n--------------------------------\n%s\n", welcome_message[language], welcome_message[language + 1]);
-    int number_of_navires_jeu = get_user_input(txt_2[language + 1], txt_3[language], txt_3[language + 1], 1, 6, language);
-    clearScreenWait(0.8);
-    Liste_Navire liste1, liste2;
-    // Allocation de la mémoire pour prop1
-    int **prop1;
-    prop1 = malloc(taille_plateau_jeu * sizeof(int *));
-    if (prop1 == NULL)
-    {
-#ifdef __APPLE__
-        system("killall afplay");
-#endif
-        allocation_error_print_general("prop_muti");
-    }
-    for (int i = 0; i < taille_plateau_jeu; i++)
-    {
-        prop1[i] = malloc(taille_plateau_jeu * sizeof(int));
-        if (prop1[i] == NULL)
-        {
-#ifdef __APPLE__
-            system("killall afplay");
-#endif
-            allocation_error_print_with_id("prop row", i);
-        }
-    }
-
-    initialize_plate(taille_plateau_jeu, prop1);
-    // Allocation de la mémoire pour prop2 - Used on modes such as multiplayer and AI
-    int **prop2;
-    prop2 = malloc(taille_plateau_jeu * sizeof(int *));
-    if (prop2 == NULL)
-    {
-#ifdef __APPLE__
-        system("killall afplay");
-#endif
-        allocation_error_print_general("prop2");
-    }
-
-    for (int i = 0; i < taille_plateau_jeu; i++)
-    {
-        prop2[i] = malloc(taille_plateau_jeu * sizeof(int));
-        if (prop2[i] == NULL)
-        {
-#ifdef __APPLE__
-            system("killall afplay");
-#endif
-            allocation_error_print_with_id("prop2 row", i);
-        }
-    }
-
-    initialize_plate(taille_plateau_jeu, prop2);
-    int coulle1 = 0;
-    int *NbNav1 = &coulle1;
-
-    int round_global = 3; // used to show the number of the round (multiplayer & AI)
-    int *NbJoue_global = &round_global;
-
-    int round = 1; // used to show the number of the round (solo version & load)
-    int *NbJoue = &round;
-
-    int coulle2 = 0;
-    int *NbNav2 = &coulle2;
-
     int mode = game_mode_menu(language);
 
-    if (mode == COMPUTER)
-    {
-        solo(prop1, liste1, NbNav1, NbJoue, coulle1, round, taille_plateau_jeu, number_of_navires_jeu, language);
-    }
-
-    if (mode == MULTIPLAYER)
-    {
-        multiplayer(prop1, prop2, liste1, liste2, NbNav1, NbNav2, NbJoue_global, coulle1, coulle2, round_global, taille_plateau_jeu, number_of_navires_jeu, language);
-    }
-    if (mode == AI)
-    {
-        ai(prop1, prop2, liste1, liste2, NbNav1, NbNav2, NbJoue_global, coulle1, coulle2, round_global, taille_plateau_jeu, number_of_navires_jeu, language);
-    }
     if (mode == LOAD)
     {
+        clearScreen();
         load(language);
+    }
+    else
+    {
+        clearScreen();
+        printf("\n\e[0;103m%s V2.1\e[0m\n--------------------------------\n%s\n", welcome_message[language], welcome_message_parameters[language]);
+        int taille_plateau_jeu = get_user_input(txt_1[language], txt_1[language + 1], txt_2[language], 4, 25, language);
+        clearScreenWait(0.8);
+        printf("\n\e[0;103m%s V2.0\e[0m\n--------------------------------\n%s\n", welcome_message[language], welcome_message[language + 1]);
+        int number_of_navires_jeu = get_user_input(txt_2[language + 1], txt_3[language], txt_3[language + 1], 1, 6, language);
+        clearScreenWait(0.8);
+        Liste_Navire liste1, liste2;
+        // Allocation de la mémoire pour prop1
+        int **prop1;
+        prop1 = malloc(taille_plateau_jeu * sizeof(int *));
+        if (prop1 == NULL)
+        {
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
+            allocation_error_print_general("prop_muti");
+        }
+        for (int i = 0; i < taille_plateau_jeu; i++)
+        {
+            prop1[i] = malloc(taille_plateau_jeu * sizeof(int));
+            if (prop1[i] == NULL)
+            {
+#ifdef __APPLE__
+                system("killall afplay");
+#endif
+                allocation_error_print_with_id("prop row", i);
+            }
+        }
+
+        initialize_plate(taille_plateau_jeu, prop1);
+        // Allocation de la mémoire pour prop2 - Used on modes such as multiplayer and AI
+        int **prop2;
+        prop2 = malloc(taille_plateau_jeu * sizeof(int *));
+        if (prop2 == NULL)
+        {
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
+            allocation_error_print_general("prop2");
+        }
+
+        for (int i = 0; i < taille_plateau_jeu; i++)
+        {
+            prop2[i] = malloc(taille_plateau_jeu * sizeof(int));
+            if (prop2[i] == NULL)
+            {
+#ifdef __APPLE__
+                system("killall afplay");
+#endif
+                allocation_error_print_with_id("prop2 row", i);
+            }
+        }
+
+        initialize_plate(taille_plateau_jeu, prop2);
+        int coulle1 = 0;
+        int *NbNav1 = &coulle1;
+
+        int round_global = 3; // used to show the number of the round (multiplayer & AI)
+        int *NbJoue_global = &round_global;
+
+        int round = 1; // used to show the number of the round (solo version & load)
+        int *NbJoue = &round;
+
+        int coulle2 = 0;
+        int *NbNav2 = &coulle2;
+
+        switch (mode)
+        {
+        case MULTIPLAYER:
+            multiplayer(prop1, prop2, liste1, liste2, NbNav1, NbNav2, NbJoue_global, coulle1, coulle2, round_global, taille_plateau_jeu, number_of_navires_jeu, language);
+            break;
+
+        case AI:
+            ai(prop1, prop2, liste1, liste2, NbNav1, NbNav2, NbJoue_global, coulle1, coulle2, round_global, taille_plateau_jeu, number_of_navires_jeu, language);
+            break;
+
+        case COMPUTER:
+            solo(prop1, liste1, NbNav1, NbJoue, coulle1, round, taille_plateau_jeu, number_of_navires_jeu, language);
+            break;
+        default:
+            break;
+        }
     }
 
 #ifdef __APPLE__
     system("killall afplay");
 #endif
+
     return 1;
 }
