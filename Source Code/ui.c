@@ -486,6 +486,10 @@ int midle_game_menu(int rounds, int taille_plateau, int version, int mode, int l
             printf("\n\033[1;36m%s\033[0m\n", msg_attention[language + 1]);
             api_delete_game_file(language);
 
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
+
             exit(4); // code on the log that determines that the game was exited without any saving action taking place
         }
         else
@@ -560,6 +564,10 @@ int midle_game_menu_saving_unavailable_temps(int rounds, int taille_plateau, int
             clearScreen();
             printf("\n\033[1;36m%s\033[0m\n", msg_attention[language + 1]);
             api_delete_game_file(language);
+
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
             exit(4); // code on the log that determines that the game was exited without any saving action taking place
         }
         else
@@ -628,6 +636,10 @@ int midle_game_menu_saving_unavailable(int rounds, int taille_plateau, int mode,
             clearScreen();
             printf("\n\033[1;36m%s\033[0m\n", msg_attention[language + 1]);
             api_delete_game_file(language);
+
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
             exit(4); // code on the log that determines that the game was exited without any saving action taking place
         }
         else
