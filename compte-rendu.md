@@ -1,16 +1,5 @@
 # Bataille Navale S5 2023-2024
 
-## Instructions
-
-Pour lancer le jeu de la version 2 (version la plus avancée et développée ci-dessous), il suffit de donner accès au programme d'installation automatique. Voici les instructions :
-
-1. Ouvrez une fenêtre du terminal et assurez-vous que vous êtes dans le même répertoire que le code source du projet
-   ![23012024001](image/COMPTE_RENDU/23012024001.png)
-2. Tappez `chmod 777 play.sh` et exécutez ensuite en faisant `bash play.sh`. Maintenant, il suffit de suivre les instructions sur le terminal et vous pouvez jouer.
-   ![23012024002](image/COMPTE_RENDU/23012024002.png)
-3. Si vous êtes sur un Mac, le jeu est développé de telle manière qu'il permet d'avoir de la musique lorsque vous jouez.
-4. Amusez-vous bien! Bonne lecture...
-
 ## Introduction
 
 Dans le cadre de  notre cours d'informatique en troisième année de Robotique à Polytech Sorbonne, notre défi a été de développer un projet collaboratif : une version informatisée du célèbre jeu de bataille navale.Ce dernier a non seulement mis à l'épreuve nos compétences en programmation, mais a aussi exigé une coordination d'équipe efficace, avec une gestion complexe des fichiers et de leurs interrelations. Notre objectif principal étant de creer un espace où le joueur arrangeait six navires de différentes tailles sur un plateau dont les dimensions étaient déterminées par lui-même, ajoutant ainsi une touche personnelle et stratégique au jeu.
@@ -22,6 +11,19 @@ Ce projet nous a également permis d'explorer et d'intégrer des fonctionnalité
 * Et l'introduction d'une intelligence artificielle pour enrichir l'expérience de jeu.
 
 Pour structurer ce rapport, nous commencerons par expliquer les règles du jeu et les differentes fonctions de bases imposées par le sujet . Nous décrirons ensuite les principales fonctions que nous avons programmées et les contributions personnelles apportées ; pour poursuivre avec les problèmes rencontrés et les solutions trouvées. Ce plan permettra de présenter de manière claire et détaillée notre processus de travail et les résultats obtenus.
+
+Nous vous communiquerons d’abord les instructions de départ puis nous expliquerons les règles ….
+
+## Instructions de départ
+
+Pour lancer le jeu de la version 2 (version la plus avancée et développée ci-dessous), il suffit de donner accès au programme d'installation automatique. Voici les instructions :
+
+1. Ouvrez une fenêtre du terminal et assurez-vous que vous êtes dans le même répertoire que le code source du projet
+   ![23012024001](image/COMPTE_RENDU/23012024001.png)
+2. Tappez `chmod 777 play.sh` et exécutez ensuite en faisant `bash play.sh`. Maintenant, il suffit de suivre les instructions sur le terminal et vous pouvez jouer.
+   ![23012024002](image/COMPTE_RENDU/23012024002.png)
+3. Si vous êtes sur un Mac, le jeu est développé de telle manière qu'il permet d'avoir de la musique lorsque vous jouez. ([vidéo de démonstration](https://dev.madebyvasilis.site/REC-20240124131918.mp4))
+4. Amusez-vous bien! Bonne lecture...
 
 ## Règles du jeu
 
@@ -57,6 +59,16 @@ if (temps_restant <= 0) {
 ```
 
 Ce système ajoute une couche de complexité et d'engagement, rendant le jeu plus captivant et compétitif.
+
+### Affichage de la grille
+
+Dans notre jeu, l’utilisation de symboles et couleurs aident à visualiser facilement l'état actuel du jeu, permettant aux joueurs de comprendre rapidement ce qui se passe sur le plateau. Ainsi :
+
+* ![24012024001](image/COMPTE_RENDU/24012024001.png) Étoile jaune: ⁠Une Case avec un Navire Touché (NAVIRE_TROUVE)  est représentée par une étoile jaune `\033[1;33m*\033[1;0m`.Cela indique qu'un tir a touché une partie d'un navire.
+* ![24012024002](image/COMPTE_RENDU/24012024002.png) Magenta O: Une Case Jouée sans Navire (AUCUN_NAVIRE)  est représentée par un "o" violet `\033[1;35mo\033[1;0m`. Cela signifie qu'un tir a été effectué sur cette case mais aucun navire n'a été touché.
+* ![24012024003](image/COMPTE_RENDU/24012024003.png) Étoile blue light: Une Case avec un Navire Touché Plus d'une Fois (NAVIRE_TROUVE_PLUS_1) : Utilisation d’une étoile cyan `\033[1;36m*\033[1;0m`. Cela signifie que cette partie du navire a été touchée plus d'une fois.
+* ![24012024004](image/COMPTE_RENDU/24012024004.png) Croix rouge:  Une Case avec un Navire Coulé (COULE) est Représentée par un "x" rouge `\033[0;31mx\033[1;0m`. Cela indique qu'un navire entier a été coulé sur ces cases.
+* Une Case Vide (VIDE)  est représentée par un point bleu `\033[1;34m.\033[1;0m`. Cela indique une case sur laquelle aucun tir n'a été effectué.
 
 ## Indications
 
