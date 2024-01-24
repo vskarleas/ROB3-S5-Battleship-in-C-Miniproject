@@ -18,7 +18,7 @@
 #include "programmes.h"
 #include "ui.h"
 
-int ai(int **prop1, int **prop2, Liste_Navire liste1, Liste_Navire liste2, int *NbNav1, int *NbNav2, int *NbJoue_global, int coulle1, int coulle2, int round_global, int taille_plateau_jeu, int number_of_navires_jeu, int language)
+int ai(int **prop1, int **prop2, Liste_Navire liste1, Liste_Navire liste2, int *NbNav1, int *NbNav2, int *NbJoue_global, int coulle1, int coulle2, int taille_plateau_jeu, int number_of_navires_jeu, int language)
 {
     char *round_txt[4] = {"Round", "is playing", "Tour", "est en train de jouer"};
     char *msg_ai[4] = {"now create the board for", "has created the game plate for you as well", "creer maintenant le plateu pour", "a également créé le plateau de jeu pour vous"};
@@ -44,7 +44,7 @@ int ai(int **prop1, int **prop2, Liste_Navire liste1, Liste_Navire liste2, int *
 
     int max_rounds_multi_custom;
     ajuster_tours(taille_plateau_jeu, &max_rounds_multi_custom, number_of_navires_jeu, 2);
-    rules_interface(max_rounds_multi_custom, taille_plateau_jeu, language);
+    rules_interface(max_rounds_multi_custom, taille_plateau_jeu, language, 3); //mode game AI = 3
     msleep(100);
     waitForKeypress();
     waitForKeypress();
@@ -75,14 +75,10 @@ int ai(int **prop1, int **prop2, Liste_Navire liste1, Liste_Navire liste2, int *
             printing_the_grille_v2(prop1, taille_plateau_jeu);
 
             // decision making if the user wins or loses the game
-            if (round_global == max_rounds_multi_custom && (*NbNav1 < number_of_navires_jeu || *NbNav2 < number_of_navires_jeu))
+            if (*NbJoue_global == max_rounds_multi_custom && (*NbNav1 < number_of_navires_jeu || *NbNav2 < number_of_navires_jeu))
             {
                 repeat_multi_custom = false;
                 lost_graphics(1, language);
-
-#ifdef __APPLE__
-                system("killall afplay");
-#endif
                 return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
             }
             if (*NbNav1 == number_of_navires_jeu || *NbNav2 == number_of_navires_jeu)
@@ -96,9 +92,6 @@ int ai(int **prop1, int **prop2, Liste_Navire liste1, Liste_Navire liste2, int *
                     win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                 }
 
-#ifdef __APPLE__
-                system("killall afplay");
-#endif
                 return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
             }
         }
@@ -182,24 +175,14 @@ int ai(int **prop1, int **prop2, Liste_Navire liste1, Liste_Navire liste2, int *
                 {
                     win_graphics(taille_plateau_jeu, prop1, (*NbJoue_global - 1) / 2, 2, player2, language);
                 }
-
-#ifdef __APPLE__
-                system("killall afplay");
-#endif
                 return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
             }
         }
     }
     else
     {
-#ifdef __APPLE__
-        system("killall afplay");
-#endif
         error_graphics(6, language);
     }
 
-#ifdef __APPLE__
-    system("killall afplay");
-#endif
     return 1;
 }

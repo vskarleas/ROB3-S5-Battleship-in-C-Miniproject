@@ -19,6 +19,8 @@ else
   make
   clear
   ./jeu_v2
-  wait 4000
+  sleep 3
   make clean
+  clear
+  echo -e "${PURPLE}Game has been successfully terminated"
 fi

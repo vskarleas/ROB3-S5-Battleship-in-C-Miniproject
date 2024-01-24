@@ -9,6 +9,6 @@
 
 #include "structures.h"
 
-int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1, int round, int taille_plateau_jeu, int number_of_navires_jeu, int language);
+int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1, int taille_plateau_jeu, int number_of_navires_jeu, int language);
 
 #endif

@@ -120,6 +120,7 @@
 * V10.0 Project finalised
 * V10.1 Bug fixes and improvments
 * V10.2 Bug fixes and improvments
+* V10.3 Bug fixes and algorithm has been added to provide smart max_rounds for the solo mode. Multiplayer mode has been simplified.
 
 # Filing codec
 

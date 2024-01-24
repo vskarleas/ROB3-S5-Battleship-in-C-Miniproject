@@ -54,6 +54,9 @@ int main(int argc, char **argv)
         prop[i] = malloc(taille_plateau * sizeof(int));
         if (prop[i] == NULL)
         {
+#ifdef __APPLE__
+            system("killall afplay");
+#endif
             allocation_error_print_with_id("prop row", i);
         }
     }
@@ -71,7 +74,7 @@ int main(int argc, char **argv)
 
     int round = 1; // used to show the number of the round
     int *NbJoue = &round;
-    rules_interface(ROUNDS, taille_plateau, language);
+    rules_interface(ROUNDS, taille_plateau, language, 1);
     msleep(100);
     waitForKeypress();
     waitForKeypress();
@@ -108,9 +111,6 @@ int main(int argc, char **argv)
                 repeat = false;
                 lost_graphics(2, language);
 
-#ifdef __APPLE__
-                system("killall afplay");
-#endif
                 return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
             }
             if (*NbNav == number_of_navires)

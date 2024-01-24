@@ -51,9 +51,6 @@ int load(int language)
     prop_load = malloc(api_response * sizeof(int *));
     if (prop_load == NULL)
     {
-#ifdef __APPLE__
-        system("killall afplay");
-#endif
         allocation_error_print_general("prop_load");
     }
 
@@ -62,9 +59,6 @@ int load(int language)
         prop_load[i] = malloc(api_response * sizeof(int));
         if (prop_load[i] == NULL)
         {
-#ifdef __APPLE__
-            system("killall afplay");
-#endif
             allocation_error_print_with_id("prop_load row", i);
         }
     }
@@ -97,9 +91,6 @@ int load(int language)
             {
                 api_save_game(number_of_navires_load, taille_plateau_load, coulle_load, round_load, prop_load, liste_load, language);
 
-#ifdef __APPLE__
-                system("killall afplay");
-#endif
                 error_graphics(5, language);
             }
         }
@@ -118,9 +109,6 @@ int load(int language)
                 lost_graphics(1, language);
                 api_delete_game_file(language);
 
-#ifdef __APPLE__
-                system("killall afplay");
-#endif
                 return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
             }
             if (*NbNav_load == number_of_navires_load)
@@ -128,16 +116,10 @@ int load(int language)
                 win_graphics(taille_plateau_load, prop_load, *NbJoue_load - 1, 1, "", language);
                 api_delete_game_file(language);
 
-#ifdef __APPLE__
-                system("killall afplay");
-#endif
                 return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
             }
         }
     }
 
-#ifdef __APPLE__
-    system("killall afplay");
-#endif
     return 1;
 }

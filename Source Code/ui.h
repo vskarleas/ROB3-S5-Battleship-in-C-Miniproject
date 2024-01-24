@@ -27,7 +27,7 @@ void displaySpecialWinMessage(int language);
 char *get_user_name(char message[1024], int language);
 
 // Printing the rules of the game
-void rules_interface(int points, int taille_plateau, int language);
+void rules_interface(int rounds, int taille_plateau, int language, int game_mode);
 
 // Printing the rules of the game in SOlo mode with option Time
 void rules_interface_temps(int rounds, int taille_plateau, int language);
@@ -94,5 +94,8 @@ void game_loaded_graphics(int max_rounds_load, int taille_plateau_load, int lang
 
 // Indicating on which round we are for different game modes
 void new_round_graphics(int round, int taille_plateau, int **prop, int id, char *buffer, int temps, int language);
+
+//Controls the overal game's loop
+bool keep_playing(int language);
 
 #endif

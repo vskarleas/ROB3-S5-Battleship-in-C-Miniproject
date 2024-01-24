@@ -15,7 +15,7 @@
 #include "ui.h"
 #include "api.h"
 
-int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1, int round, int taille_plateau_jeu, int number_of_navires_jeu, int language)
+int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1, int taille_plateau_jeu, int number_of_navires_jeu, int language)
 {
     int mode_solo = game_mode_solo(language);
 
@@ -33,7 +33,7 @@ int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1
         ajuster_tours(taille_plateau_jeu, &max_rounds, number_of_navires_jeu, 1);
 
         // game loop
-        rules_interface(max_rounds, taille_plateau_jeu, language);
+        rules_interface(max_rounds, taille_plateau_jeu, language, 1); //mode game COMPUTER = 1
         msleep(100);
         waitForKeypress();
         waitForKeypress();
@@ -50,9 +50,6 @@ int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1
                 {
                     api_save_game(number_of_navires_jeu, taille_plateau_jeu, (*NbNav1), (*NbJoue), prop1, liste1, language);
 
-#ifdef __APPLE__
-                    system("killall afplay");
-#endif
                     error_graphics(5, language);
                 }
             }
@@ -65,23 +62,17 @@ int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1
                 clearScreen();
 
                 // decision making if the user wins or loses the game
-                if (round == max_rounds && *NbNav1 < number_of_navires_jeu)
+                if (*NbJoue-1 == max_rounds && *NbNav1 < number_of_navires_jeu)
                 {
                     repeat = false;
                     lost_graphics(1, language);
 
-#ifdef __APPLE__
-                    system("killall afplay");
-#endif
                     return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
                 }
                 if (*NbNav1 == number_of_navires_jeu)
                 {
                     win_graphics(taille_plateau_jeu, prop1, *NbJoue - 1, 1, "", language);
 
-#ifdef __APPLE__
-                    system("killall afplay");
-#endif
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
             }
@@ -93,7 +84,7 @@ int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1
         ajuster_temps(taille_plateau_jeu, &duree_limite);
 
         // game loop
-        rules_interface_temps(duree_limite, taille_plateau_jeu, language);
+        rules_interface_temps(duree_limite, taille_plateau_jeu, language); 
         msleep(100);
         waitForKeypress();
         waitForKeypress();
@@ -119,9 +110,6 @@ int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1
                 repeat = false;
                 lost_graphics(2, language);
 
-#ifdef __APPLE__
-                system("killall afplay");
-#endif
                 return 1; // returns 1 if the user ran out of rounds - it also works as the while(repeat) stopper
             }
 
@@ -141,9 +129,6 @@ int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1
                 {
                     win_graphics(taille_plateau_jeu, prop1, *NbJoue - 1, 1, "", language);
 
-#ifdef __APPLE__
-                    system("killall afplay");
-#endif
                     return 0; // returns 0 if the user found all the ships - it also works as the while(repeat) stopper
                 }
             }
@@ -151,14 +136,8 @@ int solo(int **prop1, Liste_Navire liste1, int *NbNav1, int *NbJoue, int coulle1
     }
     else
     {
-#ifdef __APPLE__
-        system("killall afplay");
-#endif
         error_graphics(4, language);
     }
 
-#ifdef __APPLE__
-    system("killall afplay");
-#endif
     return 1;
 }

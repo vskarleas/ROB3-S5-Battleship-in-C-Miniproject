@@ -452,9 +452,6 @@ Cellule_Liste_Navire *creer_element_liste_Navire(Navire v)
 	el = (Cellule_Liste_Navire *)malloc(sizeof(Cellule_Liste_Navire));
 	if (el == NULL)
 	{
-#ifdef __APPLE__
-		system("killall afplay");
-#endif
 		allocation_error_print_general("creer_element_liste_Navire");
 	}
 	el->data = v;

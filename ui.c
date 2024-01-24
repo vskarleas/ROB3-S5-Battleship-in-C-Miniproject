@@ -18,6 +18,11 @@
 #define LANG_ENGLISH 0
 #define LANG_FRENCH 2
 
+#define MULTIPLAYER 2
+#define COMPUTER 1
+#define AI 3
+#define LOAD 5
+
 // Function to choose the language
 int choose_language()
 {
@@ -159,13 +164,21 @@ char *get_user_name(char message[1024], int language)
 }
 
 // Printing the rules of the game
-void rules_interface(int rounds, int taille_plateau, int language)
+void rules_interface(int rounds, int taille_plateau, int language, int game_mode)
 {
     char *rules[4] = {"RULES", "", "REGLES", ""};
     printf("\n%s\n", rules[language]);
     char *message[4] = {"We are playing in a field of", "On every round you will be asked to provide the coordinates x & y for a vessel.", "Nous jouons sur un terrain de", ""};
     char *message_explanation[4] = {"The goal is to find the hiden vessels coordinates. There are", "rounds.", "Le but est de trouver les coordonnées des vaisseaux cachés. Il y a", "tours."};
-    printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation[language], rounds, message_explanation[language + 1]);
+    char *message_explanation_mode[4] = {"The goal is to find the hiden vessels coordinates.", "", "Le but est de trouver les coordonnées des vaisseaux cachés.", ""};
+    if (game_mode == COMPUTER)
+    {
+        printf("%s %dx%d. %s \n%s %d %s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation[language], rounds, message_explanation[language + 1]);
+    }
+    else
+    {
+        printf("%s %dx%d. %s \n%s\n\n", message[language], taille_plateau, taille_plateau, message[language + 1], message_explanation_mode[language]);
+    }
     char *message_str[4] = {"The coordinates x & y can take any value between 1 and", "(ex: A, B, C, ...)", "Les coordonnées x et y peuvent prendre n'importe quelle valeur comprise entre 1 et", ""};
     printf("%s %d %s\n", message_str[language], taille_plateau, message_str[1]);
     char *message_str_play[4] = {"When you are ready to start, press ENTER on the keyboard", "", "Lorsque vous êtes prêt à commencer, appuyez sur ENTER sur le clavier", ""};
@@ -218,7 +231,7 @@ void rules_reminder_temps(int seconds, int taille_plateau, int language)
 void lost_graphics(int mode, int language)
 {
     char *lines[4] = {"=================================", "", "=================================", ""};
-    char *extra[4] = {"===========", "", "==========", ""};
+    char *extra[4] = {"===========", "Tap ENTER to continue", "==========", "Tapper ENTER pour continuer"};
     printf("\n%s\n", lines[language]);
     char *over[4] = {"Game over", "", "Jeu terminé", ""};
     printf("%s %s %s\n", extra[language], over[language], extra[language]);
@@ -242,7 +255,7 @@ void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char n
     printf("\n%s %d\n\n", total_number[language], round_nb);
 
     char *finished[4] = {"Game finished", "  YOU WIN  ", " Jeu terminé ", "VOUS GAGNEZ"};
-    char *won[4] = {"wins since he/she found more navires on time (before running out of rounds)", "", "gagne puisqu'il a trouvé plus de navires à temps (avant de manquer de tours)", ""};
+    char *won[4] = {"wins since he/she found more navires on time (before running out of rounds)", "Tap ENTER to continue", "gagne puisqu'il a trouvé plus de navires à temps (avant de manquer de tours)", "Tapper ENTER pour continuer"};
     printing_the_grille_v2(prop, taille_plateau);
     printf("\n=====================================\n");
     printf("=========== %s ===========\n", finished[language]);
@@ -260,6 +273,9 @@ void win_graphics(int taille_plateau, int **prop, int round_nb, int mode, char n
 // Printing error message for allocating memory with corresponding ID
 void allocation_error_print_with_id(char reference[512], int i)
 {
+#ifdef __APPLE__
+    system("killall afplay");
+#endif
     fprintf(stderr, "Failed to allocate memory for %s %d.\n", reference, i);
     exit(-1);
 }
@@ -267,6 +283,9 @@ void allocation_error_print_with_id(char reference[512], int i)
 // Printing error message for allocating memory with corresponding general
 void allocation_error_print_general(char reference[512])
 {
+#ifdef __APPLE__
+    system("killall afplay");
+#endif
     fprintf(stderr, "Failed to allocate memory for %s.\n", reference);
     exit(-1);
 }
@@ -688,54 +707,11 @@ void ajuster_tours(int taille_plateau, int *max_tours, int nb_navires, int mode)
 {
     if (mode == 1)
     {
-        if (taille_plateau <= 4)
-        {
-            switch (nb_navires)
-            {
-            case 1:
-                *max_tours = 20;
-            case 2:
-                *max_tours = 32;
-            case 3:
-                *max_tours = 43;
-            case 4:
-                *max_tours = 54;
-            case 5:
-                *max_tours = 65;
-            case 6:
-                *max_tours = 70;
-            default:
-                *max_tours = 100;
-            }
-        }
-        else if (taille_plateau <= 10)
-        {
-            switch (nb_navires)
-            {
-            case 1:
-                *max_tours = 20;
-            case 2:
-                *max_tours = 22;
-            case 3:
-                *max_tours = 33;
-            case 4:
-                *max_tours = 44;
-            case 5:
-                *max_tours = 55;
-            case 6:
-                *max_tours = 60;
-            default:
-                *max_tours = 70;
-            }
-        }
-        else
-        {
-            *max_tours = 110;
-        }
+        *max_tours = taille_plateau * taille_plateau * 0.8; // minus 20% of the total number of points in a table
     }
     else if (mode == 2) // case multiplayer
     {
-        *max_tours = 40;
+        *max_tours = taille_plateau * taille_plateau * 0.9; // minus 10% of the total number of points in a table
     }
 }
 
@@ -852,6 +828,9 @@ void game_mode_graphics_congratulations(int **prop, int taille_plateau, int nb_n
 // Printing any errors function
 void error_graphics(int error_code, int language)
 {
+#ifdef __APPLE__
+    system("killall afplay");
+#endif
     clearScreen();
     char *msg[4] = {"The game has been saved succesfully on server!", "", "Le jeu a été sauvegardé avec succès sur le serveur !", ""};
     switch (error_code)
@@ -882,7 +861,7 @@ void game_loaded_graphics(int max_rounds_load, int taille_plateau_load, int lang
 {
     char *msg[4] = {"The previous game has been loaded from the server succesfully! For your reference, here are the rules:", "Round", "Le jeu précédent a été chargé depuis le serveur avec succès ! Pour information, voici les règles :", "Tour"};
     printf("\n\033[1;36m%s\033[0m\n", msg[language]);
-    rules_interface(max_rounds_load, taille_plateau_load, language);
+    rules_interface(max_rounds_load, taille_plateau_load, language, 1);
     msleep(100);
 }
 
@@ -909,4 +888,47 @@ void new_round_graphics(int round, int taille_plateau, int **prop, int id, char 
         break;
     }
     printing_the_grille_v2(prop, taille_plateau);
+}
+
+bool keep_playing(int language)
+{
+    char userInput[20];
+    char *msg[4] = {"Now", "Battleship", "Maintenant", "Bataille Navale"};
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    printf("\n\n=====================================");
+    printf("\n%s: %d-%02d-%02d %02d:%02d:%02d - %s\n\n", msg[language], tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, msg[language + 1]);
+
+    char *choice[4] = {"Main menu", "You can either Exit the game or play Again. Your choice: ", "Menu principal", "Vous pouvez soit Quitter le jeu, soit Rejoueur. Votre choix: "};
+    printf("\e[0;36m%s\e[0m\n", choice[language]);
+    char *msg_attention[4] = {"You can only choose from Exit or Again. Try again!", "", "Vous pouvez uniquement choisir entre Quitter ou Rejoueur. Essayer à nouveau!", ""};
+
+    while (true)
+    {
+        printf("%s", choice[language + 1]);
+        scanf("%s", userInput);
+
+        // Convert input to lowercase for case-insensitive comparison and returns
+        for (int i = 0; i < strlen(userInput); i++)
+        {
+            userInput[i] = tolower(userInput[i]);
+        }
+
+        if (strcmp(userInput, "exit") == 0 || strcmp(userInput, "quitter") == 0)
+        {
+            clearScreen();
+            printf("\nDies tuus sit felix!\n");
+            return false;
+        }
+        else if (strcmp(userInput, "again") == 0 || strcmp(userInput, "rejoueur") == 0)
+        {
+            return true;
+        }
+        else
+        {
+            clearScreen();
+            printf("\n\033[0;33mATTENTION!\033[1;0m: %s\n", msg_attention[language]);
+        }
+    }
 }
