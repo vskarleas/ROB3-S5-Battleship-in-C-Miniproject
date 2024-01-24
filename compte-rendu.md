@@ -210,18 +210,13 @@ La fonction ajuster_tours est une composante importante de notre jeu de bataille
 
 L'idée derrière cette fonction est de rendre le jeu juste et équitable, quelle que soit la configuration choisie. Par exemple, sur un petit plateau de 4x4 avec un nombre fixe de tours, disons 55, le jeu pourrait devenir trop facile ou trop difficile selon le nombre de navires présents. Cela pourrait nuire à l'expérience de jeu.
 
-L'algorithme de ajuster_tours calcule le nombre maximum de tours en tenant compte de ces variables. Il analyse la taille du plateau et le nombre de navires pour déterminer un nombre de tours optimal, permettant ainsi de conserver un niveau de défi approprié. Cette approche garantit que chaque partie reste stimulante et engageante, peu importe les choix de l'utilisateur. Son algorithme est le suivant :
+L'algorithme de ajuster_tours calcule le nombre maximum de tours en tenant compte de ces variables. Notre approche etait simple. Il faudrait trouver une fonction mathematique qui gurantira le bon `max_tours` du jeu. Effectivement, si on prend le numero des cases disponibles pour une configuration, tout en suposant que les propabilites d'avoir des points des navires partour dans le tableau, il suffit de multiplier ce nombre avec un pourcentage pour eliminer l'option pour quel'qu'un d'etre capable de choisir tous les cases du tableau. Cette approche garantit que chaque partie reste stimulante et engageante, peu importe les choix de l'utilisateur. Son algorithme est le suivant :
 
-1. Vérifier le mode de jeu (`mode`) :
-   * Si `mode` est égal à 1 (mode solo), ajuster le nombre maximum de tours en fonction de la taille du plateau de jeu (`taille_plateau`) et du nombre de navires (`nb_navires`).
-   * Sinon, si `mode` est égal à 2 (mode multijoueur), fixer le nombre maximum de tours à 40.
-2. Gérer les cas du mode *solo* :
-   * Si la taille du plateau (`taille_plateau`) est inférieure ou égale à 4 :
-     * Basculer entre différentes valeurs de `max_tours` en fonction du nombre de navires (`nb_navires`).
-   * Si la taille du plateau (`taille_plateau`) est supérieure à 4 et inférieure ou égale à 10 :
-     * Basculer entre différentes valeurs de `max_tours` en fonction du nombre de navires (`nb_navires`).
-   * Sinon (taille du plateau supérieure à 10) :
-     * Fixer `max_tours` à 60.
+1. Vérifier le mode de jeu (`mode`)  est solo avec l'option "rounds" ou multiplayer:
+
+   * Si `mode` est égal à 1 (mode solo [load fait partie de la même catégorie du mode de jeu]), ajuster le nombre maximum de tours en fonction de: `taille_plateau * taille_plateau * 0.8`.
+   * Si `mode` est égal à 2 (mode mutliplayer), ajuster le nombre maximum de tours en fonction de: `taille_plateau * taille_plateau * 0.9`.
+2. Sinon on fait rien (car en fait on n'a pas besoin de ce variable pour les autres mode de jeu [IA])
 3. Affecter la valeur calculée de `max_tours` à la variable globale.
 
 ## Colaboration et gestion de projet en Binôme
