@@ -1,4 +1,7 @@
-# Calendrier
+# How to install and play ?
+Access the "Source code" folder found on this repository and install it in your computer device. Then simply follow the instructions for automatic installation that can be found here: https://github.com/vskarleas/ROB3-S5-MiniProjet/tree/main/Source%20Code
+
+# Calendrier / Calendar
 
 * 15/11/2023: Creation de la structure et initialisation de tous les fnctionnes principales du programme
 * 16/11/2023: Creation du fichier compte-rendu
