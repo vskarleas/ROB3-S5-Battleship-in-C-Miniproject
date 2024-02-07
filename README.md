@@ -1,5 +1,5 @@
 # How to install and play ?
-Access the "Source code" folder found on this repository and install it in your computer device. Then simply follow the instructions for automatic installation that can be found here: https://github.com/vskarleas/ROB3-S5-MiniProjet/tree/main/Source%20Code
+Download the file "Game.zip" found on this repository and unzip it in your computer device. Then simply follow the instructions for automatic installation that can be found here: https://github.com/vskarleas/ROB3-S5-MiniProjet/tree/main/Source%20Code
 
 # Calendrier / Calendar
 
