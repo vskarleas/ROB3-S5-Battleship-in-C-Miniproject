@@ -1,7 +1,7 @@
 // #############################################################################
 // # File solo.h
 // # UE Infomatics for Robotics - Polytech Sorbonne - 2023/2024 - S5
-// # Authors: Yannis Sadoun, Vasileios Filippos Skarleas - All rights reserved.
+// # Authors: Yanis Sadoun, Vasileios Filippos Skarleas - All rights reserved.
 // #############################################################################
 
 #ifndef _SOLO_H_
