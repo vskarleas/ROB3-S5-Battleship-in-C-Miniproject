@@ -156,5 +156,5 @@ We can modify the codec in order to include a timestamp that will indicate to th
 ### License Information
 
 **ROB3-S5-Battleship-in-C-Miniproject
-** © 2024 by **Vasileios Filippos Skarleas** and **Yanis Sadoun** is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/). 
+** © 2024 by **Vasileios Filippos Skarleas** and **Yanis Sadoun** is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/)
 
